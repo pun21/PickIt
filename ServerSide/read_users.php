@@ -1,35 +1,52 @@
 <?php
+//Turn off deprecated warnings
+error_reporting(E_ALL ^ E_DEPRECATED);
  
-/*
- * Following code will create a new product row
- * All product details are read from HTTP Post Request
- */
- 
-// array for JSON response
+//Create response array
 $response = array();
  
-// check for required fields
+//If the UserID was passed in...
 if (isset($_GET["UserID"])){
 	$userID = $_GET['UserID'];
 	
-	$result = musql_query("SELECT userID,username,birthday,gender
-		,ethnicity,religion,politicalAffiliation FROM Users");
+	require_once __DIR__ . '/db_connect.php';
+	$db = new DB_CONNECT();
 	
-	if (!empty($result)){
+	$result = mysql_query("SELECT UserID,Username,Gender,Religion,PoliticalAffiliation,Birthday,Ethnicity FROM Users WHERE UserID='$userID'");
 	
-		$result = mysql_fetch_array($result);
-		echo $result;
-		$user = array();
-		$user["userID"] = $result["userID"];
-		$user["username"] = $result["username"];
-		$user["birthday"] = $result["birthday"];
-		$user["gender"] = $result["gender"];
-		$user["ethnicity"] = $result["ethnicity"];
-		$user["religion"] = $result["religion"];
-		$user["politicalAffiliation"] = $result["politicalAffiliation"];
+	if(mysql_num_rows($result)!=0){
+		$result = mysql_fetch_assoc($result);
+		
+		echo json_encode($result);
+	}else{
+		$response["success"] = 0;
+        $response["message"] = "User unsuccessfully queried!!";
+		
+		echo json_encode($response);
 	}
-}
-else{
-	echo "Fucked up";
+}else if (isset($_GET["Username"])){
+	$username = $_GET['Username'];
+	
+	require_once __DIR__ . '/db_connect.php';
+	
+	$db = new DB_CONNECT();
+	
+	$result = mysql_query("SELECT UserID,Username,Gender,Religion,PoliticalAffiliation,Birthday,Ethnicity FROM Users WHERE Username='$username'");
+	
+	if(mysql_num_rows($result)!=0){
+		$result = mysql_fetch_assoc($result);
+		
+		echo json_encode($result);
+	}else{
+		$response["success"] = 0;
+        $response["message"] = "User unsuccessfully queried!!";
+		
+		echo json_encode($response);
+	}
+}else{
+	$response["success"] = 0;
+    $response["message"] = "No Username or UserID provided!";
+		
+	echo json_encode($response);
 }
 ?>
