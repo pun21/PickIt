@@ -22,4 +22,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile project(':commons-net-3.3')
+    compile project(':commons-net-3.3-sources')
+    compile project(':commons-net-examples-3.3')
+    compile project(':json-simple-1.1.1')
+    compile project(':httpclient-4.3.1')
 }

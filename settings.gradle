@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':commons-net-3.3-sources', ':commons-net-3.3', ':commons-net-examples-3.3', ':json-simple-1.1.1', ':httpclient-4.3.1'
