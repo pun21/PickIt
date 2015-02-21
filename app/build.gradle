@@ -17,11 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
-
+repositories{ mavenCentral() }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile project(':commons-net-3.3')
     compile project(':commons-net-3.3-sources')
     compile project(':commons-net-examples-3.3')

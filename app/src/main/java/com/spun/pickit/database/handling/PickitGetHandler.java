@@ -3,7 +3,7 @@ package com.spun.pickit.database.handling;
 /**
  * Created by jacob_000 on 2/21/2015.
  */
-public class PickitGetHandler extends DatabaseGet{
+public class PickitGetHandler{
     private static final String URL = "SOMETHING";
     private String userID;
 
