@@ -20,6 +20,16 @@ public class UserCRUD extends CRUD{
         this.userID = userID;
     }
 
+    public UserCRUD(String username,String password,String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+        this.username = username;
+        this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.ethnicity = ethnicity;
+        this.religion = religion;
+        this.politicalAffiliation = politicalAffiliation;
+    }
+
     protected String readExtension(){
         String extension = READ_REQUEST +"?Username="+ this.username + "&Password=" +this.password;
         return extension;

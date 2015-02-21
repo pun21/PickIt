@@ -3,7 +3,7 @@ package com.spun.pickit.database.handling.crud;
 
 //Following is the sense that the following is the user only
 // so the user has leaders, people he can issue and change
-public class FollowingCRUD {
+public class FollowingCRUD extends CRUD{
     protected static final String READ_LEADER = "read_following_get_leader.php";
     private static final String DELETE_FOLLOWING = "delete_following.php";
     private static final String CREATE_FOLLOWING = "create_following.php";
