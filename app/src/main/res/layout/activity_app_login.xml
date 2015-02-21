@@ -53,4 +53,19 @@
         android:layout_gravity="center_horizontal"
         android:textColor="#000" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guest_login"
+        android:id="@+id/button_guest_login"
+        android:layout_gravity="center_horizontal" />
+
+    <com.facebook.widget.LoginButton
+        android:id="@+id/authButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        />
+
 </LinearLayout>
