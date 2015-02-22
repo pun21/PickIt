@@ -1,4 +1,5 @@
 package com.spun.pickit.database.handling.crud;
+import org.json.JSONObject;
 
 
 // use CRUD to read, delete, update, and create Users
@@ -31,7 +32,7 @@ public class UserCRUD extends CRUD{
     }
 
     protected String readExtension(){
-        String extension = READ_REQUEST +"?Username="+ this.username + "&Password=" +this.password;
+        String extension = READ_REQUEST +"?UserID="+ this.username;
         return extension;
     }
 
@@ -58,19 +59,8 @@ public class UserCRUD extends CRUD{
         return extension;
     }
 
-    protected void readPrimitive(){
-
-    }
-
-    protected void deletePrimitive(){
-
-
-    }
-
-    protected void updatePrimitive(){
-
-    }
-
-    protected void createPrimitive(){
-    }
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 }

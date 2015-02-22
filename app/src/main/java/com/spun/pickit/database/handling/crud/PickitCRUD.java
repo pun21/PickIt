@@ -1,5 +1,5 @@
 package com.spun.pickit.database.handling.crud;
-
+import org.json.JSONObject;
 /**
  * Created by jacob_000 on 2/21/2015.
  */
@@ -37,8 +37,8 @@ public class PickitCRUD extends CRUD{
         return extension;
     }
 
-    protected void readPrimitive(){}
-    protected void deletePrimitive(){}
-    protected void updatePrimitive(){}
-    protected void createPrimitive(){}
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 }

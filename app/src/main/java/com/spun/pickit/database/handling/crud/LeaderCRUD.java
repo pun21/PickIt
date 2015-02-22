@@ -1,6 +1,8 @@
 package com.spun.pickit.database.handling.crud;
 
 
+import org.json.JSONObject;
+
 //Leader in the since that the user is the Leader, the following are those people
 // that follow the user
 public class LeaderCRUD extends CRUD {
@@ -37,14 +39,15 @@ public class LeaderCRUD extends CRUD {
         try {
             throw new Exception("a Leader cant force people to follow him");
         }catch(Exception e){
+            e.printStackTrace();
         }
         return null;
     }
 
-    protected void readPrimitive(){}
-    protected void deletePrimitive(){}
-    protected void updatePrimitive(){}
-    protected void createPrimitive(){}
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 
 
 }

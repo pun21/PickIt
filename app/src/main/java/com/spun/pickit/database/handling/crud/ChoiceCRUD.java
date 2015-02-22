@@ -1,4 +1,5 @@
 package com.spun.pickit.database.handling.crud;
+import org.json.JSONObject;
 
 public class ChoiceCRUD extends CRUD{
     private static final String READ_CHOICE = "read_choice.php";
@@ -24,7 +25,7 @@ public class ChoiceCRUD extends CRUD{
     }
     protected String updateExtension(){
         try {
-            throw new Exception("a pickit cant update a Choice");
+            throw new Exception("a pickit can't update a Choice");
         }catch(Exception e){
         }
         return null;
@@ -34,9 +35,9 @@ public class ChoiceCRUD extends CRUD{
         return extension;
     }
 
-    protected void readPrimitive(){}
-    protected void deletePrimitive(){}
-    protected void updatePrimitive(){}
-    protected void createPrimitive(){}
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 
 }

@@ -1,4 +1,5 @@
 package com.spun.pickit.database.handling.crud;
+import org.json.JSONObject;
 
 public class VotesUserCRUD extends CRUD{
     private static final String READ_VOTES_USER = "read_votes.php";
@@ -41,10 +42,10 @@ public class VotesUserCRUD extends CRUD{
         return extension;
     }
 
-    protected void readPrimitive(){}
-    protected void deletePrimitive(){}
-    protected void updatePrimitive(){}
-    protected void createPrimitive(){}
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 
 
 

@@ -17,7 +17,7 @@
         android:inputType="textPersonName"
         android:text="@string/username"
         android:ems="10"
-        android:id="@+id/field_username"
+        android:id="@+id/usernameTextbox"
         android:layout_gravity="center_horizontal" />
 
     <EditText
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/field_password"
+        android:id="@+id/passwordTextbox"
         android:text="@string/password"
         android:layout_gravity="center_horizontal" />
 
@@ -34,7 +34,8 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:id="@+id/button_login"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickLogin" />
 
     <CheckBox
         android:layout_width="wrap_content"

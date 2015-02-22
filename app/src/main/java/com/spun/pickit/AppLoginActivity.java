@@ -1,21 +1,35 @@
 package com.spun.pickit;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.facebook.Session;
+import com.spun.pickit.database.handling.DatabaseHandler;
 
 
 public class AppLoginActivity extends FragmentActivity {
+    private static final String USERNAME_KEY = "usernameKey";
+    private static final String PASSWORD_KEY = "passwordKey";
+    private static final String TAG = "MainFragment";
 
     private MainFragment mainFragment;
-    private static final String TAG = "MainFragment";
+    private EditText mUsernameRepresentation;
+    private EditText mPasswordRepresentation;
+
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +47,15 @@ public class AppLoginActivity extends FragmentActivity {
             mainFragment = (MainFragment) getSupportFragmentManager()
                     .findFragmentById(android.R.id.content);
         }
+
+        mUsernameRepresentation = (EditText)findViewById(R.id.usernameTextbox);
+        mPasswordRepresentation = (EditText)findViewById(R.id.passwordTextbox);
+
+        username = getPreferences(MODE_PRIVATE).getString(USERNAME_KEY, "");
+        password = getPreferences(MODE_PRIVATE).getString(PASSWORD_KEY, "");
+
+        setEventListeners();
+
         setContentView(R.layout.activity_app_login);
     }
 
@@ -62,6 +85,12 @@ public class AppLoginActivity extends FragmentActivity {
     protected void onPause() {
         super.onPause();
 
+        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+        editor.putString(USERNAME_KEY, username);
+        editor.putString(PASSWORD_KEY, password);
+
+        editor.commit();
+
         //Fb's Insights Dashboard - Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -81,5 +110,64 @@ public class AppLoginActivity extends FragmentActivity {
     public void onClickGuestLogin(View v) {
         Intent intent = new Intent(this, AccountAdminActivity.class);
         startActivity(intent);
+    }
+
+    public void onClickLogin(View v){
+        DatabaseHandler data = new DatabaseHandler();
+        boolean pass = data.validatePassword(this.username,this.password);
+        if (pass){
+            Intent intent = new Intent(this, AccountAdminActivity.class);
+            startActivity(intent);
+        }else{
+            Context context = getApplicationContext();
+            CharSequence text = "Incorrect login!";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+        }
+    }
+
+    private void setEventListeners(){
+        mUsernameRepresentation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                    username = mUsernameRepresentation.getText().toString();
+                }catch(Exception e){
+                    username = "";
+                }
+            }
+        });
+
+        mPasswordRepresentation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try{
+                    password= mPasswordRepresentation.getText().toString();
+                }catch(Exception e){
+                    password = "";
+                }
+            }
+        });
     }
 }

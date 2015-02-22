@@ -1,6 +1,8 @@
 package com.spun.pickit.database.handling.crud;
 
 
+import org.json.JSONObject;
+
 //Following is the sense that the following is the user only
 // so the user has leaders, people he can issue and change
 public class FollowingCRUD extends CRUD{
@@ -39,10 +41,10 @@ public class FollowingCRUD extends CRUD{
         return extension;
     }
 
-    protected void readPrimitive(){}
-    protected void deletePrimitive(){}
-    protected void updatePrimitive(){}
-    protected void createPrimitive(){}
+    protected void readPrimitive(JSONObject json){}
+    protected void deletePrimitive(JSONObject json){}
+    protected void updatePrimitive(JSONObject json){}
+    protected void createPrimitive(JSONObject json){}
 
 
 

@@ -3,6 +3,7 @@ package com.spun.pickit.database.handling;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
 import com.spun.pickit.database.handling.crud.FollowingCRUD;
 import com.spun.pickit.database.handling.crud.LeaderCRUD;
+import com.spun.pickit.database.handling.crud.PasswordValidation;
 import com.spun.pickit.database.handling.crud.PickitCRUD;
 import com.spun.pickit.database.handling.crud.UserCRUD;
 import com.spun.pickit.database.handling.crud.VotesChoiceCRUD;
@@ -19,6 +20,7 @@ public class DatabaseHandler {
     private VotesChoiceCRUD votesChoiceCRUD;
     private VotesPickitCRUD votesPickitCRUD;
     private VotesUserCRUD votesUserCRUD;
+    private PasswordValidation passwordValidation;
 
 
     public void createUser(){
@@ -32,6 +34,12 @@ public class DatabaseHandler {
         //TODO need to have the correct format of this
         this.userCRUD = new UserCRUD("USERID");
         this.userCRUD.read();
+    }
+
+    public boolean validatePassword(String username,String password){
+        passwordValidation = new PasswordValidation(username,password);
+        passwordValidation.read();
+        return passwordValidation.getPass();
     }
 
     public void updateUser(){
