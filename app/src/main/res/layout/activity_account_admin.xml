@@ -3,12 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="136dp"
+        android:layout_gravity="center_horizontal" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/account_admin_blurb"
-        android:id="@+id/textView_account_admin_blurb"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/textView_account_admin_blurb" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,24 +33,61 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView" />
+        android:text="@string/gender"
+        android:id="@+id/textView_gender"
+        android:layout_gravity="center_horizontal" />
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="266dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_gender"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView2" />
+        android:text="@string/ethnicity"
+        android:id="@+id/textView_ethnicity"
+        android:layout_gravity="center_horizontal" />
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="252dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2" />
+        android:id="@+id/spinner_ethnicity"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/religion"
+        android:id="@+id/textView_religion"
+        android:layout_gravity="center_horizontal" />
+
+    <Spinner
+        android:layout_width="244dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_religion"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/political"
+        android:id="@+id/textView_political"
+        android:layout_gravity="center_horizontal" />
+
+    <Spinner
+        android:layout_width="238dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_political"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:id="@+id/button_save"
+        android:onClick="onClickSave"
+        android:layout_gravity="right" />
 
 </LinearLayout>

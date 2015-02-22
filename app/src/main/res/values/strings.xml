@@ -8,6 +8,7 @@
     <string name="facebook_app_id">1589926514552725</string>
     <string name="facebook_login">Facebook Login</string>
 
+    <string name="save">Save</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -31,14 +32,27 @@
     </string-array>
 
     <string-array name="ethnicity_array">
-        <item></item>
+        <item>African American/Black</item>
+        <item>Asian/Pacific Islander</item>
+        <item>Hispanic/Latino</item>
+        <item>Native American</item>
+        <item>Caucasian</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="political_affiliation_array">
-        <item></item>
+       <item></item>
     </string-array>
 
     <string-array name="religion_array">
-        <item></item>
+        <item>Christian</item>
+        <item>Jewish</item>
+        <item>Catholic</item>
+        <item>Muslim</item>
+        <item>Hindu</item>
+        <item>Buddhist</item>
+        <item>Atheist</item>
+        <item>Agnostic</item>
+        <item>Other</item>
     </string-array>
 </resources>
