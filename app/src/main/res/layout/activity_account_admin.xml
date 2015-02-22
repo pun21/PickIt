@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    android:layout_height="match_parent">
 
-    <DatePicker
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datePicker"
+        android:text="@string/account_admin_blurb"
+        android:id="@+id/textView_account_admin_blurb"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/textView"
+        android:text="@string/bday"
+        android:id="@+id/textView_bday"
         android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="229dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/textField_bday"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/date_format" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -24,15 +38,15 @@
         android:id="@+id/spinner"
         android:layout_gravity="center_horizontal" />
 
-    <ListView
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_gravity="center_horizontal" />
+        android:text="New Text"
+        android:id="@+id/textView2" />
 
-    <ListView
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView2"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/spinner2" />
+
 </LinearLayout>
