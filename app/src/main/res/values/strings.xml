@@ -14,4 +14,31 @@
     <string name="guest_login">Guest Login</string>
     <string name="rememberMe">Remember Me</string>
     <string name="createAccount">Create account</string>
+    <string name="date_format">mm/dd/yyyy</string>
+    <string name="bday">Birthday</string>
+    <string name="account_admin_blurb">Please input the following information about yourself so that we may provide a breakdown of the voters\' demographics.</string>
+
+    <!-- Demographic Categories -->
+    <string name="gender">Gender</string>
+    <string name="ethnicity">Ethnicity</string>
+    <string name="political">Political Affiliation</string>
+    <string name="religion">Religion</string>
+    <string name="age">Age</string>
+
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="ethnicity_array">
+        <item></item>
+    </string-array>
+
+    <string-array name="political_affiliation_array">
+        <item></item>
+    </string-array>
+
+    <string-array name="religion_array">
+        <item></item>
+    </string-array>
 </resources>
