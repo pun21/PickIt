@@ -41,7 +41,11 @@
     </string-array>
 
     <string-array name="political_affiliation_array">
-       <item></item>
+       <item>Democrat</item>
+        <item>Republican</item>
+        <item>Independent</item>
+        <item>Other</item>
+        <item>None</item>
     </string-array>
 
     <string-array name="religion_array">

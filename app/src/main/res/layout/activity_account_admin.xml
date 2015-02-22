@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <GridView
-        android:layout_width="match_parent"
-        android:layout_height="136dp"
-        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/account_admin_blurb"
-        android:id="@+id/textView_account_admin_blurb" />
+        android:id="@+id/textView_account_admin_blurb"
+        android:layout_marginTop="46dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/spinner_gender"
+        android:layout_alignStart="@+id/textView_bday" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bday"
         android:id="@+id/textView_bday"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/textField_bday"
+        android:layout_alignEnd="@+id/textView_gender" />
 
     <EditText
         android:layout_width="229dp"
@@ -28,59 +29,78 @@
         android:ems="10"
         android:id="@+id/textField_bday"
         android:layout_gravity="center_horizontal"
-        android:text="@string/date_format" />
+        android:text="@string/date_format"
+        android:layout_above="@+id/textView_gender"
+        android:layout_alignStart="@+id/spinner_gender"
+        android:layout_marginBottom="28dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/gender"
         android:id="@+id/textView_gender"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_gender"
+        android:layout_alignStart="@+id/textField_bday" />
 
     <Spinner
         android:layout_width="266dp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_gender"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_ethnicity"
+        android:layout_alignStart="@+id/spinner_ethnicity" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/ethnicity"
         android:id="@+id/textView_ethnicity"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_alignBottom="@+id/spinner_gender"
+        android:layout_alignStart="@+id/spinner_gender" />
 
     <Spinner
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_ethnicity"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_religion"
+        android:layout_alignStart="@+id/spinner_religion" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/religion"
         android:id="@+id/textView_religion"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_religion"
+        android:layout_alignStart="@+id/textView_political" />
 
     <Spinner
         android:layout_width="244dp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_religion"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_political"
+        android:layout_alignEnd="@+id/spinner_political" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/political"
         android:id="@+id/textView_political"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/spinner_political"
+        android:layout_alignStart="@+id/spinner_political" />
 
     <Spinner
         android:layout_width="238dp"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_political"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/button_save"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -88,6 +108,9 @@
         android:text="@string/save"
         android:id="@+id/button_save"
         android:onClick="onClickSave"
-        android:layout_gravity="right" />
+        android:layout_gravity="right"
+        android:layout_marginBottom="39dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/spinner_gender" />
 
-</LinearLayout>
+</RelativeLayout>
