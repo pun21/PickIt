@@ -16,7 +16,7 @@ import java.util.Date;
 public class DatabaseAccess {
     final private static long timeout = 10000;
 
-    public boolean validatePassword(String username,String password) {
+    public boolean validatePassword(String username, String password) {
         PasswordValidation passwordValidation = new PasswordValidation(username,password);
         DataAccess access = new DataAccess(passwordValidation.read(), timeout);
 
@@ -24,7 +24,6 @@ public class DatabaseAccess {
 
         boolean pass = false;
         try{
-            json = json.getJSONObject("Result");
             pass = json.get("success") == 1;
         }catch(JSONException e){
             e.printStackTrace();

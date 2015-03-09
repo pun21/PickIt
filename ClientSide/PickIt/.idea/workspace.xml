@@ -39,15 +39,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AppLoginActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="AppLoginActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3.0367775" vertical-offset="0" max-vertical-offset="1887">
-              <caret line="120" column="37" selection-start-line="120" selection-start-column="37" selection-end-line="120" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1594" max-vertical-offset="2108">
+              <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
               <folding>
-                <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
                 <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="View.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-21/android/view/View.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="63477" max-vertical-offset="347888">
+              <caret line="3853" column="0" selection-start-line="3853" selection-start-column="0" selection-end-line="3853" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -62,14 +71,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseAccess.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="DatabaseAccess.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="731">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.33268481" vertical-offset="169" max-vertical-offset="1020">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
                 <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
               </folding>
             </state>
@@ -831,8 +839,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/database/DataAccess.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/crud/PickitCRUD.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/crud/UserCRUD.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DataAccess.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java" />
       </list>
     </option>
@@ -1069,7 +1077,7 @@
     <property name="recentsLimit" value="5" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="TA62701R1Z" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_21_x86" />
-    <property name="DEBUGGABLE_DEVICE" value="Nexus_5_API_21_x86 [emulator-5554]" />
+    <property name="DEBUGGABLE_DEVICE" value="motorola-xt1080-TA62701R1Z" />
     <property name="DEBUGGABLE_PROCESS" value="com.spun.pickit" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
   </component>
@@ -1274,14 +1282,14 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32333332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39777777" sideWeight="0.75319827" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39777777" sideWeight="0.75319827" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5003959" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33444443" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39777777" sideWeight="0.2468017" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33444443" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33444443" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32918552" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1318,25 +1326,19 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java</url>
-          <line>122</line>
-          <properties />
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java</url>
-          <line>123</line>
-          <properties />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java</url>
           <line>20</line>
           <properties />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java</url>
+          <line>122</line>
+          <properties />
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="14" />
+      <option name="time" value="15" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1370,7 +1372,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1393,7 +1394,6 @@
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
@@ -1437,7 +1437,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1457,7 +1456,6 @@
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
@@ -1501,7 +1499,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1524,7 +1521,6 @@
           <caret line="42" column="5" selection-start-line="42" selection-start-column="5" selection-end-line="42" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
@@ -1568,7 +1564,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1588,7 +1583,6 @@
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
@@ -1632,7 +1626,6 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1655,7 +1648,6 @@
           <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
@@ -1709,14 +1701,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1326">
           <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-21/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="63477" max-vertical-offset="347888">
-          <caret line="3853" column="0" selection-start-line="3853" selection-start-column="0" selection-end-line="3853" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1800,25 +1784,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java">
+    <entry file="file://$USER_HOME$/AppData/Local/Android/sdk/sources/android-21/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="731">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
-            <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="63477" max-vertical-offset="347888">
+          <caret line="3853" column="0" selection-start-line="3853" selection-start-column="0" selection-end-line="3853" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.0367775" vertical-offset="0" max-vertical-offset="1887">
-          <caret line="120" column="37" selection-start-line="120" selection-start-column="37" selection-end-line="120" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1594" max-vertical-offset="2108">
+          <caret line="122" column="0" selection-start-line="122" selection-start-column="0" selection-end-line="122" selection-end-column="0" />
           <folding>
-            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33268481" vertical-offset="169" max-vertical-offset="1020">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
           </folding>
         </state>
       </provider>
