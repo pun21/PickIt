@@ -39,12 +39,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AppLoginActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AppLoginActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1537" max-vertical-offset="2108">
-              <caret line="121" column="53" selection-start-line="121" selection-start-column="53" selection-end-line="121" selection-end-column="53" />
+            <state vertical-scroll-proportion="3.0367775" vertical-offset="0" max-vertical-offset="1887">
+              <caret line="120" column="37" selection-start-line="120" selection-start-column="37" selection-end-line="120" selection-end-column="37" />
               <folding>
+                <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
                 <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
               </folding>
             </state>
@@ -61,10 +62,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DatabaseAccess.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DatabaseAccess.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.642732" vertical-offset="160" max-vertical-offset="731">
+            <state vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="731">
               <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -1263,7 +1264,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1369,6 +1370,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1435,6 +1437,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1498,6 +1501,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1564,6 +1568,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1627,6 +1632,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2142" max-vertical-offset="3043">
           <caret line="126" column="32" selection-start-line="126" selection-start-column="32" selection-end-line="126" selection-end-column="32" />
           <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
             <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
@@ -1777,16 +1783,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1537" max-vertical-offset="2108">
-          <caret line="121" column="53" selection-start-line="121" selection-start-column="53" selection-end-line="121" selection-end-column="53" />
-          <folding>
-            <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/crud/CRUD.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
@@ -1806,12 +1802,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/database/handling/DatabaseAccess.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.642732" vertical-offset="160" max-vertical-offset="731">
+        <state vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="731">
           <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
             <element signature="class#AsyncReaderThread#0;class#DataAccess#0;class#DatabaseAccess#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/spun/pickit/AppLoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.0367775" vertical-offset="0" max-vertical-offset="1887">
+          <caret line="120" column="37" selection-start-line="120" selection-start-column="37" selection-end-line="120" selection-end-column="37" />
+          <folding>
+            <element signature="method#onClickLogin#0;class#AppLoginActivity#0" expanded="false" />
+            <element signature="method#setEventListeners#0;class#AppLoginActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
