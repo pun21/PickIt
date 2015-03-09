@@ -1,12 +1,9 @@
 package com.spun.pickit;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +14,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
-import com.facebook.Session;
-import com.spun.pickit.database.handling.DatabaseHandler;
+import com.spun.pickit.database.handling.DatabaseAccess;
+
+import org.json.JSONException;
 
 
 public class AppLoginActivity extends Activity {
@@ -120,15 +118,15 @@ public class AppLoginActivity extends Activity {
         startActivity(intent);
     }
 
-    public void onClickLogin(View v){
-        DatabaseHandler data = new DatabaseHandler();
-        boolean pass = data.validatePassword(username,password);
+    public void onClickLogin(View v) {
+        DatabaseAccess access = new DatabaseAccess();
+        boolean pass = access.validatePassword(username,password);
         if (pass){
             Intent intent = new Intent(this, AccountAdminActivity.class);
             startActivity(intent);
         }else{
             Context context = getApplicationContext();
-            CharSequence text = "Incorrect login!";
+            CharSequence text = "Invalid Credentials... Please try again";
             int duration = Toast.LENGTH_LONG;
 
             Toast.makeText(context, text, duration).show();

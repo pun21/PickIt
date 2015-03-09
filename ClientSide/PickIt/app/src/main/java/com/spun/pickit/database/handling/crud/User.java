@@ -1,9 +1,6 @@
 package com.spun.pickit.database.handling.crud;
-import org.json.JSONObject;
 
-
-// use CRUD to read, delete, update, and create Users
-public class UserCRUD extends CRUD{
+public class User extends CRUD{
     private static final String READ_REQUEST = "validate_password.php";
     private static final String UPDATE_REQUEST = "update_user.php";
     private static final String CREATE_REQUEST = "create_user.php";
@@ -17,11 +14,11 @@ public class UserCRUD extends CRUD{
     private String religion;
     private String politicalAffiliation;
 
-    public UserCRUD(String userID){
+    public User(String userID){
         this.userID = userID;
     }
 
-    public UserCRUD(String username,String password,String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+    public User(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
         this.username = username;
         this.password = password;
         this.birthday = birthday;
@@ -31,13 +28,13 @@ public class UserCRUD extends CRUD{
         this.politicalAffiliation = politicalAffiliation;
     }
 
-    protected String readExtension(){
+    public String readExtension(){
         String extension = READ_REQUEST +"?UserID="+ this.username;
         return extension;
     }
 
     //Since a user cannot delete themselves, this will return null
-    protected String deleteExtension(){
+    public String deleteExtension(){
         try {
             throw new Exception("Users can not be deleted");
         }catch(Exception e){
@@ -45,22 +42,17 @@ public class UserCRUD extends CRUD{
         return null;
     }
 
-    protected String updateExtension(){
+    public String updateExtension(){
         String extension = (UPDATE_REQUEST + "?UserID=" + this.userID + "&Username=" + this.username
                 + "&Password=" + this.password + "&Birthday=" + this.birthday + "&Gender=" + this.gender
                 + "&Ethnicity=" + this.ethnicity + "&Religion=" + this.religion
                 + "&PoliticalAffiliation=" + this.politicalAffiliation);
         return extension;
     }
-    protected String createExtension(){
+    public String createExtension(){
         String extension = (CREATE_REQUEST + "?Username=" + this.username + "&Password=" + this.password +
                 "&Birthday=" + this.birthday + "&Gender=" + this.gender + "&Ethnicity=" + this.ethnicity
                 + "&Religion=" + this.religion + "&PoliticalAffiliation=" + this.politicalAffiliation);
         return extension;
     }
-
-    protected void readPrimitive(JSONObject json){}
-    protected void deletePrimitive(JSONObject json){}
-    protected void updatePrimitive(JSONObject json){}
-    protected void createPrimitive(JSONObject json){}
 }

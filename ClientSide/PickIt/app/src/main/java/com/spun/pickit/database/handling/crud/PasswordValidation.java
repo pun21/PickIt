@@ -16,41 +16,20 @@ public class PasswordValidation extends CRUD{
         this.password = password;
     }
 
-    protected String readExtension(){
+    public String readExtension(){
         String extension = VALIDATE +"?Username="+ this.username + "&Password=" +this.password;
         return extension;
     }
-    protected String deleteExtension(){
-        String extension = "";;
-        return extension;
-    }
-    protected String updateExtension(){
+    public String deleteExtension(){
         String extension = "";
         return extension;
     }
-    protected String createExtension(){
-        String extension = "";;
+    public String updateExtension(){
+        String extension = "";
         return extension;
     }
-
-    protected void readPrimitive(JSONObject json){
-        try {
-            if (json.get("success")==1) {
-                this.pass = true;
-            }else{
-                this.pass = false;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    public String createExtension(){
+        String extension = "";
+        return extension;
     }
-    protected void deletePrimitive(JSONObject json){}
-    protected void updatePrimitive(JSONObject json){}
-    protected void createPrimitive(JSONObject json){}
-
-    public boolean getPass(){
-        return this.pass;
-    }
-
-
 }
