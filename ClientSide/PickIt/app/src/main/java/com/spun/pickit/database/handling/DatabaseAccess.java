@@ -18,7 +18,7 @@ public class DatabaseAccess {
 
     public boolean validatePassword(String username, String password) {
         PasswordValidation passwordValidation = new PasswordValidation(username,password);
-        DataAccess access = new DataAccess(passwordValidation.read(), timeout);
+        DataAccess access = new DataAccess(passwordValidation.read());
 
         JSONObject json = access.getJson();
 
@@ -33,18 +33,18 @@ public class DatabaseAccess {
     }
 
     class DataAccess {
-        private long timeout;
         private String url;
         private JSONObject json = null;
+        private Thread readerThread;
 
-        public DataAccess(String url, long timeout){
+        public DataAccess(String url){
             this.url = url;
-            this.timeout = timeout;
-            new AsyncReaderThread().start();
+            readerThread = new AsyncReaderThread();
+            readerThread.start();
         }
 
         public JSONObject getJson(){
-            while(json == null ){}
+            while(json ==  null){}
 
             return json;
         }

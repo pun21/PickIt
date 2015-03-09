@@ -65,18 +65,18 @@
         <dex dex="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\json-simple-1.1.1-a0664a2475f38c09fc097ca6bbc8bcf71152fe3b.jar" />
     </item>
     <item
-        jar="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\3.21.1\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0285ad8da812e92dda76ed5d0dcba05724c7911d">
-        <dex dex="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-61871c155af8cbc0250f6906ba2525c2f2f29d5c.jar" />
-    </item>
-    <item
         jar="C:\Users\bjclark\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.1.2\91c20388c9a45f62b5ed8fe0502bb76ff6251fc7\bolts-android-1.1.2.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="91c20388c9a45f62b5ed8fe0502bb76ff6251fc7">
         <dex dex="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.2-f091e933c6191fa83e2e9269d5a8a633acab5c94.jar" />
+    </item>
+    <item
+        jar="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\3.21.1\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0285ad8da812e92dda76ed5d0dcba05724c7911d">
+        <dex dex="C:\Users\bjclark\Desktop\School\Spring 2015\CIS4914\ProjectRepo\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-61871c155af8cbc0250f6906ba2525c2f2f29d5c.jar" />
     </item>
 
 </items>
