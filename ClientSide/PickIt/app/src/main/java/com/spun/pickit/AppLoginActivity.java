@@ -118,6 +118,17 @@ public class AppLoginActivity extends Activity {
         startActivity(intent);
     }
 
+    //button to MainActivity for testing purposes - remove when done
+    public void onClickTestMainActivity(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickTestUploadActivity(View v) {
+        Intent intent = new Intent(this, UploadActivity.class);
+        startActivity(intent);
+    }
+
     public void onClickLogin(View v) {
         DatabaseAccess access = new DatabaseAccess();
         boolean pass = access.validatePassword(username,password);

@@ -62,6 +62,21 @@
         android:onClick="onClickGuestLogin"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goto_main_activity"
+        android:onClick="onClickTestMainActivity"
+        android:text="@string/title_activity_main"
+        android:layout_gravity="center_horizontal"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goto_upload_activity"
+        android:onClick="onClickTestUploadActivity"
+        android:text="@string/title_activity_upload"
+        android:layout_gravity="center_horizontal"/>
+
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
         android:layout_width="wrap_content"
