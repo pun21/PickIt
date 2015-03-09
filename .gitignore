@@ -17,6 +17,10 @@ gen/
 build/
 /*/build/
 
+#Android Studio
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
 # Local configuration file (sdk path, etc)
 local.properties
 
