@@ -9,7 +9,6 @@ public class PasswordValidation extends CRUD{
     private static final String VALIDATE = "validate_password.php";
     private String username;
     private String password;
-    private boolean pass;
 
     public PasswordValidation(String username, String password){
         this.username = username;

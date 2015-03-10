@@ -30,3 +30,5 @@ Thumbs.db
 # Log Files
 *.log
 ClientSide/PickIt/.idea/workspace.xml
+ClientSide/PickIt/.idea/workspace.xml
+ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/fileHashes.bin

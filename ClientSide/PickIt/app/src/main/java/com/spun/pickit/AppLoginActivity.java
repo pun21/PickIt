@@ -25,9 +25,6 @@ import java.util.ArrayList;
 public class AppLoginActivity extends Activity {
     private static final String USERNAME_KEY = "usernameKey";
     private static final String PASSWORD_KEY = "passwordKey";
-    private static final String TAG = "MainFragment";
-
-    private MainFragment mainFragment;
 
     FileManager fileManager;
     EditText mUsernameRepresentation;
@@ -135,32 +132,35 @@ public class AppLoginActivity extends Activity {
     }
 
     public void onClickLogin(View v) {
-        //Create access object to validate username/password input
-        DatabaseAccess access = new DatabaseAccess();
-        boolean pass = access.validatePassword(username,password);
+        if(!username.equals("") && !password.equals("")){
+            //Create access object to validate username/password input
+            DatabaseAccess access = new DatabaseAccess();
+            boolean pass = access.validatePassword(username,password);
 
-        if (pass){
-            //If the password is valid and the checkbox is checked, save username/password locally
-            CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
-            if(rememberMe.isChecked()){
-                fileManager.saveCredentials(username, password);
-            }else{
-                if(fileManager.credentialFileExists()){
-                    fileManager.deleteCredentials();
+            if (pass){
+                //If the password is valid and the checkbox is checked, save username/password locally
+                CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
+                if(rememberMe.isChecked()){
+                    fileManager.saveCredentials(username, password);
+                }else{
+                    if(fileManager.credentialFileExists()){
+                        fileManager.deleteCredentials();
+                    }
                 }
+
+                //Take the user to the menu activity
+                //TODO- change to appropriate activity once created
+                Intent intent = new Intent(this, AccountAdminActivity.class);
+                startActivity(intent);
+                return;
             }
-
-            //Take the user to the menu activity
-            //TODO- change to appropriate activity once created
-            Intent intent = new Intent(this, AccountAdminActivity.class);
-            startActivity(intent);
-        }else{
-            Context context = getApplicationContext();
-            CharSequence text = "Invalid username or password\nPlease try again";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast.makeText(context, text, duration).show();
         }
+
+        Context context = getApplicationContext();
+        CharSequence text = "Invalid username or password\nPlease try again";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast.makeText(context, text, duration).show();
     }
 
     private void setEventListeners(){
