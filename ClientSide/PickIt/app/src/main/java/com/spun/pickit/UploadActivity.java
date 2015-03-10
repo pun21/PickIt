@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -26,8 +27,11 @@ public class UploadActivity extends ActionBarActivity {
 
     private String pickItHeading;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int LOAD_IMAGE_REQUEST_CODE = 200;
+    private static final int SELECT_PICTURE = 1;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight;
 
     private Uri fileUri;
 
@@ -49,6 +53,13 @@ public class UploadActivity extends ActionBarActivity {
                 return handled;
             }
         });
+
+        imageTopLeft = (ImageView) findViewById(R.id.imageView);
+        imageTopRight = (ImageView) findViewById(R.id.imageView2);
+        imageBottomLeft = (ImageView) findViewById(R.id.imageView3);
+        imageBottomLeft = (ImageView) findViewById(R.id.imageView4);
+
+
     }
 
 
@@ -75,7 +86,8 @@ public class UploadActivity extends ActionBarActivity {
     }
 
     public void onClickNavHome(View v) {
-        //create pull down category menu or do in xml file
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void onClickNavUpload(View v) {
@@ -91,7 +103,7 @@ public class UploadActivity extends ActionBarActivity {
     }
     public void onClickSignOut(View v) {
 
-        //do any sign out stuff
+        //TODO do any sign out stuff
 
         //go to login page after signing out
         Intent intent = new Intent(this, AppLoginActivity.class);
@@ -99,11 +111,29 @@ public class UploadActivity extends ActionBarActivity {
     }
     public void onClickUpload(View v) {
 
-        //do upload stuff
+        //TODO do upload stuff - save the heading and pictures to database
 
         //go to Results Activity
         Intent intent = new Intent(this, ResultsActivity.class);
         startActivity(intent);
+
+    }
+    public void onClickImage(View v) {
+        //TODO
+        //identify the right image and bring back the right gallery camera icons
+        //__.setVisibility(VISIBLE);
+
+
+    }
+    public void onClickGallery(View v) {
+        //open gallery, select picture, set imageView as picture, set gallery icon and camera icon invisible/inactive
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+
+        //TODO
+        //once imageView has been set with image from gallery, make the gallery and camera icons invisible
 
     }
     public void onClickCamera(View v) {
@@ -165,6 +195,15 @@ public class UploadActivity extends ActionBarActivity {
         return mediaFile;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //gallery
+        if (requestCode == LOAD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+
+        }
+    }
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){

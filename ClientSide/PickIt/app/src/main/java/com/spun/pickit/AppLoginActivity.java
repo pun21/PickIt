@@ -129,6 +129,11 @@ public class AppLoginActivity extends Activity {
         startActivity(intent);
     }
 
+    public void onClickTestResultsActivity(View v) {
+        Intent intent = new Intent(this, ResultsActivity.class);
+        startActivity(intent);
+    }
+
     public void onClickLogin(View v) {
         DatabaseAccess access = new DatabaseAccess();
         boolean pass = access.validatePassword(username,password);

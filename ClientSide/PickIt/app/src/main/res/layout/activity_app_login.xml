@@ -76,6 +76,13 @@
         android:onClick="onClickTestUploadActivity"
         android:text="@string/title_activity_upload"
         android:layout_gravity="center_horizontal"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goto_results_activity"
+        android:onClick="onClickTestResultsActivity"
+        android:text="@string/title_activity_results"
+        android:layout_gravity="center_horizontal"/>
 
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
