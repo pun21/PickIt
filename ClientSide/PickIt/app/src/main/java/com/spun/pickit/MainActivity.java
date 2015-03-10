@@ -103,6 +103,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     }
+
     public void onClickTimeRemainingToggle(View v) {
         ToggleButton tog = (ToggleButton) findViewById(R.id.toggle_time_remaining);
 

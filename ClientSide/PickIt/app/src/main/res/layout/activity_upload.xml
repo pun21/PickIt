@@ -83,6 +83,7 @@
                 android:layout_height="52dp"
                 android:id="@+id/imageButton2"
                 android:background="@drawable/ic_action_camera"
+                android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
         </FrameLayout>
 
@@ -110,6 +111,7 @@
                 android:layout_height="48dp"
                 android:id="@+id/imageButton4"
                 android:background="@drawable/ic_action_camera"
+                android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
         </FrameLayout>
 
@@ -137,6 +139,7 @@
                 android:layout_height="58dp"
                 android:id="@+id/imageButton6"
                 android:background="@drawable/ic_action_camera"
+                android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
         </FrameLayout>
 
@@ -164,6 +167,7 @@
                 android:layout_height="46dp"
                 android:id="@+id/imageButton8"
                 android:background="@drawable/ic_action_camera"
+                android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
         </FrameLayout>
     </GridLayout>
