@@ -1,6 +1,7 @@
 package com.spun.pickit;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,13 +11,15 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.spun.pickit.database.handling.DatabaseAccess;
+import com.spun.pickit.fileIO.*;
 
-import org.json.JSONException;
+import java.util.ArrayList;
 
 
 public class AppLoginActivity extends Activity {
@@ -26,6 +29,7 @@ public class AppLoginActivity extends Activity {
 
     private MainFragment mainFragment;
 
+    FileManager fileManager;
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
 
@@ -42,13 +46,28 @@ public class AppLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_login);
 
-        username = getPreferences(MODE_PRIVATE).getString(USERNAME_KEY, "");
-        password = getPreferences(MODE_PRIVATE).getString(PASSWORD_KEY, "");
-
+        fileManager = new FileManager(this);
         mUsernameRepresentation = (EditText)findViewById(R.id.usernameTextbox);
         mPasswordRepresentation = (EditText)findViewById(R.id.passwordTextbox);
 
+        username = getPreferences(MODE_PRIVATE).getString(USERNAME_KEY, "");
+        password = getPreferences(MODE_PRIVATE).getString(PASSWORD_KEY, "");
+
+        ArrayList<String> credentials = fileManager.readSavedCredentials();
+        if(credentials.size() == 2){
+            username = credentials.get(0);
+            password = credentials.get(1);
+            CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
+            rememberMe.setChecked(true);
+        }
+
+        updateScreenText();
+
         setEventListeners();
+
+        //
+        // Facebook related material
+        //
 
 //        if (savedInstanceState == null) {
 //            // Add the fragment on initial activity setup
@@ -62,8 +81,6 @@ public class AppLoginActivity extends Activity {
 //            mainFragment = (MainFragment) getSupportFragmentManager()
 //                    .findFragmentById(android.R.id.content);
 //        }
-
-
     }
 
     @Override
@@ -92,14 +109,13 @@ public class AppLoginActivity extends Activity {
         super.onPause();
 
         SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-        editor.putString(USERNAME_KEY, username);
-        editor.putString(PASSWORD_KEY, password);
 
         editor.commit();
 
         //Fb's Insights Dashboard - Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -118,31 +134,29 @@ public class AppLoginActivity extends Activity {
         startActivity(intent);
     }
 
-    //button to MainActivity for testing purposes - remove when done
-    public void onClickTestMainActivity(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickTestUploadActivity(View v) {
-        Intent intent = new Intent(this, UploadActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickTestResultsActivity(View v) {
-        Intent intent = new Intent(this, ResultsActivity.class);
-        startActivity(intent);
-    }
-
     public void onClickLogin(View v) {
+        //Create access object to validate username/password input
         DatabaseAccess access = new DatabaseAccess();
         boolean pass = access.validatePassword(username,password);
+
         if (pass){
+            //If the password is valid and the checkbox is checked, save username/password locally
+            CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
+            if(rememberMe.isChecked()){
+                fileManager.saveCredentials(username, password);
+            }else{
+                if(fileManager.credentialFileExists()){
+                    fileManager.deleteCredentials();
+                }
+            }
+
+            //Take the user to the menu activity
+            //TODO- change to appropriate activity once created
             Intent intent = new Intent(this, AccountAdminActivity.class);
             startActivity(intent);
         }else{
             Context context = getApplicationContext();
-            CharSequence text = "Invalid Credentials... Please try again";
+            CharSequence text = "Invalid username or password\nPlease try again";
             int duration = Toast.LENGTH_LONG;
 
             Toast.makeText(context, text, duration).show();
@@ -157,9 +171,7 @@ public class AppLoginActivity extends Activity {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -174,15 +186,17 @@ public class AppLoginActivity extends Activity {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                password = "hello0";
-
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
             @Override
             public void afterTextChanged(Editable s) {
                 password = mPasswordRepresentation.getText().toString();
             }
         });
+    }
+
+    private void updateScreenText(){
+        mUsernameRepresentation.setText(username);
+        mPasswordRepresentation.setText(password);
     }
 }

@@ -1,33 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="#ffffff">
 
     <ImageView
-        android:layout_width="87dp"
-        android:layout_height="231dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/appLogo"
         android:src="@drawable/app_logo"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="top"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp" />
 
     <EditText
-        android:layout_width="191dp"
+        android:layout_width="337dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/usernameTextbox"
+        android:hint="Username"
         android:editable="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="87dp"
+        android:gravity="center_horizontal"
+        android:focusable="true"
+        android:enabled="true"
+        android:focusableInTouchMode="true"
+        android:layout_below="@+id/appLogo"
+        android:layout_centerHorizontal="true" />
 
     <EditText
-        android:layout_width="196dp"
+        android:layout_width="357dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordTextbox"
+        android:hint="Password"
         android:editable="true"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/usernameTextbox"
+        android:layout_alignStart="@+id/usernameTextbox"
+        android:layout_alignEnd="@+id/usernameTextbox" />
 
     <Button
         android:layout_width="192dp"
@@ -35,14 +52,24 @@
         android:text="@string/login"
         android:id="@+id/button_login"
         android:layout_gravity="center_horizontal"
-        android:onClick="onClickLogin" />
+        android:onClick="onClickLogin"
+        android:layout_marginTop="74dp"
+        android:layout_below="@+id/box_remember_me"
+        android:layout_alignEnd="@+id/textView_create_account"
+        android:layout_alignStart="@+id/box_remember_me" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/rememberMe"
         android:id="@+id/box_remember_me"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ff417286"
+        android:textStyle="bold|italic"
+        android:textSize="18dp"
+        android:layout_below="@+id/passwordTextbox"
+        android:layout_alignStart="@+id/passwordTextbox"
+        android:checked="false" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,7 +79,13 @@
         android:onClick="onClickCreateAccount"
         android:id="@+id/textView_create_account"
         android:layout_gravity="center_horizontal"
-        android:textColor="#000" />
+        android:textColor="#ff417286"
+        android:autoText="false"
+        android:textStyle="bold|italic"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_alignTop="@+id/box_remember_me"
+        android:layout_alignEnd="@+id/passwordTextbox" />
 
     <Button
         android:layout_width="wrap_content"
@@ -60,36 +93,18 @@
         android:text="@string/guest_login"
         android:id="@+id/button_guest_login"
         android:onClick="onClickGuestLogin"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/goto_main_activity"
-        android:onClick="onClickTestMainActivity"
-        android:text="@string/title_activity_main"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/goto_upload_activity"
-        android:onClick="onClickTestUploadActivity"
-        android:text="@string/title_activity_upload"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/goto_results_activity"
-        android:onClick="onClickTestResultsActivity"
-        android:text="@string/title_activity_results"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/button_login"
+        android:layout_alignStart="@+id/button_login"
+        android:layout_alignEnd="@+id/button_login" />
 
     <com.facebook.widget.LoginButton
         android:id="@+id/authButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        />
+        android:layout_below="@+id/button_guest_login"
+        android:layout_alignStart="@+id/button_guest_login"
+        android:layout_alignEnd="@+id/button_guest_login" />
 
-</LinearLayout>
+</RelativeLayout>
