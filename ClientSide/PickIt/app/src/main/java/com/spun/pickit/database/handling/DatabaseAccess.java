@@ -1,5 +1,6 @@
 package com.spun.pickit.database.handling;
 
+import android.app.Activity;
 import com.spun.pickit.database.handling.crud.PasswordValidation;
 
 import org.apache.http.client.ResponseHandler;
@@ -11,11 +12,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 public class DatabaseAccess {
-    final private static long timeout = 10000;
-
     public boolean validatePassword(String username, String password) {
         PasswordValidation passwordValidation = new PasswordValidation(username,password);
         DataAccess access = new DataAccess(passwordValidation.read());
@@ -26,7 +24,13 @@ public class DatabaseAccess {
         try{
             pass = json.get("success") == 1;
         }catch(JSONException e){
-            e.printStackTrace();
+            try {
+                json = json.getJSONObject("Result");
+                pass = json.get("success") == 1;
+            } catch (JSONException e1) {
+                e.printStackTrace();
+                e1.printStackTrace();
+            }
         }
 
         return pass;
@@ -44,7 +48,13 @@ public class DatabaseAccess {
         }
 
         public JSONObject getJson(){
-            while(json ==  null){}
+            while(json ==  null){
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
             return json;
         }
@@ -53,31 +63,28 @@ public class DatabaseAccess {
 
             @Override
             public void run(){
-                Date end = new Date(new Date().getTime()+timeout);
+                ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                DefaultHttpClient client = new DefaultHttpClient();
 
-                while(new Date().getTime() < end.getTime()){
-                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                    DefaultHttpClient client = new DefaultHttpClient();
-                    InputStream content = null;
-                    HttpGet request;
-                    String response = "";
+                InputStream content = null;
+                HttpGet request;
+                String response = "";
 
-                    try {
-                        request = new HttpGet( url );
-                        response = client.execute( request, responseHandler );
-                        json = new JSONObject(response);
-                        break;
-                    } catch ( Exception e ) {
-                        e.printStackTrace();
-                    }finally{
-                        if( content != null )
-                            try {
-                                content.close();
-                            } catch ( IOException e ) {
-                                e.printStackTrace();
-                            }
-                    }
+                try {
+                    request = new HttpGet( url );
+                    response = client.execute( request, responseHandler );
+                    json = new JSONObject(response);
+                } catch ( Exception e ) {
+                    e.printStackTrace();
+                }finally {
+                    if (content != null)
+                        try {
+                            content.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                 }
+
 
                 if(json == null){
                     json = new JSONObject();

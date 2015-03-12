@@ -37,36 +37,36 @@
     <string name="age">Age</string>
 
     <string-array name="gender_array">
-        <item>Male</item>
         <item>Female</item>
+        <item>Male</item>
     </string-array>
 
     <string-array name="ethnicity_array">
         <item>African American/Black</item>
         <item>Asian/Pacific Islander</item>
+        <item>Caucasian/White</item>
         <item>Hispanic/Latino</item>
         <item>Native American</item>
-        <item>Caucasian</item>
         <item>Other</item>
     </string-array>
 
     <string-array name="political_affiliation_array">
         <item>Democrat</item>
-        <item>Republican</item>
         <item>Independent</item>
+        <item>Republican</item>
         <item>Other</item>
         <item>None</item>
     </string-array>
 
     <string-array name="religion_array">
-        <item>Christian</item>
-        <item>Jewish</item>
-        <item>Catholic</item>
-        <item>Muslim</item>
-        <item>Hindu</item>
-        <item>Buddhist</item>
-        <item>Atheist</item>
         <item>Agnostic</item>
+        <item>Atheist</item>
+        <item>Buddhist</item>
+        <item>Catholic</item>
+        <item>Christian</item>
+        <item>Hindu</item>
+        <item>Jewish</item>
+        <item>Muslim</item>
         <item>Other</item>
     </string-array>
     <string name="title_activity_temp">temp</string>

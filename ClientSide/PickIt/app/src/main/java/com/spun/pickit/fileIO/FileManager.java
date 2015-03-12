@@ -18,6 +18,7 @@ import java.util.ArrayList;
  * Created by BJClark on 3/10/2015.
  */
 public class FileManager {
+    final String CREDENTIALS_FILE_NAME = "credentials.txt";
     private Activity activity;
 
     //region Constructors
@@ -35,11 +36,11 @@ public class FileManager {
 
     //region ...Credentials
     public ArrayList<String> readSavedCredentials(){
-        final String FILE_NAME = "credentials.txt";
+
         ArrayList<String> credentials = new ArrayList<>();
 
         try {
-            InputStream inputStream = activity.openFileInput(FILE_NAME);
+            InputStream inputStream = activity.openFileInput(CREDENTIALS_FILE_NAME);
 
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -69,12 +70,11 @@ public class FileManager {
     }
 
     public boolean credentialFileExists(){
-        final String FILE_NAME = "credentials.txt";
         boolean fileExists = false;
 
         String[] files = activity.fileList();
         for (String file : files) {
-            if (file.equals(FILE_NAME)) {
+            if (file.equals(CREDENTIALS_FILE_NAME)) {
                 fileExists = true;
                 break;
             }
@@ -84,17 +84,15 @@ public class FileManager {
     }
 
     public void deleteCredentials(){
-        final String FILE_NAME = "credentials.txt";
         String[] files = activity.fileList();
         for (String file : files) {
-            if (file.equals(FILE_NAME)) {
-                activity.deleteFile(FILE_NAME);
+            if (file.equals(CREDENTIALS_FILE_NAME)) {
+                activity.deleteFile(CREDENTIALS_FILE_NAME);
             }
         }
     }
 
     public void saveCredentials(String username, String password){
-        final String FILE_NAME = "credentials.txt";
         JSONObject temp = new JSONObject();
 
         try {
@@ -112,7 +110,7 @@ public class FileManager {
                     FileOutputStream os = null;
 
                     try{
-                        os = activity.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+                        os = activity.openFileOutput(CREDENTIALS_FILE_NAME, Context.MODE_PRIVATE);
                         os.write(credentials.toString().getBytes());
                     }catch(Exception e){
                         e.printStackTrace();

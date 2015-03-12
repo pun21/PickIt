@@ -1,7 +1,6 @@
 package com.spun.pickit;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
@@ -23,16 +24,18 @@ import java.util.ArrayList;
 
 
 public class AppLoginActivity extends Activity {
-    private static final String USERNAME_KEY = "usernameKey";
-    private static final String PASSWORD_KEY = "passwordKey";
-
+    //region Activity Variables
     FileManager fileManager;
+    PickItApp pickItApp;
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
+    ProgressBar loading;
 
     private static String username;
     private static String password;
+    //endregion
 
+    //region Life-cycle methods
     @Override
     protected void onStart(){
         super.onStart();
@@ -43,41 +46,17 @@ public class AppLoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_login);
 
+        pickItApp = (PickItApp)getApplication();
         fileManager = new FileManager(this);
-        mUsernameRepresentation = (EditText)findViewById(R.id.usernameTextbox);
-        mPasswordRepresentation = (EditText)findViewById(R.id.passwordTextbox);
+        mUsernameRepresentation = (EditText)findViewById(R.id.usernameLoginTextbox);
+        mPasswordRepresentation = (EditText)findViewById(R.id.passwordLoginTextbox);
+        loading = (ProgressBar)findViewById(R.id.loading);
 
-        username = getPreferences(MODE_PRIVATE).getString(USERNAME_KEY, "");
-        password = getPreferences(MODE_PRIVATE).getString(PASSWORD_KEY, "");
+        loading.setVisibility(View.INVISIBLE);
 
-        ArrayList<String> credentials = fileManager.readSavedCredentials();
-        if(credentials.size() == 2){
-            username = credentials.get(0);
-            password = credentials.get(1);
-            CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
-            rememberMe.setChecked(true);
-        }
-
+        readCredentials();
         updateScreenText();
-
         setEventListeners();
-
-        //
-        // Facebook related material
-        //
-
-//        if (savedInstanceState == null) {
-//            // Add the fragment on initial activity setup
-//            mainFragment = new MainFragment();
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .add(android.R.id.content, mainFragment)
-//                    .commit();
-//        } else {
-//            // Or set the fragment from restored state info
-//            mainFragment = (MainFragment) getSupportFragmentManager()
-//                    .findFragmentById(android.R.id.content);
-//        }
     }
 
     @Override
@@ -105,10 +84,6 @@ public class AppLoginActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
-
-        editor.commit();
-
         //Fb's Insights Dashboard - Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -117,21 +92,41 @@ public class AppLoginActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        readCredentials();
+        updateScreenText();
+
         //Fb's Insights Dashboard - Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
 
+    @Override
+    protected void onStop(){
+        endLoad();
+
+        username = "";
+        password = "";
+        updateScreenText();
+
+        super.onStop();
+    }
+    //endregion
+
+    //region Input Handlers
     public void onClickCreateAccount(View v) {
+        pickItApp.setGuest(false);
         Intent intent = new Intent(this, AccountAdminActivity.class);
         startActivity(intent);
     }
 
     public void onClickGuestLogin(View v) {
+        pickItApp.setGuest(true);
         Intent intent = new Intent(this, AccountAdminActivity.class);
         startActivity(intent);
     }
 
     public void onClickLogin(View v) {
+        startLoad();
+
         if(!username.equals("") && !password.equals("")){
             //Create access object to validate username/password input
             DatabaseAccess access = new DatabaseAccess();
@@ -148,13 +143,16 @@ public class AppLoginActivity extends Activity {
                     }
                 }
 
+                endLoad();
+
                 //Take the user to the menu activity
-                //TODO- change to appropriate activity once created
-                Intent intent = new Intent(this, AccountAdminActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return;
             }
         }
+
+        endLoad();
 
         Context context = getApplicationContext();
         CharSequence text = "Invalid username or password\nPlease try again";
@@ -162,13 +160,49 @@ public class AppLoginActivity extends Activity {
 
         Toast.makeText(context, text, duration).show();
     }
+    //endregion
 
+    //Helper Methods
+    private void readCredentials(){
+        ArrayList<String> credentials = fileManager.readSavedCredentials();
+        if(credentials.size() == 2){
+            username = credentials.get(0);
+            password = credentials.get(1);
+            CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
+            rememberMe.setChecked(true);
+        }
+    }
+    private void startLoad(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.VISIBLE);
+
+                enableLayoutChildren(false);
+            }
+        });
+    }
+    private void endLoad(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.INVISIBLE);
+
+                enableLayoutChildren(true);
+            }
+        });
+    }
+    private void enableLayoutChildren(boolean enable){
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.AppLogin);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            child.setEnabled(enable);
+        }
+    }
     private void setEventListeners(){
         mUsernameRepresentation.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
@@ -181,9 +215,7 @@ public class AppLoginActivity extends Activity {
 
         mPasswordRepresentation.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
@@ -194,7 +226,6 @@ public class AppLoginActivity extends Activity {
             }
         });
     }
-
     private void updateScreenText(){
         mUsernameRepresentation.setText(username);
         mPasswordRepresentation.setText(password);
