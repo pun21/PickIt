@@ -3,16 +3,12 @@ package com.spun.pickit.database.handling;
 import android.util.Log;
 
 import com.spun.pickit.database.handling.crud.PasswordValidation;
-<<<<<<< HEAD
+
 import com.spun.pickit.database.handling.crud.UserCRUD;
 import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
 
 import com.spun.pickit.model.User;
-
-=======
-import com.spun.pickit.database.handling.crud.User;
->>>>>>> origin/bensBranch
 
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -23,7 +19,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 public class DatabaseAccess {
     public boolean validatePassword(String username, String password) {
@@ -46,7 +41,7 @@ public class DatabaseAccess {
     }
 
     public boolean saveUserProfile(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
-        User user = new User(username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
+        UserCRUD user = new UserCRUD(username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
         DataAccess access = new DataAccess(user.create());
 
         JSONObject json = access.getJson();
@@ -65,17 +60,6 @@ public class DatabaseAccess {
         return pass;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public User readUser(String userID){
         UserCRUD userCRUDOp = new UserCRUD(userID);
         DataAccess access = new DataAccess(userCRUDOp.read());
@@ -86,7 +70,7 @@ public class DatabaseAccess {
             if (this.JSONResquestPass(json)) {
                 userToSend = new User((int)json.get("UserID"), (String)json.get("Username"),(String) json.get("Gender"), (String)json.get("Religion"), (String)json.get("PoliticalAffiliation"), (String)json.get("Birthday"), (String)json.get("Ethnicity"));
             } else {
-               Log.v("readUsesr", "the json object is not accesed correctly,  try json.get(\"Result\").get([whatever])");
+               Log.v("readUser", "the json object is not accesed correctly,  try json.get(\"Result\").get([whatever])");
             }
         }catch(JSONException e){
             e.printStackTrace();
@@ -136,8 +120,6 @@ public class DatabaseAccess {
         return pass;
     }
 
-
-
     class DataAccess {
         private String url;
         private JSONObject json = null;
@@ -162,7 +144,6 @@ public class DatabaseAccess {
         }
 
         class AsyncReaderThread extends Thread{
-
             @Override
             public void run(){
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();
