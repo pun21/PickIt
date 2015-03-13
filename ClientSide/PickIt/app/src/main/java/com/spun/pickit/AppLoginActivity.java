@@ -21,6 +21,7 @@ import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class AppLoginActivity extends Activity {
@@ -101,11 +102,8 @@ public class AppLoginActivity extends Activity {
 
     @Override
     protected void onStop(){
-        endLoad();
-
         username = "";
         password = "";
-        updateScreenText();
 
         super.onStop();
     }
@@ -125,8 +123,6 @@ public class AppLoginActivity extends Activity {
     }
 
     public void onClickLogin(View v) {
-        startLoad();
-
         if(!username.equals("") && !password.equals("")){
             //Create access object to validate username/password input
             DatabaseAccess access = new DatabaseAccess();
@@ -143,19 +139,16 @@ public class AppLoginActivity extends Activity {
                     }
                 }
 
-                endLoad();
+                pickItApp.setGuest(false);
 
-                //Take the user to the menu activity
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return;
             }
         }
 
-        endLoad();
-
         Context context = getApplicationContext();
-        CharSequence text = "Invalid username or password\nPlease try again";
+        CharSequence text = "Invalid username/password";
         int duration = Toast.LENGTH_LONG;
 
         Toast.makeText(context, text, duration).show();
@@ -170,33 +163,6 @@ public class AppLoginActivity extends Activity {
             password = credentials.get(1);
             CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
             rememberMe.setChecked(true);
-        }
-    }
-    private void startLoad(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.VISIBLE);
-
-                enableLayoutChildren(false);
-            }
-        });
-    }
-    private void endLoad(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.INVISIBLE);
-
-                enableLayoutChildren(true);
-            }
-        });
-    }
-    private void enableLayoutChildren(boolean enable){
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.AppLogin);
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            View child = layout.getChildAt(i);
-            child.setEnabled(enable);
         }
     }
     private void setEventListeners(){

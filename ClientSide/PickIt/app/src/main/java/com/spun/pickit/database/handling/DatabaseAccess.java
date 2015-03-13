@@ -3,12 +3,16 @@ package com.spun.pickit.database.handling;
 import android.util.Log;
 
 import com.spun.pickit.database.handling.crud.PasswordValidation;
+<<<<<<< HEAD
 import com.spun.pickit.database.handling.crud.UserCRUD;
 import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
 
 import com.spun.pickit.model.User;
 
+=======
+import com.spun.pickit.database.handling.crud.User;
+>>>>>>> origin/bensBranch
 
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -19,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class DatabaseAccess {
     public boolean validatePassword(String username, String password) {
@@ -28,16 +33,33 @@ public class DatabaseAccess {
         JSONObject json = access.getJson();
 
         boolean pass = false;
-        try{
-            pass = json.get("success") == 1;
-        }catch(JSONException e){
-            try {
+        try {
+            if(json.get("Successful")==1){
                 json = json.getJSONObject("Result");
                 pass = json.get("success") == 1;
-            } catch (JSONException e1) {
-                e.printStackTrace();
-                e1.printStackTrace();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return pass;
+    }
+
+    public boolean saveUserProfile(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+        User user = new User(username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
+        DataAccess access = new DataAccess(user.create());
+
+        JSONObject json = access.getJson();
+
+        boolean pass = false;
+
+        try {
+            if(json.get("Successful") == 1){
+                json = json.getJSONObject("Result");
+                pass = json.get("success") == 1;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         return pass;
@@ -169,15 +191,15 @@ public class DatabaseAccess {
                 if(json == null){
                     json = new JSONObject();
                     try {
-                        json.put("Successful", "0");
-                        json.put("Result", "!ERROR!");
+                        json.put("Successful", 0);
+                        json.put("Result", "!!!ERROR!!!");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }else{
                     JSONObject temp = new JSONObject();
                     try{
-                        temp.put("Successful", "1");
+                        temp.put("Successful", 1);
                         temp.put("Result", json);
                     }catch (JSONException e) {
                         e.printStackTrace();

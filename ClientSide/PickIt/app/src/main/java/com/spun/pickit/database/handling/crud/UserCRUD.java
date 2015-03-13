@@ -1,6 +1,12 @@
 package com.spun.pickit.database.handling.crud;
 
+<<<<<<< HEAD:ClientSide/PickIt/app/src/main/java/com/spun/pickit/database/handling/crud/UserCRUD.java
 public class UserCRUD extends CRUD{
+=======
+import java.util.Date;
+
+public class User extends CRUD{
+>>>>>>> origin/bensBranch:ClientSide/PickIt/app/src/main/java/com/spun/pickit/database/handling/crud/User.java
     private static final String READ_REQUEST = "validate_password.php";
     private static final String UPDATE_REQUEST = "update_user.php";
     private static final String CREATE_REQUEST = "create_user.php";

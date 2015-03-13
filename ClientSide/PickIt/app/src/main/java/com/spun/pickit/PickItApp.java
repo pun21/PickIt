@@ -1,6 +1,10 @@
 package com.spun.pickit;
 
+import android.app.Activity;
 import android.app.Application;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Date;
 
@@ -8,15 +12,18 @@ import java.util.Date;
  * Created by BJClark on 3/10/2015.
  */
 public class PickItApp extends Application {
-    private int userID = -1;
-    private String username = "";
-    private Date birthday = new Date(1900, 0, 0);
-    private String gender = "";
-    private String ethnicity = "";
-    private String religion = "";
-    private String political = "";
-    private boolean guest = false;
+    //region Demographics and user identification
+    private int userID;
+    private String username;
+    private Date birthday;
+    private String gender;
+    private String ethnicity;
+    private String religion;
+    private String political;
+    private boolean guest;
+    //endregion
 
+    //region Accessor Methods
     public void setUserID(int userID){
         this.userID = userID;
     }
@@ -65,4 +72,5 @@ public class PickItApp extends Application {
     public boolean isGuest(){
         return guest;
     }
+    //endregion
 }

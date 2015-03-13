@@ -2,30 +2,31 @@ package com.spun.pickit;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.FileManager;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
+import java.util.Formatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class AccountAdminActivity extends Activity {
     //region Class Variables
@@ -76,10 +77,6 @@ public class AccountAdminActivity extends Activity {
 
         loading.setVisibility(View.INVISIBLE);
 
-        username = getPreferences(MODE_PRIVATE).getString(USERNAME_KEY, "");
-        password = getPreferences(MODE_PRIVATE).getString(PASSWORD_KEY, "");
-        confirmPassword = getPreferences(MODE_PRIVATE).getString(CONFIRM_KEY, "");
-
         setSpinners();
         setEventListeners();
         updateScreen();
@@ -98,10 +95,6 @@ public class AccountAdminActivity extends Activity {
 
         SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
 
-        editor.putString(USERNAME_KEY, username);
-        editor.putString(PASSWORD_KEY, password);
-        editor.putString(CONFIRM_KEY, confirmPassword);
-
         editor.commit();
     }
     //endregion
@@ -111,7 +104,7 @@ public class AccountAdminActivity extends Activity {
         startLoad();
 
         if(isAcceptableData()){
-            if(pickItApp.getUserID() == -1){
+            if(pickItApp.getUserID() == 0){
                 saveUser();
             }else{
                 updateUser();
@@ -130,9 +123,63 @@ public class AccountAdminActivity extends Activity {
 
     //Helper Methods
     private void saveUser(){
+        String tempUsername;
+        String tempPassword;
+        String tempBirthday;
+        String tempGender;
+        String tempEthnicity;
+        String tempReligion;
+        String tempPolitical;
 
+        try{
+            tempUsername = username;
+            tempPassword = password;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            Date date = formatter.parse(mBirthday.getText().toString());
+            tempBirthday = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+            Spinner mGender = (Spinner)findViewById(R.id.spinner_gender);
+            tempGender = mGender.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mEthnicity = (Spinner)findViewById(R.id.spinner_ethnicity);
+            tempEthnicity = mEthnicity.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mReligion = (Spinner)findViewById(R.id.spinner_religion);
+            tempReligion = mReligion.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mPolitical = (Spinner)findViewById(R.id.spinner_political);
+            tempPolitical = mPolitical.getSelectedItem().toString().replace(" ", "");
+        }catch(Exception e){
+            e.printStackTrace();
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter valid inputs";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+            return;
+        }
+
+        DatabaseAccess access = new DatabaseAccess();
+        boolean pass = access.saveUserProfile(tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+
+        if (pass){
+            setUserInformation();
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else{
+            Context context = getApplicationContext();
+            CharSequence text = "We're sorry! We were unable to save user";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+        }
     }
     private void updateUser(){
+        //TODO
+    }
+    private void setUserInformation(){
 
     }
     private boolean isAcceptableData(){
@@ -150,7 +197,14 @@ public class AccountAdminActivity extends Activity {
         return mPasswordRepresentation.getText().toString().equals(mConfirmPasswordRepresentation.getText().toString());
     }
     private boolean credentialsAreFilled(){
-        return !mUsernameRepresentation.getText().toString().equals("") && !mPasswordRepresentation.getText().toString().equals("") && !mConfirmPasswordRepresentation.getText().toString().equals("");
+        Pattern pattern = Pattern.compile("\\s");
+        Matcher matcher1 = pattern.matcher(mUsernameRepresentation.getText().toString());
+        Matcher matcher2 = pattern.matcher(mPasswordRepresentation.getText().toString());
+        boolean usernameFine = !matcher1.find();
+        boolean passwordFine = !matcher2.find();
+
+        return !mUsernameRepresentation.getText().toString().equals("") && !mPasswordRepresentation.getText().toString().equals("")
+                && !mConfirmPasswordRepresentation.getText().toString().equals("") && usernameFine && passwordFine;
     }
     private boolean birthdayIsCorrectFormat(){
         String temp = mBirthday.getText().toString();
@@ -248,24 +302,15 @@ public class AccountAdminActivity extends Activity {
         }
     }
     private void startLoad(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.VISIBLE);
+        enableLayoutChildren(false);
+        loading.setEnabled(true);
+        loading.setVisibility(View.VISIBLE);
 
-                enableLayoutChildren(false);
-            }
-        });
     }
     private void endLoad(){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.INVISIBLE);
-
-                enableLayoutChildren(true);
-            }
-        });
+        enableLayoutChildren(true);
+        loading.setEnabled(true);
+        loading.setVisibility(View.INVISIBLE);
     }
     private void enableLayoutChildren(boolean enable){
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.accountAdminActivity);
