@@ -3,14 +3,14 @@ import org.json.JSONObject;
 /**
  * Created by jacob_000 on 2/21/2015.
  */
-public class Pickit extends CRUD{
+public class PickitCRUD extends CRUD{
     private static final String READ_PICKIT = "read_pickit.php";
     private static final String CREATE_PICKIT = "create_pickit.php";
     private static final String DELETE_PICKIT = "delete_pickit.pnp";
 
     private String pickitID;
 
-    public Pickit(String pickitID){
+    public PickitCRUD(String pickitID){
         this.pickitID = pickitID;
     }
 

@@ -1,6 +1,6 @@
 package com.spun.pickit.database.handling.crud;
 
-public class User extends CRUD{
+public class UserCRUD extends CRUD{
     private static final String READ_REQUEST = "validate_password.php";
     private static final String UPDATE_REQUEST = "update_user.php";
     private static final String CREATE_REQUEST = "create_user.php";
@@ -14,11 +14,11 @@ public class User extends CRUD{
     private String religion;
     private String politicalAffiliation;
 
-    public User(String userID){
+    public UserCRUD(String userID){
         this.userID = userID;
     }
 
-    public User(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+    public UserCRUD(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
         this.username = username;
         this.password = password;
         this.birthday = birthday;

@@ -14,14 +14,19 @@ public class Following extends CRUD{
     private String leader;
 
     public Following(String leader){
-
+        this.follower = follower;
     }
 
+    public Following(String follower, String leader){
+        this.follower = follower;
+        this.leader = leader;
+    }
+    //TODO
     public String readExtension(){
         String extension = READ_LEADER + "?UserID=" + this.follower;
         return extension;
     }
-
+    //TODO
     public String deleteExtension(){
         String extension = (DELETE_FOLLOWING + "?Follower=" + this.follower + "&Leader="
                 + this.leader);

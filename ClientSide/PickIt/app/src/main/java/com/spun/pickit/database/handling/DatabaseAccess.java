@@ -1,7 +1,14 @@
 package com.spun.pickit.database.handling;
 
-import android.app.Activity;
+import android.util.Log;
+
 import com.spun.pickit.database.handling.crud.PasswordValidation;
+import com.spun.pickit.database.handling.crud.UserCRUD;
+import com.spun.pickit.database.handling.crud.Following;
+import com.spun.pickit.database.handling.crud.ChoiceCRUD;
+
+import com.spun.pickit.model.User;
+
 
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -35,6 +42,81 @@ public class DatabaseAccess {
 
         return pass;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    public User readUser(String userID){
+        UserCRUD userCRUDOp = new UserCRUD(userID);
+        DataAccess access = new DataAccess(userCRUDOp.read());
+
+        JSONObject json = access.getJson();
+        User userToSend = null;
+        try {
+            if (this.JSONResquestPass(json)) {
+                userToSend = new User((int)json.get("UserID"), (String)json.get("Username"),(String) json.get("Gender"), (String)json.get("Religion"), (String)json.get("PoliticalAffiliation"), (String)json.get("Birthday"), (String)json.get("Ethnicity"));
+            } else {
+               Log.v("readUsesr", "the json object is not accesed correctly,  try json.get(\"Result\").get([whatever])");
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+        return userToSend;
+    }
+
+    public boolean updateUser(String username,String password,String birthday, String gender, String ethnicity,String religion,String politicalAffiliation){
+        UserCRUD userCRUDOp = new UserCRUD(username,password,birthday,gender,ethnicity,religion,politicalAffiliation);
+        DataAccess access = new DataAccess(userCRUDOp.update());
+
+        JSONObject json = access.getJson();
+        return this.JSONResquestPass(json);
+    }
+
+
+    public boolean createFollowing(String followerID,String leaderID){
+        Following following = new Following(followerID,leaderID);
+        DataAccess access = new DataAccess(following.create());
+
+        JSONObject json = access.getJson();
+        return this.JSONResquestPass(json);
+    }
+
+    public boolean createChoice(String PickitID, String filePath){
+        ChoiceCRUD choice = new ChoiceCRUD(PickitID,filePath);
+        DataAccess access = new DataAccess(choice.create());
+
+        JSONObject json = access.getJson();
+        return this.JSONResquestPass(json);
+    }
+
+
+
+    public boolean JSONResquestPass(JSONObject json){
+        boolean pass = false;
+        try{
+            pass = json.get("success") == 1;
+        }catch(JSONException e){
+            try {
+                json = json.getJSONObject("Result");
+                pass = json.get("success") == 1;
+            } catch (JSONException e1) {
+                e.printStackTrace();
+                e1.printStackTrace();
+            }
+        }
+
+        return pass;
+    }
+
+
 
     class DataAccess {
         private String url;

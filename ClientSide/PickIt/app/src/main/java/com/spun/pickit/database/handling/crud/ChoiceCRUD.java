@@ -1,17 +1,23 @@
 package com.spun.pickit.database.handling.crud;
 import org.json.JSONObject;
 
-public class Choice extends CRUD{
+public class ChoiceCRUD extends CRUD{
     private static final String READ_CHOICE = "read_choice.php";
     private static final String CREATE_CHOICE = "create_choice.php";
 
     private String pickItID;
     private String filepath;
 
-    public Choice(String pickItID){
+    public ChoiceCRUD(String pickItID){
         this.pickItID = pickItID;
     }
 
+    public ChoiceCRUD(String pickItID,String filepath){
+        this.pickItID = pickItID;
+        this.filepath = filepath;
+    }
+
+    //TODO
     public String readExtension(){
     String extension = READ_CHOICE + "?PickItID=" +this.pickItID;
     return extension;
