@@ -1,5 +1,7 @@
 package com.spun.pickit.database.handling.crud;
 
+import java.util.Date;
+
 public class User extends CRUD{
     private static final String READ_REQUEST = "validate_password.php";
     private static final String UPDATE_REQUEST = "update_user.php";

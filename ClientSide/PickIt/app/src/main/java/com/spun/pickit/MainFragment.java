@@ -33,21 +33,12 @@ public class MainFragment extends Fragment {
         uiHelper.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_app_login, container, false);
-//        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
-//        authButton.setFragment(this);
-//        authButton.setReadPermissions(Arrays.asList("public_profile"));
+        LoginButton authButton = (LoginButton) view.findViewById(R.id.authButton);
+        authButton.setFragment(this);
+        authButton.setReadPermissions(Arrays.asList("public_profile"));
         return view;
-    }
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        if (state.isOpened()) {
-            Log.i(TAG, "Logged in...");
-        } else if (state.isClosed()) {
-            Log.i(TAG, "Logged out...");
-        }
     }
     @Override
     public void onResume() {
@@ -81,5 +72,14 @@ public class MainFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         uiHelper.onSaveInstanceState(outState);
+    }
+
+    // Helper Method
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        if (state.isOpened()) {
+            Log.i(TAG, "Logged in...");
+        } else if (state.isClosed()) {
+            Log.i(TAG, "Logged out...");
+        }
     }
 }
