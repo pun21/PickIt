@@ -96,9 +96,7 @@ public class DatabaseAccess {
         JSONObject json = access.getJson();
         return this.JSONResquestPass(json);
     }
-
-
-
+    
     public boolean JSONResquestPass(JSONObject json){
         boolean pass = false;
         try{
