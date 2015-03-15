@@ -13,7 +13,7 @@ if (isset($_GET["Username"]) && isset($_GET["Password"])){
 	require_once __DIR__ . '/db_connect.php';
 	$db = new DB_CONNECT();
 	
-	$result = mysql_query("SELECT Password FROM Users WHERE Username='$username'");
+	$result = mysql_query("SELECT UserID, Username, Password, Birthday, Gender, Ethnicity, Religion, PoliticalAffiliation FROM Users WHERE Username='$username'");
 	
 	if(mysql_num_rows($result)!=0){
 		$result = mysql_fetch_assoc($result);
@@ -22,8 +22,10 @@ if (isset($_GET["Username"]) && isset($_GET["Password"])){
 	$comparison = strcmp($result["Password"],$password);
 	
 	if($comparison == 0){
+		$result["Password"] = "";
+	
 		$response["success"] = 1;
-		$response["message"] = "Verified password for user!";
+		$response["message"] = json_encode($result);
 		
 		echo json_encode($response);
 	}else{

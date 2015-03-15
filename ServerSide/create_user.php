@@ -28,14 +28,30 @@ if (isset($_GET["Username"]) && isset($_GET["Password"]) && isset($_GET["Birthda
     exit;
 	}
 	
-	$response["success"] = 1;
-    $response["message"] = "User created successfully";
+	$result = getUserByUsername($username);
 	
-	echo json_encode($response);
+	echo $result;
 }else{
 	$response["success"] = 0;
     $response["message"] = "Incorrect parameters passed in!";
 		
 	echo json_encode($response);
+}
+
+function getUserByUsername($username){	
+	$query_result = mysql_query("SELECT UserID,Username,Gender,Religion,PoliticalAffiliation,Birthday,Ethnicity FROM Users WHERE Username='$username'");
+	$query_response = array();
+	
+	if($query_result){
+		$query_result = mysql_fetch_assoc($query_result);
+		
+		$query_response["success"] = 1;
+		$query_response["message"] = json_encode($query_result);
+		return json_encode($query_response);
+	}else{
+		$query_response["success"] = 0;
+        $query_response["message"] = "User unsuccessfully queried!";
+		return json_encode($query_response);
+	}
 }
 ?>

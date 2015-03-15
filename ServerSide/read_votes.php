@@ -54,7 +54,7 @@ if (isset($_GET["UserID"])){
 		echo json_encode($result);
 	}else{
 		$response["success"] = 0;
-        $response["message"] = "No Votes for the given PickIt";
+        $response["message"] = "No Votes for the given ChoiceID";
 		
 		echo json_encode($response);
 	}

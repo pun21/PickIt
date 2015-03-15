@@ -5,7 +5,7 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 //Create response array
 $response = array();
 
-if (isset($_GET["UserID"]) && isset($_GET["Username"]) && isset($_GET["Password"]) && isset($_GET["Birthday"])
+if (isset($_GET["UserID"]) && isset($_GET["Password"]) && isset($_GET["Birthday"])
 	&& isset($_GET["Gender"]) && isset($_GET["Ethnicity"]) && isset($_GET["Religion"])
 	&& isset($_GET["PoliticalAffiliation"])){
 			
@@ -21,9 +21,7 @@ if (isset($_GET["UserID"]) && isset($_GET["Username"]) && isset($_GET["Password"
 	require_once __DIR__ . '/db_connect.php';
 	$db = new DB_CONNECT();
 	
-	$result = mysql_query("UPDATE USERS SET Password='$password', Birthday='$birthday', Gender='$gender', Ethnicity='$ethnicity', Religion='$religion', PoliticalAffiliation='$political' WHERE UserID='$userID' AND Username='$username'");
-	
-	echo $result;
+	$result = mysql_query("UPDATE USERS SET Password='$password', Birthday='$birthday', Gender='$gender', Ethnicity='$ethnicity', Religion='$religion', PoliticalAffiliation='$political' WHERE UserID='$userID'");
 	
 	if (!$result) {
     echo 'Could not run query: ' . mysql_error();

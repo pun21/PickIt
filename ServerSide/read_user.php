@@ -33,10 +33,12 @@ if (isset($_GET["UserID"])){
 	
 	$result = mysql_query("SELECT UserID,Username,Gender,Religion,PoliticalAffiliation,Birthday,Ethnicity FROM Users WHERE Username='$username'");
 	
-	if(mysql_num_rows($result)!=0){
+	if($result){
 		$result = mysql_fetch_assoc($result);
 		
-		echo json_encode($result);
+		$response["success"] = 1;
+		$response["message"] = json_encode($result);
+		echo json_encode($response);
 	}else{
 		$response["success"] = 0;
         $response["message"] = "User unsuccessfully queried!!";
