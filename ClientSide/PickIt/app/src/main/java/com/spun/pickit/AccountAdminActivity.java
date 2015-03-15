@@ -101,8 +101,6 @@ public class AccountAdminActivity extends Activity {
 
     //region Input Handlers
     public void onClickSave(View v) {
-        startLoad();
-
         if(isAcceptableData()){
             if(pickItApp.getUserID() == 0){
                 saveUser();
@@ -116,13 +114,71 @@ public class AccountAdminActivity extends Activity {
 
             Toast.makeText(context, text, duration).show();
         }
-
-        endLoad();
     }
     //endregion
 
     //Helper Methods
     private void saveUser(){
+        String tempUsername;
+        String tempPassword;
+        String tempBirthday;
+        String tempGender;
+        String tempEthnicity;
+        String tempReligion;
+        String tempPolitical;
+
+        try{
+            if(pickItApp.isGuest()){
+                tempUsername = "Guest"+new Date().getTime();
+                tempPassword = "guest";
+            }else{
+                tempUsername = username;
+                tempPassword = password;
+            }
+
+
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            Date date = formatter.parse(mBirthday.getText().toString());
+            tempBirthday = new SimpleDateFormat("yyyy-MM-dd").format(date);
+
+            Spinner mGender = (Spinner)findViewById(R.id.spinner_gender);
+            tempGender = mGender.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mEthnicity = (Spinner)findViewById(R.id.spinner_ethnicity);
+            tempEthnicity = mEthnicity.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mReligion = (Spinner)findViewById(R.id.spinner_religion);
+            tempReligion = mReligion.getSelectedItem().toString().replace(" ", "");
+
+            Spinner mPolitical = (Spinner)findViewById(R.id.spinner_political);
+            tempPolitical = mPolitical.getSelectedItem().toString().replace(" ", "");
+        }catch(Exception e){
+            e.printStackTrace();
+            Context context = getApplicationContext();
+            CharSequence text = "Please enter valid inputs";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+            return;
+        }
+
+        DatabaseAccess access = new DatabaseAccess();
+        int userID= access.createUser(tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+
+        if (userID != 0){
+            setUserInformation(userID, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }else{
+            Context context = getApplicationContext();
+            CharSequence text = "We're sorry! We were unable to save your information";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast.makeText(context, text, duration).show();
+        }
+    }
+    private void updateUser(){
         String tempUsername;
         String tempPassword;
         String tempBirthday;
@@ -161,10 +217,10 @@ public class AccountAdminActivity extends Activity {
         }
 
         DatabaseAccess access = new DatabaseAccess();
-        boolean pass = access.saveUserProfile(tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+        boolean pass = access.updateUser(pickItApp.getUserID(), tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
 
         if (pass){
-            setUserInformation();
+            setUserInformation(pickItApp.getUserID(), tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -176,18 +232,21 @@ public class AccountAdminActivity extends Activity {
             Toast.makeText(context, text, duration).show();
         }
     }
-    private void updateUser(){
-        //TODO
-    }
-    private void setUserInformation(){
-
+    private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
+        pickItApp.setUserID(userID);
+        pickItApp.setUsername(username);
+        pickItApp.setBirthday(birthday);
+        pickItApp.setGender(gender);
+        pickItApp.setEthnicity(ethnicity);
+        pickItApp.setReligion(religion);
+        pickItApp.setPolitical(political);
     }
     private boolean isAcceptableData(){
         if(pickItApp.isGuest()){
             if(birthdayIsCorrectFormat())
                 return true;
         }else{
-            if(birthdayIsCorrectFormat() && credentialsAreFilled() && passwordsMatch())
+            if(birthdayIsCorrectFormat() && credentialsAreValid() && passwordsMatch())
                 return true;
         }
 
@@ -196,7 +255,7 @@ public class AccountAdminActivity extends Activity {
     private boolean passwordsMatch(){
         return mPasswordRepresentation.getText().toString().equals(mConfirmPasswordRepresentation.getText().toString());
     }
-    private boolean credentialsAreFilled(){
+    private boolean credentialsAreValid(){
         Pattern pattern = Pattern.compile("\\s");
         Matcher matcher1 = pattern.matcher(mUsernameRepresentation.getText().toString());
         Matcher matcher2 = pattern.matcher(mPasswordRepresentation.getText().toString());
@@ -284,21 +343,16 @@ public class AccountAdminActivity extends Activity {
     }
     public void updateScreen(){
         if(pickItApp.isGuest()){
-            mUsernameRepresentation.setHeight(0);
-            mUsernameRepresentation.setWidth(0);
             mUsernameRepresentation.setVisibility(View.GONE);
-
-            mPasswordRepresentation.setHeight(0);
-            mPasswordRepresentation.setWidth(0);
             mPasswordRepresentation.setVisibility(View.GONE);
-
-            mConfirmPasswordRepresentation.setHeight(0);
-            mConfirmPasswordRepresentation.setWidth(0);
             mConfirmPasswordRepresentation.setVisibility(View.GONE);
         }else{
-            mUsernameRepresentation.setText(username);
-            mPasswordRepresentation.setText(password);
-            mConfirmPasswordRepresentation.setText(confirmPassword);
+            mUsernameRepresentation.setText(pickItApp.getUsername());
+
+            if(pickItApp.getUserID() != 0)
+                mUsernameRepresentation.setEnabled(false);
+
+
         }
     }
     private void startLoad(){

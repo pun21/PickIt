@@ -1,11 +1,11 @@
 package com.spun.pickit.database.handling.crud;
 
 public class UserCRUD extends CRUD{
-    private static final String READ_REQUEST = "validate_password.php";
     private static final String UPDATE_REQUEST = "update_user.php";
     private static final String CREATE_REQUEST = "create_user.php";
+    private static final String READ_REQUEST = "read_user.php";
 
-    private String userID;
+    private int userID;
     private String username;
     private String password;
     private String birthday;
@@ -14,8 +14,19 @@ public class UserCRUD extends CRUD{
     private String religion;
     private String politicalAffiliation;
 
-    public UserCRUD(String userID){
+    public UserCRUD(int userID){
         this.userID = userID;
+    }
+
+    public UserCRUD(int userID, String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+        this.userID = userID;
+        this.username = username;
+        this.password = password;
+        this.birthday = birthday;
+        this.gender = gender;
+        this.ethnicity = ethnicity;
+        this.religion = religion;
+        this.politicalAffiliation = politicalAffiliation;
     }
 
     public UserCRUD(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
@@ -28,21 +39,21 @@ public class UserCRUD extends CRUD{
         this.politicalAffiliation = politicalAffiliation;
     }
 
-    public String readExtension(){
+    protected String readExtension(){
         String extension = READ_REQUEST +"?UserID="+ this.username;
         return extension;
     }
 
     //Since a user cannot delete themselves, this will return null
-    public String deleteExtension(){
+    protected String deleteExtension(){
         try {
-            throw new Exception("Users can not be deleted");
+            throw new Exception("Users cannot be deleted");
         }catch(Exception e){
         }
         return null;
     }
 
-    public String updateExtension(){
+    protected String updateExtension(){
         String extension = (UPDATE_REQUEST + "?UserID=" + this.userID + "&Username=" + this.username
                 + "&Password=" + this.password + "&Birthday=" + this.birthday + "&Gender=" + this.gender
                 + "&Ethnicity=" + this.ethnicity + "&Religion=" + this.religion

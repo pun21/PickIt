@@ -19,10 +19,10 @@ import android.widget.Toast;
 import com.facebook.AppEventsLogger;
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.*;
+import com.spun.pickit.model.User;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 
 public class AppLoginActivity extends Activity {
     //region Activity Variables
@@ -126,9 +126,9 @@ public class AppLoginActivity extends Activity {
         if(!username.equals("") && !password.equals("")){
             //Create access object to validate username/password input
             DatabaseAccess access = new DatabaseAccess();
-            boolean pass = access.validatePassword(username,password);
+            User user= access.validatePassword(username,password);
 
-            if (pass){
+            if (user != null){
                 //If the password is valid and the checkbox is checked, save username/password locally
                 CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
                 if(rememberMe.isChecked()){
@@ -139,7 +139,7 @@ public class AppLoginActivity extends Activity {
                     }
                 }
 
-                pickItApp.setGuest(false);
+                setUserInformation(user.getID(), user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -156,6 +156,15 @@ public class AppLoginActivity extends Activity {
     //endregion
 
     //Helper Methods
+    private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
+        pickItApp.setUserID(userID);
+        pickItApp.setUsername(username);
+        pickItApp.setBirthday(birthday);
+        pickItApp.setGender(gender);
+        pickItApp.setEthnicity(ethnicity);
+        pickItApp.setReligion(religion);
+        pickItApp.setPolitical(political);
+    }
     private void readCredentials(){
         ArrayList<String> credentials = fileManager.readSavedCredentials();
         if(credentials.size() == 2){

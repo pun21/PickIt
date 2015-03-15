@@ -42,10 +42,12 @@
     </string-array>
 
     <string-array name="ethnicity_array">
-        <item>African American/Black</item>
-        <item>Asian/Pacific Islander</item>
-        <item>Caucasian/White</item>
-        <item>Hispanic/Latino</item>
+        <item>African American</item>
+        <item>Asian</item>
+        <item>Pacific Islander</item>
+        <item>Caucasian</item>
+        <item>Hispanic</item>
+        <item>Latino</item>
         <item>Native American</item>
         <item>Other</item>
     </string-array>

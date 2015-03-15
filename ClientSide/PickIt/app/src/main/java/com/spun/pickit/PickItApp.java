@@ -15,7 +15,7 @@ public class PickItApp extends Application {
     //region Demographics and user identification
     private int userID;
     private String username;
-    private Date birthday;
+    private String birthday;
     private String gender;
     private String ethnicity;
     private String religion;
@@ -36,10 +36,10 @@ public class PickItApp extends Application {
     public String getUsername(){
         return username;
     }
-    public void setBirthday(Date birthday){
+    public void setBirthday(String birthday){
         this.birthday = birthday;
     }
-    public Date getBirthday(){
+    public String getBirthday(){
         return birthday;
     }
     public void setGender(String gender){
