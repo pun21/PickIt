@@ -24,11 +24,12 @@ build/
 # Local configuration file (sdk path, etc)
 /ClientSide/PickIt/local.properties
 /ClientSide/PickIt/.idea/workspace.xml
-/ClientSide/PickIt/.idea/workspace.xml
 /ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/fileHashes.bin
 /ClientSide/PickIt/build/intermediates/dex-cache/cache.xml
-/ClientSide/PickIt/local.properties
-/ClientSide/PickIt/build/intermediates/dex-cache/cache.xml
+/ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin
+/ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin
+/ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/fileHashes.bin
+/ClientSide/PickIt/.gradle/2.2.1/taskArtifacts/cache.properties.lock
 
 #Windows thumbnail db
 Thumbs.db
