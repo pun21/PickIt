@@ -4,10 +4,8 @@ package com.spun.pickit.model;
  * Created by jacob_000 on 3/13/2015.
  */
 public class User {
-    private String userID;
     private String username;
     private Demographics demo;
-
     private int id;
 
     public User(int id, String username, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){

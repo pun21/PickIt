@@ -3,10 +3,7 @@ package com.spun.pickit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,20 +16,17 @@ import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.FileManager;
+import com.spun.pickit.model.User;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
-import java.util.Formatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class AccountAdminActivity extends Activity {
     //region Class Variables
-    private static final String USERNAME_KEY = "usernameAdminKey";
-    private static final String PASSWORD_KEY = "passwordAdminKey";
-    private static final String CONFIRM_KEY = "confirmAdminKey";
     PickItApp pickItApp;
     FileManager fileManager;
 
@@ -50,9 +44,7 @@ public class AccountAdminActivity extends Activity {
     TextView mBirthday;
     ProgressBar loading;
 
-    private String username;
-    private String password;
-    private String confirmPassword;
+    private static int layoutID;
     //endregion
 
     //region Life-cycle methods
@@ -75,10 +67,11 @@ public class AccountAdminActivity extends Activity {
         mBirthday = (TextView)findViewById(R.id.textField_bday);
         loading = (ProgressBar)findViewById(R.id.loading);
 
+        layoutID = R.id.accountAdminLayout;
+
         loading.setVisibility(View.INVISIBLE);
 
         setSpinners();
-        setEventListeners();
         updateScreen();
     }
 
@@ -92,15 +85,20 @@ public class AccountAdminActivity extends Activity {
     @Override
     public void onPause(){
         super.onPause();
+    }
 
-        SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+    @Override
+    public void onStop(){
+        super.onStop();
 
-        editor.commit();
+        endLoad();
     }
     //endregion
 
     //region Input Handlers
     public void onClickSave(View v) {
+        startLoad();
+
         if(isAcceptableData()){
             if(pickItApp.getUserID() == 0){
                 saveUser();
@@ -113,14 +111,16 @@ public class AccountAdminActivity extends Activity {
             int duration = Toast.LENGTH_LONG;
 
             Toast.makeText(context, text, duration).show();
+
+            endLoad();
         }
     }
     //endregion
 
-    //Helper Methods
+    //region Helper Methods
     private void saveUser(){
         String tempUsername;
-        String tempPassword;
+        final String tempPassword;
         String tempBirthday;
         String tempGender;
         String tempEthnicity;
@@ -132,8 +132,8 @@ public class AccountAdminActivity extends Activity {
                 tempUsername = "Guest"+new Date().getTime();
                 tempPassword = "guest";
             }else{
-                tempUsername = username;
-                tempPassword = password;
+                tempUsername = mUsernameRepresentation.getText().toString();
+                tempPassword = mPasswordRepresentation.getText().toString();
             }
 
 
@@ -162,25 +162,18 @@ public class AccountAdminActivity extends Activity {
             return;
         }
 
-        DatabaseAccess access = new DatabaseAccess();
-        int userID= access.createUser(tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+        final User user = new User(0, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+        final AccountAdminActivity activity = this;
 
-        if (userID != 0){
-            setUserInformation(userID, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }else{
-            Context context = getApplicationContext();
-            CharSequence text = "We're sorry! We were unable to save your information";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast.makeText(context, text, duration).show();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new AsyncSave(activity, user, tempPassword).start();
+            }
+        }).start();
     }
     private void updateUser(){
         String tempUsername;
-        String tempPassword;
         String tempBirthday;
         String tempGender;
         String tempEthnicity;
@@ -188,8 +181,7 @@ public class AccountAdminActivity extends Activity {
         String tempPolitical;
 
         try{
-            tempUsername = username;
-            tempPassword = password;
+            tempUsername = mUsernameRepresentation.getText().toString();
 
             SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
             Date date = formatter.parse(mBirthday.getText().toString());
@@ -216,21 +208,15 @@ public class AccountAdminActivity extends Activity {
             return;
         }
 
-        DatabaseAccess access = new DatabaseAccess();
-        boolean pass = access.updateUser(pickItApp.getUserID(), tempUsername, tempPassword, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+        final User user = new User(pickItApp.getUserID(), tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
+        final AccountAdminActivity activity = this;
 
-        if (pass){
-            setUserInformation(pickItApp.getUserID(), tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }else{
-            Context context = getApplicationContext();
-            CharSequence text = "We're sorry! We were unable to save user";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast.makeText(context, text, duration).show();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new AsyncUpdate(activity, user, mPasswordRepresentation.getText().toString()).start();
+            }
+        }).start();
     }
     private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
         pickItApp.setUserID(userID);
@@ -301,46 +287,6 @@ public class AccountAdminActivity extends Activity {
         adapt_p.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_p.setAdapter(adapt_p);
     }
-    private void setEventListeners(){
-        mUsernameRepresentation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                username = mUsernameRepresentation.getText().toString();
-            }
-        });
-
-        mPasswordRepresentation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                password = mPasswordRepresentation.getText().toString();
-            }
-        });
-
-        mConfirmPasswordRepresentation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                confirmPassword = mPasswordRepresentation.getText().toString();
-            }
-        });
-    }
     public void updateScreen(){
         if(pickItApp.isGuest()){
             mUsernameRepresentation.setVisibility(View.GONE);
@@ -351,26 +297,97 @@ public class AccountAdminActivity extends Activity {
 
             if(pickItApp.getUserID() != 0)
                 mUsernameRepresentation.setEnabled(false);
-
-
         }
     }
-    private void startLoad(){
-        enableLayoutChildren(false);
-        loading.setEnabled(true);
+    public void startLoad(){
+        setEnabled(false);
         loading.setVisibility(View.VISIBLE);
-
     }
-    private void endLoad(){
-        enableLayoutChildren(true);
-        loading.setEnabled(true);
+    public void endLoad(){
+        setEnabled(true);
         loading.setVisibility(View.INVISIBLE);
     }
-    private void enableLayoutChildren(boolean enable){
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.accountAdminActivity);
+    private void setEnabled(boolean enabled){
+        RelativeLayout layout = (RelativeLayout) findViewById(layoutID);
         for (int i = 0; i < layout.getChildCount(); i++) {
             View child = layout.getChildAt(i);
-            child.setEnabled(enable);
+
+            if(child.getId() != R.id.loading)
+                child.setEnabled(enabled);
+        }
+    }
+    //endregion
+
+    class AsyncUpdate extends Thread {
+        final AccountAdminActivity activity;
+        final User user;
+        final String password;
+
+        public AsyncUpdate(AccountAdminActivity activity, User user, String password) {
+            this.activity = activity;
+            this.user = user;
+            this.password = password;
+        }
+
+        @Override
+        public void run(){
+            DatabaseAccess access = new DatabaseAccess();
+            final boolean pass = access.updateUser(user.getID(), user.getUsername(), password, user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (pass){
+                        setUserInformation(user.getID(), user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Context context = getApplicationContext();
+                        CharSequence text = "We're sorry! We were unable to update your profile information";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast.makeText(context, text, duration).show();
+                    }
+                }
+            });
+        }
+    }
+    class AsyncSave extends Thread {
+        final AccountAdminActivity activity;
+        final User user;
+        final String password;
+
+        public AsyncSave(AccountAdminActivity activity, User user, String password) {
+            this.activity = activity;
+            this.user = user;
+            this.password = password;
+        }
+
+        @Override
+        public void run(){
+            DatabaseAccess access = new DatabaseAccess();
+            final int userID= access.createUser(user.getUsername(), password, user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (userID != 0){
+                        setUserInformation(userID, user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Context context = getApplicationContext();
+                        CharSequence text = "We're sorry! We were unable to save your information";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast.makeText(context, text, duration).show();
+                    }
+
+                    endLoad();
+                }
+            });
         }
     }
 }

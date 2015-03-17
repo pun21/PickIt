@@ -57,16 +57,17 @@ public class DatabaseAccess {
         DataAccess access = new DataAccess(userCRUDOp.read());
 
         JSONObject json = access.getJson();
-        User userToSend = this.retrieveUserFromJSON(json);
+        User user = this.retrieveUserFromJSON(json);
 
-        return userToSend;
+        return user;
     }
 
     public boolean updateUser(int userID, String username,String password,String birthday, String gender, String ethnicity,String religion,String politicalAffiliation){
-        UserCRUD userCRUDOp = new UserCRUD(userID, username,password,birthday,gender,ethnicity,religion,politicalAffiliation);
-        DataAccess access = new DataAccess(userCRUDOp.update());
+        UserCRUD userCRUD = new UserCRUD(userID, username,password,birthday,gender,ethnicity,religion,politicalAffiliation);
+        DataAccess access = new DataAccess(userCRUD.update());
 
         JSONObject json = access.getJson();
+
         return JSONRequestPass(json);
     }
 
@@ -76,6 +77,7 @@ public class DatabaseAccess {
         DataAccess access = new DataAccess(following.create());
 
         JSONObject json = access.getJson();
+
         return JSONRequestPass(json);
     }
 
@@ -84,11 +86,12 @@ public class DatabaseAccess {
         DataAccess access = new DataAccess(choice.create());
 
         JSONObject json = access.getJson();
+
         return JSONRequestPass(json);
     }
 
     protected User retrieveUserFromJSON(JSONObject json) {
-        User userToSend = null;
+        User user = null;
         try {
             if (JSONRequestPass(json)) {
                 json = json.getJSONObject("Result");
@@ -102,14 +105,15 @@ public class DatabaseAccess {
                 String ethnicity = (String) json.get("Ethnicity");
                 String political = (String) json.get("PoliticalAffiliation");
 
-                userToSend = new User(userID, username, birthday, gender, religion, ethnicity, political);
+                user = new User(userID, username, birthday, gender, religion, ethnicity, political);
             } else {
                 Log.v("readUser", "the json object is not accessed correctly,  try json.get(\"Result\").get([whatever])");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return userToSend;
+
+        return user;
     }
 
     private boolean JSONRequestPass(JSONObject json){
@@ -142,17 +146,12 @@ public class DatabaseAccess {
 
         public JSONObject getJson(){
             while(json ==  null){
-                //load
-
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-
             }
-            //stop load
 
             return json;
         }
@@ -168,6 +167,7 @@ public class DatabaseAccess {
                 String response = "";
 
                 try {
+                    Thread.sleep(2500);
                     request = new HttpGet( url );
                     response = client.execute( request, responseHandler );
                     json = new JSONObject(response);
@@ -181,7 +181,6 @@ public class DatabaseAccess {
                             e.printStackTrace();
                         }
                 }
-
 
                 if(json == null){
                     json = new JSONObject();

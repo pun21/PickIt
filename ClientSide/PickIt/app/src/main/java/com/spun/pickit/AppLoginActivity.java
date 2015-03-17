@@ -3,8 +3,8 @@ package com.spun.pickit;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -22,7 +22,6 @@ import com.spun.pickit.fileIO.*;
 import com.spun.pickit.model.User;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AppLoginActivity extends Activity {
     //region Activity Variables
@@ -31,15 +30,20 @@ public class AppLoginActivity extends Activity {
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
     ProgressBar loading;
+    Handler toastHandler;
+    Runnable toastRunnable;
 
     private static String username;
     private static String password;
+    private static int layoutID;
     //endregion
 
     //region Life-cycle methods
     @Override
     protected void onStart(){
         super.onStart();
+
+        this.layoutID = R.id.AppLoginDefault;
     }
 
     @Override
@@ -85,6 +89,8 @@ public class AppLoginActivity extends Activity {
     protected void onPause() {
         super.onPause();
 
+        endLoad();
+
         //Fb's Insights Dashboard - Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
     }
@@ -123,35 +129,16 @@ public class AppLoginActivity extends Activity {
     }
 
     public void onClickLogin(View v) {
-        if(!username.equals("") && !password.equals("")){
-            //Create access object to validate username/password input
-            DatabaseAccess access = new DatabaseAccess();
-            User user= access.validatePassword(username,password);
+        startLoad();
 
-            if (user != null){
-                //If the password is valid and the checkbox is checked, save username/password locally
-                CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
-                if(rememberMe.isChecked()){
-                    fileManager.saveCredentials(username, password);
-                }else{
-                    if(fileManager.credentialFileExists()){
-                        fileManager.deleteCredentials();
-                    }
-                }
+        final AppLoginActivity activity = this;
 
-                setUserInformation(user.getID(), user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
-
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new AsyncLogIn(activity).start();
             }
-        }
-
-        Context context = getApplicationContext();
-        CharSequence text = "Invalid username/password";
-        int duration = Toast.LENGTH_LONG;
-
-        Toast.makeText(context, text, duration).show();
+        }).start();
     }
     //endregion
 
@@ -177,10 +164,12 @@ public class AppLoginActivity extends Activity {
     private void setEventListeners(){
         mUsernameRepresentation.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -190,10 +179,12 @@ public class AppLoginActivity extends Activity {
 
         mPasswordRepresentation.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -204,5 +195,70 @@ public class AppLoginActivity extends Activity {
     private void updateScreenText(){
         mUsernameRepresentation.setText(username);
         mPasswordRepresentation.setText(password);
+    }
+    public void startLoad(){
+        setEnabled(false);
+        loading.setVisibility(View.VISIBLE);
+    }
+    public void endLoad(){
+        setEnabled(true);
+        loading.setVisibility(View.INVISIBLE);
+    }
+    private void setEnabled(boolean enabled){
+        RelativeLayout layout = (RelativeLayout) findViewById(layoutID);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+
+            if(child.getId() != R.id.loading)
+                child.setEnabled(enabled);
+        }
+    }
+
+    class AsyncLogIn extends Thread{
+        final AppLoginActivity activity;
+
+        public AsyncLogIn(AppLoginActivity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void run(){
+            if(!username.equals("") && !password.equals("")){
+                //Create access object to validate username/password input
+                DatabaseAccess access = new DatabaseAccess();
+                User user= access.validatePassword(username,password);
+
+                if (user != null){
+                    //If the password is valid and the checkbox is checked, save username/password locally
+                    CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
+                    if(rememberMe.isChecked()){
+                        fileManager.saveCredentials(username, password);
+                    }else{
+                        if(fileManager.credentialFileExists()){
+                            fileManager.deleteCredentials();
+                        }
+                    }
+
+                    setUserInformation(user.getID(), user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
+                    return;
+                }
+            }
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Context context = activity.getApplicationContext();
+                    CharSequence text = "Invalid log in credentials";
+                    int length = Toast.LENGTH_LONG;
+
+                    Toast.makeText(context, text, length).show();
+
+                    endLoad();
+                }
+            });
+        }
     }
 }
