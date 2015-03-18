@@ -179,6 +179,51 @@
         </FrameLayout>
     </GridLayout>
 
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:ems="10"
+        android:inputType="date"
+        android:layout_alignBottom="@+id/imageButton1"
+        android:layout_toStartOf="@+id/textView_username" />
+    <requestFocus />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/selectdate"
+        android:cropToPadding="true"
+        android:onClick="selectDate"
+        android:src="@drawable/calendar_icon"
+        android:layout_toStartOf="@+id/textView_sign_out"
+        android:layout_above="@+id/button_time" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:ems="10"
+        android:inputType="date"
+        android:layout_alignBottom="@+id/button_time"
+        android:layout_toStartOf="@+id/textView_username" />
+    <requestFocus />
+
+    <ImageButton
+        android:id="@+id/button_time"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/selecttime"
+        android:cropToPadding="true"
+        android:onClick="selectTime"
+        android:src="@drawable/alarm_clock"
+        android:layout_toStartOf="@+id/textView_sign_out"
+        android:layout_above="@+id/button_upload" />
 
     <EditText
         android:layout_width="wrap_content"

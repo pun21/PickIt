@@ -135,5 +135,14 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:id="@+id/loading" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Activity"
+            android:id="@+id/button_upload"
+            android:onClick="onClickUpload"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </ScrollView>
