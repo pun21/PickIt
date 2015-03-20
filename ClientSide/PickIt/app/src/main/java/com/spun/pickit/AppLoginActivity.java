@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.facebook.AppEventsLogger;
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.*;
+import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
 import java.util.ArrayList;
@@ -129,6 +130,9 @@ public class AppLoginActivity extends Activity {
     public void onClickLogin(View v) {
         startLoad();
 
+        username = mUsernameRepresentation.getText().toString();
+        password = mPasswordRepresentation.getText().toString();
+
         final AppLoginActivity activity = this;
 
         new Thread(new Runnable() {
@@ -141,14 +145,11 @@ public class AppLoginActivity extends Activity {
     //endregion
 
     //region Helper Methods
-    private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
+    private void setUserInformation(int userID, String username, Demographics demo){
         pickItApp.setUserID(userID);
         pickItApp.setUsername(username);
-        pickItApp.setBirthday(birthday);
-        pickItApp.setGender(gender);
-        pickItApp.setEthnicity(ethnicity);
-        pickItApp.setReligion(religion);
-        pickItApp.setPolitical(political);
+
+        pickItApp.setDemographics(demo);
     }
     private void readCredentials(){
         ArrayList<String> credentials = fileManager.readSavedCredentials();
@@ -238,7 +239,9 @@ public class AppLoginActivity extends Activity {
                         }
                     }
 
-                    setUserInformation(user.getID(), user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+                    Demographics demo = new Demographics(user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
+
+                    setUserInformation(user.getID(), user.getUsername(), demo);
 
                     Intent intent = new Intent(activity, MainActivity.class);
                     startActivity(intent);

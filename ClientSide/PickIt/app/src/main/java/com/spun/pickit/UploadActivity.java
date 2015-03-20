@@ -1,12 +1,20 @@
 package com.spun.pickit;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.widget.DatePicker;
+import android.support.v4.app.FragmentActivity;
+import android.app.Dialog;
+import android.app.DatePickerDialog;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,16 +22,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.spun.pickit.model.SelectDateFragment;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
-public class UploadActivity extends ActionBarActivity {
+public class UploadActivity extends FragmentActivity {
 
     private String pickItHeading;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -34,6 +46,7 @@ public class UploadActivity extends ActionBarActivity {
     private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight;
 
     private Uri fileUri;
+    private static EditText mEdit, mTimeEdit;
 
 
     @Override
@@ -214,4 +227,23 @@ public class UploadActivity extends ActionBarActivity {
             return false;
         }
     }
+
+    public void selectDate(View view) {
+        DialogFragment newFragment = new SelectDateFragment();
+        newFragment.show(getFragmentManager(), "DatePicker");
+    }
+    public void populateSetDate(int year, int month, int day) {
+        mEdit = (EditText)findViewById(R.id.editText1);
+        mEdit.setText(month+"/"+day+"/"+year);
+    }
+
+    public void selectTime(View view) {
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "TimePicker");
+    }
+    public void populateSetTime(int hour, int minute) {
+        mTimeEdit = (EditText)findViewById(R.id.editText2);
+        mTimeEdit.setText(hour+":"+minute);
+    }
+
 }

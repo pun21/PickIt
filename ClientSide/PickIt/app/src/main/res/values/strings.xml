@@ -26,6 +26,9 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="upload">Upload</string>
 
+    <string name="selectdate">mm/dd/yyyy</string>
+    <string name="selecttime">hh:mm</string>
+
     <!-- Demographic Categories -->
     <string name="gender">Gender</string>
     <string name="ethnicity">Ethnicity</string>
