@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Activity Labels -->
     <string name="app_name">PickIt</string>
     <string name="account_admin">Account Admin</string>
-
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">1589926514552725</string>
     <string name="facebook_login">Facebook Login</string>
-
     <string name="sign_out">Sign Out</string>
     <string name="save">Save</string>
     <string name="username">Username</string>
@@ -24,10 +23,8 @@
     <string name="recency">Recency</string>
     <string name="trending">Trending</string>
     <string name="time_remaining">Time Remaining</string>
-
     <string name="edit_profile">Edit Profile</string>
     <string name="upload">Upload</string>
-
 
     <!-- Demographic Categories -->
     <string name="gender">Gender</string>
@@ -40,7 +37,6 @@
         <item>Female</item>
         <item>Male</item>
     </string-array>
-
     <string-array name="ethnicity_array">
         <item>African American</item>
         <item>Asian</item>
@@ -51,7 +47,6 @@
         <item>Native American</item>
         <item>Other</item>
     </string-array>
-
     <string-array name="political_affiliation_array">
         <item>Democrat</item>
         <item>Independent</item>
@@ -59,7 +54,6 @@
         <item>Other</item>
         <item>None</item>
     </string-array>
-
     <string-array name="religion_array">
         <item>Agnostic</item>
         <item>Atheist</item>
@@ -71,12 +65,21 @@
         <item>Muslim</item>
         <item>Other</item>
     </string-array>
-    <string name="title_activity_temp">temp</string>
 
+    <string name="title_activity_temp">temp</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_profile_admin">ProfileAdminActivity</string>
     <string name="title_activity_upload">UploadActivity</string>
     <string name="title_activity_results">ResultsActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="category_menu">Categories</string>
+    <string name="confirmPassword">Confirm Password</string>
+    <string name="uploadDescription">Upload a PickIt</string>
 
 </resources>

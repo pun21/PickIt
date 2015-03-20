@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.fileIO.FileManager;
+import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class AccountAdminActivity extends Activity {
     //region Class Variables
@@ -69,10 +69,15 @@ public class AccountAdminActivity extends Activity {
 
         layoutID = R.id.accountAdminLayout;
 
-        loading.setVisibility(View.INVISIBLE);
-
         setSpinners();
         updateScreen();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        endLoad();
     }
 
     @Override
@@ -90,8 +95,6 @@ public class AccountAdminActivity extends Activity {
     @Override
     public void onStop(){
         super.onStop();
-
-        endLoad();
     }
     //endregion
 
@@ -219,13 +222,10 @@ public class AccountAdminActivity extends Activity {
         }).start();
     }
     private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
+        Demographics demo = new Demographics(birthday, gender, ethnicity, religion, political);
         pickItApp.setUserID(userID);
         pickItApp.setUsername(username);
-        pickItApp.setBirthday(birthday);
-        pickItApp.setGender(gender);
-        pickItApp.setEthnicity(ethnicity);
-        pickItApp.setReligion(religion);
-        pickItApp.setPolitical(political);
+        pickItApp.setDemographics(demo);
     }
     private boolean isAcceptableData(){
         if(pickItApp.isGuest()){

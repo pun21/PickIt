@@ -30,8 +30,6 @@ public class AppLoginActivity extends Activity {
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
     ProgressBar loading;
-    Handler toastHandler;
-    Runnable toastRunnable;
 
     private static String username;
     private static String password;
@@ -57,12 +55,11 @@ public class AppLoginActivity extends Activity {
         mPasswordRepresentation = (EditText)findViewById(R.id.passwordLoginTextbox);
         loading = (ProgressBar)findViewById(R.id.loading);
 
-        loading.setVisibility(View.INVISIBLE);
-
         readCredentials();
         updateScreenText();
         setEventListeners();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,6 +96,7 @@ public class AppLoginActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        endLoad();
         readCredentials();
         updateScreenText();
 
@@ -142,7 +140,7 @@ public class AppLoginActivity extends Activity {
     }
     //endregion
 
-    //Helper Methods
+    //region Helper Methods
     private void setUserInformation(int userID, String username, String birthday, String gender, String ethnicity, String religion, String political){
         pickItApp.setUserID(userID);
         pickItApp.setUsername(username);
@@ -213,6 +211,7 @@ public class AppLoginActivity extends Activity {
                 child.setEnabled(enabled);
         }
     }
+    //endregion
 
     class AsyncLogIn extends Thread{
         final AppLoginActivity activity;

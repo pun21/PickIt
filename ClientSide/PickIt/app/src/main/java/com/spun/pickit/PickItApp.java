@@ -1,19 +1,13 @@
 package com.spun.pickit;
 
-import android.app.Activity;
 import android.app.Application;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import java.util.Date;
+import com.spun.pickit.model.Demographics;
 
-/**
- * Created by BJClark on 3/10/2015.
- */
 public class PickItApp extends Application {
     //region Demographics and user identification
     private int userID;
+    private Demographics demographics;
     private String username;
     private String birthday;
     private String gender;
@@ -24,6 +18,16 @@ public class PickItApp extends Application {
     //endregion
 
     //region Accessor Methods
+    public void setDemographics(Demographics demographics){
+        this.demographics = demographics;
+
+        setPolitical(demographics.getPoliticalAffiliation());
+        setBirthday(demographics.getBirthday());
+        setEthnicity(demographics.getEthnicity());
+        setGender(demographics.getGender());
+        setReligion(demographics.getReligion());
+    }
+
     public void setUserID(int userID){
         this.userID = userID;
     }

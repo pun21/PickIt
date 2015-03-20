@@ -1,18 +1,20 @@
 package com.spun.pickit;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+    //region Class Variables
 
+    //endregion
+
+    //region Life-cycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,37 +24,9 @@ public class MainActivity extends ActionBarActivity {
         TextView username = (TextView) findViewById(R.id.textView_username);
         //username.setText(/*get username here*/);
     }
+    //endregion
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /*Navigation Menu Handler methods - maybe make it an activity that other activities extend from -for now copy into other activities--------------------------------*/
-
-    public void onClickNavCategory(View v) {
-        //create pull down category menu or do in xml file
-    }
-
-    public void onClickNavUpload(View v) {
+    public void onClickUpload(View v) {
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
     }
