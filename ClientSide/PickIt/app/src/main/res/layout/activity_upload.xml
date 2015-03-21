@@ -68,14 +68,14 @@
             <ImageView
                 android:layout_width="139dp"
                 android:layout_height="139dp"
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewTopLeft"
                 android:onClick="onClickImage"
                 android:layout_gravity="left|top" />
 
             <ImageButton
                 android:layout_width="51dp"
                 android:layout_height="42dp"
-                android:id="@+id/imageButton"
+                android:id="@+id/galleryButtonTopLeft"
                 android:background="@drawable/ic_action_new_picture"
                 android:onClick="onClickGallery"
                 android:layout_gravity="left|top" />
@@ -83,7 +83,7 @@
             <ImageButton
                 android:layout_width="62dp"
                 android:layout_height="52dp"
-                android:id="@+id/imageButton2"
+                android:id="@+id/cameraButtonTopLeft"
                 android:background="@drawable/ic_action_camera"
                 android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
@@ -98,14 +98,14 @@
             <ImageView
                 android:layout_width="149dp"
                 android:layout_height="match_parent"
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewTopRight"
                 android:onClick="onClickImage"
                 android:layout_gravity="left|top" />
 
             <ImageButton
                 android:layout_width="68dp"
                 android:layout_height="57dp"
-                android:id="@+id/imageButton3"
+                android:id="@+id/galleryButtonTopRight"
                 android:background="@drawable/ic_action_new_picture"
                 android:onClick="onClickGallery"
                 android:layout_gravity="left|top" />
@@ -113,7 +113,7 @@
             <ImageButton
                 android:layout_width="57dp"
                 android:layout_height="48dp"
-                android:id="@+id/imageButton4"
+                android:id="@+id/cameraButtonTopRight"
                 android:background="@drawable/ic_action_camera"
                 android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
@@ -128,14 +128,14 @@
             <ImageView
                 android:layout_width="118dp"
                 android:layout_height="118dp"
-                android:id="@+id/imageView3"
+                android:id="@+id/imageViewBottomLeft"
                 android:onClick="onClickImage"
                 android:layout_gravity="left|top" />
 
             <ImageButton
                 android:layout_width="70dp"
                 android:layout_height="58dp"
-                android:id="@+id/imageButton5"
+                android:id="@+id/galleryButtonBottomLeft"
                 android:background="@drawable/ic_action_new_picture"
                 android:onClick="onClickGallery"
                 android:layout_gravity="left|top" />
@@ -143,7 +143,7 @@
             <ImageButton
                 android:layout_width="70dp"
                 android:layout_height="58dp"
-                android:id="@+id/imageButton6"
+                android:id="@+id/cameraButtonBottomLeft"
                 android:background="@drawable/ic_action_camera"
                 android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />
@@ -158,13 +158,13 @@
             <ImageView
                 android:layout_width="124dp"
                 android:layout_height="124dp"
-                android:id="@+id/imageView4"
+                android:id="@+id/imageViewBottomRight"
                 android:layout_gravity="left|top" />
 
             <ImageButton
                 android:layout_width="60dp"
                 android:layout_height="50dp"
-                android:id="@+id/imageButton7"
+                android:id="@+id/galleryButtonBottomRight"
                 android:background="@drawable/ic_action_new_picture"
                 android:onClick="onClickGallery"
                 android:layout_gravity="left|top" />
@@ -172,7 +172,7 @@
             <ImageButton
                 android:layout_width="55dp"
                 android:layout_height="46dp"
-                android:id="@+id/imageButton8"
+                android:id="@+id/cameraButtonBottomRight"
                 android:background="@drawable/ic_action_camera"
                 android:onClick="onClickCamera"
                 android:layout_gravity="center_horizontal|top" />

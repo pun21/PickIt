@@ -1,20 +1,14 @@
 package com.spun.pickit;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.DatePicker;
 import android.support.v4.app.FragmentActivity;
-import android.app.Dialog;
-import android.app.DatePickerDialog;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,29 +23,37 @@ import android.widget.TextView;
 import com.spun.pickit.model.SelectDateFragment;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 
 public class UploadActivity extends FragmentActivity {
 
+    PickItApp pickItApp;
     private String pickItHeading;
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int LOAD_IMAGE_REQUEST_CODE = 200;
     private static final int SELECT_PICTURE = 1;
+    private static final int CAMERA_SOURCE = 10;
+    private static final int GALLERY_SOURCE = 20;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight;
 
+    private int selectedImageId, selectedImage;
     private Uri fileUri;
     private static EditText mEdit, mTimeEdit;
+    private String username;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
+
+        pickItApp = (PickItApp)getApplication();
+        username = pickItApp.getUsername();
 
         final EditText editText = (EditText) findViewById(R.id.textField_pickit_heading);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -67,10 +68,10 @@ public class UploadActivity extends FragmentActivity {
             }
         });
 
-        imageTopLeft = (ImageView) findViewById(R.id.imageView);
-        imageTopRight = (ImageView) findViewById(R.id.imageView2);
-        imageBottomLeft = (ImageView) findViewById(R.id.imageView3);
-        imageBottomLeft = (ImageView) findViewById(R.id.imageView4);
+        imageTopLeft = (ImageView) findViewById(R.id.imageViewTopLeft);
+        imageTopRight = (ImageView) findViewById(R.id.imageViewTopRight);
+        imageBottomLeft = (ImageView) findViewById(R.id.imageViewBottomLeft);
+        imageBottomRight = (ImageView) findViewById(R.id.imageViewBottomRight);
 
 
     }
@@ -139,17 +140,20 @@ public class UploadActivity extends FragmentActivity {
 
     }
     public void onClickGallery(View v) {
+        selectedImageId = v.getId();
         //open gallery, select picture, set imageView as picture, set gallery icon and camera icon invisible/inactive
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), LOAD_IMAGE_REQUEST_CODE);
 
         //TODO
         //once imageView has been set with image from gallery, make the gallery and camera icons invisible
 
     }
     public void onClickCamera(View v) {
+        selectedImageId = v.getId();
+
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -157,10 +161,32 @@ public class UploadActivity extends FragmentActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
         // start the image capture Intent
-        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        startActivityForResult(intent, CAPTURE_IMAGE_REQUEST_CODE);
 
     }
 
+    private void setImageView(int source, Bitmap bitmap) {
+        if (source == GALLERY_SOURCE) {  //gallery button was clicked
+            if (selectedImageId == R.id.galleryButtonTopLeft)
+                imageTopLeft.setImageBitmap(bitmap);
+            else if (selectedImageId == R.id.galleryButtonTopRight)
+                imageTopRight.setImageBitmap(bitmap);
+            else if (selectedImageId == R.id.galleryButtonBottomLeft)
+                imageBottomLeft.setImageBitmap(bitmap);
+            else
+                imageBottomRight.setImageBitmap(bitmap);
+        }
+        else {  //camera button was clicked
+            if (selectedImageId == R.id.cameraButtonTopLeft)
+                imageTopLeft.setImageBitmap(bitmap);
+            else if (selectedImageId == R.id.cameraButtonTopRight)
+                imageTopRight.setImageBitmap(bitmap);
+            else if (selectedImageId == R.id.cameraButtonBottomLeft)
+                imageBottomLeft.setImageBitmap(bitmap);
+            else
+                imageBottomRight.setImageBitmap(bitmap);
+        }
+    }
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(int type, Context context){
         return Uri.fromFile(getOutputMediaFile(type, context));
@@ -197,7 +223,7 @@ public class UploadActivity extends FragmentActivity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    "IMG_" + timeStamp + ".jpg");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
@@ -212,10 +238,38 @@ public class UploadActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        /*Note: maybe load bitmap on another thread? and maybe recycle bitmap? not sure about memory management*/
+
         //gallery
         if (requestCode == LOAD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            Uri galleryImage = data.getData();
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), galleryImage);
+                /*need to resize the bitmap somehow to fit the ImageView or display it better*/
+                setImageView(GALLERY_SOURCE, bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else if (requestCode == CAPTURE_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            Bitmap bitmap = null;
+            try
+            {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
+                /*need to resize the bitmap somehow to fit the ImageView or display it better*/
+                setImageView(CAMERA_SOURCE, bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
 
         }
+
     }
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
