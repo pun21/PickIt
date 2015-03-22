@@ -1,7 +1,5 @@
 package com.spun.pickit;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.DatePicker;
 import android.support.v4.app.FragmentActivity;
-import android.app.Dialog;
-import android.app.DatePickerDialog;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,24 +23,26 @@ import com.spun.pickit.model.SelectDateFragment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
-
 public class UploadActivity extends FragmentActivity {
-
-    private String pickItHeading;
+    //region Class Variables
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     private static final int LOAD_IMAGE_REQUEST_CODE = 200;
     private static final int SELECT_PICTURE = 1;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+
+    private PickItApp pickItApp;
+
     private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight;
+    private EditText mEdit, mTimeEdit;
 
     private Uri fileUri;
-    private static EditText mEdit, mTimeEdit;
+    private String pickItHeading;
 
 
+    //region Activity Life-cycle Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +66,10 @@ public class UploadActivity extends FragmentActivity {
         imageBottomLeft = (ImageView) findViewById(R.id.imageView3);
         imageBottomLeft = (ImageView) findViewById(R.id.imageView4);
 
+        pickItApp = (PickItApp)getApplication();
 
+        setUsername();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,6 +93,18 @@ public class UploadActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //gallery
+        if (requestCode == LOAD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+
+        }
+    }
+    //endregion
+
+    //region Input Handlers
     public void onClickNavHome(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -114,6 +121,7 @@ public class UploadActivity extends FragmentActivity {
         Intent intent = new Intent(this, ProfileAdminActivity.class);
         startActivity(intent);
     }
+
     public void onClickSignOut(View v) {
 
         //TODO do any sign out stuff
@@ -122,6 +130,7 @@ public class UploadActivity extends FragmentActivity {
         Intent intent = new Intent(this, AppLoginActivity.class);
         startActivity(intent);
     }
+
     public void onClickUpload(View v) {
 
         //TODO do upload stuff - save the heading and pictures to database
@@ -131,6 +140,7 @@ public class UploadActivity extends FragmentActivity {
         startActivity(intent);
 
     }
+
     public void onClickImage(View v) {
         //TODO
         //identify the right image and bring back the right gallery camera icons
@@ -138,6 +148,7 @@ public class UploadActivity extends FragmentActivity {
 
 
     }
+
     public void onClickGallery(View v) {
         //open gallery, select picture, set imageView as picture, set gallery icon and camera icon invisible/inactive
         Intent intent = new Intent();
@@ -149,6 +160,7 @@ public class UploadActivity extends FragmentActivity {
         //once imageView has been set with image from gallery, make the gallery and camera icons invisible
 
     }
+
     public void onClickCamera(View v) {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -159,6 +171,13 @@ public class UploadActivity extends FragmentActivity {
         // start the image capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 
+    }
+    //endregion
+
+    //region Helper Methods
+    private void setUsername(){
+        TextView username = (TextView)findViewById(R.id.textView_username);
+        username.setText(pickItApp.getUsername());
     }
 
     /** Create a file Uri for saving an image or video */
@@ -208,15 +227,6 @@ public class UploadActivity extends FragmentActivity {
         return mediaFile;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //gallery
-        if (requestCode == LOAD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-
-        }
-    }
     /** Check if this device has a camera */
     private boolean checkCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -232,8 +242,9 @@ public class UploadActivity extends FragmentActivity {
         DialogFragment newFragment = new SelectDateFragment();
         newFragment.show(getFragmentManager(), "DatePicker");
     }
+
     public void populateSetDate(int year, int month, int day) {
-        mEdit = (EditText)findViewById(R.id.editText1);
+        mEdit = (EditText)findViewById(R.id.editDate);
         mEdit.setText(month+"/"+day+"/"+year);
     }
 
@@ -241,9 +252,10 @@ public class UploadActivity extends FragmentActivity {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getFragmentManager(), "TimePicker");
     }
+
     public void populateSetTime(int hour, int minute) {
-        mTimeEdit = (EditText)findViewById(R.id.editText2);
+        mTimeEdit = (EditText)findViewById(R.id.editTime);
         mTimeEdit.setText(hour+":"+minute);
     }
-
+    //endregion
 }

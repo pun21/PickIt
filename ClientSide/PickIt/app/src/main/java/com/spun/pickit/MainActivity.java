@@ -11,7 +11,7 @@ import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
     //region Class Variables
-
+    PickItApp pickItApp;
     //endregion
 
     //region Life-cycle methods
@@ -20,12 +20,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        pickItApp = (PickItApp)getApplication();
+
+        setUsername();
+
         //need to set current user's username
         TextView username = (TextView) findViewById(R.id.textView_username);
         //username.setText(/*get username here*/);
     }
     //endregion
 
+    //region UI Handlers
     public void onClickUpload(View v) {
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
@@ -37,6 +42,7 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, ProfileAdminActivity.class);
         startActivity(intent);
     }
+
     public void onClickSignOut(View v) {
 
         //do any sign out stuff
@@ -89,8 +95,13 @@ public class MainActivity extends Activity {
             //sorting by most voting time remaining
             Toast.makeText(this, "Time Remaining On", Toast.LENGTH_SHORT).show();
         }
-
-
     }
+    //endregion
 
+    //region Helper Methods
+    private void setUsername(){
+        TextView username = (TextView)findViewById(R.id.textView_username);
+        username.setText(pickItApp.getUsername());
+    }
+    //endregion
 }

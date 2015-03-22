@@ -1,239 +1,320 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.spun.pickit.UploadActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.spun.pickit.UploadActivity">
+    android:paddingBottom="@dimen/activity_vertical_margin">
 
-    <!-- Navigation menu bar -->
 
-    <!-- change to ImageButton once it has icon -->
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="home_icon"
-        android:id="@+id/button_category"
-        android:onClick="onClickNavHome"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+    <TableRow
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        android:id="@+id/textView_sign_out"
-        android:clickable="true"
-        android:onClick="onClickSignOut"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/username"
-        android:id="@+id/textView_username"
-        android:clickable="true"
-        android:onClick="onClickUsername"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/textView_sign_out" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/upload"
-        android:id="@+id/button_upload"
-        android:onClick="onClickUpload"
-        android:layout_gravity="left|bottom"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
-
-    <GridLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/button_category"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/gridLayout"
-        android:layout_marginBottom="180dp"
-        android:layout_alignEnd="@+id/textView_sign_out">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:id = "@+id/sign_out"
+            android:text = "@string/sign_out"
+            android:clickable = "true"
+            android:onClick = "onClickSignOut"
             android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_column="0">
+            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_weight="1"
+            android:textColor="#FF417286" />
 
-            <ImageView
-                android:layout_width="139dp"
-                android:layout_height="139dp"
-                android:id="@+id/imageView"
-                android:onClick="onClickImage"
-                android:layout_gravity="left|top" />
+        <TextView
+            android:id="@+id/textView_username"
+            android:text="@string/username"
+            android:clickable="true"
+            android:onClick="onClickUsername"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:textStyle="bold|italic"
+            android:textSize="25sp"
+            android:layout_weight="2"
+            android:gravity="end"
+            android:textColor="#FF417286" />
+    </TableRow>
 
-            <ImageButton
-                android:layout_width="51dp"
-                android:layout_height="42dp"
-                android:id="@+id/imageButton"
-                android:background="@drawable/ic_action_new_picture"
-                android:onClick="onClickGallery"
-                android:layout_gravity="left|top" />
+    <TableRow
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-            <ImageButton
-                android:layout_width="62dp"
-                android:layout_height="52dp"
-                android:id="@+id/imageButton2"
-                android:background="@drawable/ic_action_camera"
-                android:onClick="onClickCamera"
-                android:layout_gravity="center_horizontal|top" />
-        </FrameLayout>
+        <EditText
+            android:id="@+id/textField_pickit_heading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:inputType="textShortMessage"
+            android:hint="@string/descriptionHint"/>
+    </TableRow>
 
-        <FrameLayout
-            android:layout_width="182dp"
-            android:layout_height="157dp"
-            android:layout_row="0"
-            android:layout_column="1">
+    <TableRow
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-            <ImageView
-                android:layout_width="149dp"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView2"
-                android:onClick="onClickImage"
-                android:layout_gravity="left|top" />
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
 
-            <ImageButton
-                android:layout_width="68dp"
-                android:layout_height="57dp"
-                android:id="@+id/imageButton3"
-                android:background="@drawable/ic_action_new_picture"
-                android:onClick="onClickGallery"
-                android:layout_gravity="left|top" />
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-            <ImageButton
-                android:layout_width="57dp"
-                android:layout_height="48dp"
-                android:id="@+id/imageButton4"
-                android:background="@drawable/ic_action_camera"
-                android:onClick="onClickCamera"
-                android:layout_gravity="center_horizontal|top" />
-        </FrameLayout>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
-        <FrameLayout
-            android:layout_width="197dp"
-            android:layout_height="179dp"
-            android:layout_row="3"
-            android:layout_column="0">
+                    <GridLayout
+                        android:id="@+id/gridLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_vertical">
 
-            <ImageView
-                android:layout_width="118dp"
-                android:layout_height="118dp"
-                android:id="@+id/imageView3"
-                android:onClick="onClickImage"
-                android:layout_gravity="left|top" />
+                        <FrameLayout
+                            android:layout_row="0"
+                            android:layout_column="0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:paddingBottom="@dimen/activity_vertical_margin">
 
-            <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="58dp"
-                android:id="@+id/imageButton5"
-                android:background="@drawable/ic_action_new_picture"
-                android:onClick="onClickGallery"
-                android:layout_gravity="left|top" />
+                            <ImageView
+                                android:id="@+id/row0column0"
+                                android:contentDescription="@string/topLeftPane"
+                                android:background="@drawable/custom_upload_border"
+                                android:layout_width="139dp"
+                                android:layout_height="139dp"
+                                android:onClick="onClickImage"
+                                android:layout_gravity="start|top" />
 
-            <ImageButton
-                android:layout_width="70dp"
-                android:layout_height="58dp"
-                android:id="@+id/imageButton6"
-                android:background="@drawable/ic_action_camera"
-                android:onClick="onClickCamera"
-                android:layout_gravity="center_horizontal|top" />
-        </FrameLayout>
+                            <ImageButton
+                                android:id="@+id/galleryUpload_r0c0"
+                                android:contentDescription="@string/galleryUpload"
+                                android:layout_width="51dp"
+                                android:layout_height="42dp"
+                                android:background="@drawable/ic_action_new_picture"
+                                android:onClick="onClickGallery"
+                                android:layout_gravity="start|top"
+                                android:layout_margin="10dp"/>
 
-        <FrameLayout
-            android:layout_width="170dp"
-            android:layout_height="192dp"
-            android:layout_row="3"
-            android:layout_column="1">
+                            <ImageButton
+                                android:id="@+id/cameraUpload_r0c0"
+                                android:contentDescription="@string/cameraUpload"
+                                android:layout_width="62dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/ic_action_camera"
+                                android:onClick="onClickCamera"
+                                android:layout_gravity="end|bottom" />
+                        </FrameLayout>
 
-            <ImageView
-                android:layout_width="124dp"
-                android:layout_height="124dp"
-                android:id="@+id/imageView4"
-                android:layout_gravity="left|top" />
+                        <FrameLayout
+                            android:layout_row="0"
+                            android:layout_column="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:paddingBottom="@dimen/activity_vertical_margin">
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:id="@+id/imageButton7"
-                android:background="@drawable/ic_action_new_picture"
-                android:onClick="onClickGallery"
-                android:layout_gravity="left|top" />
+                            <ImageView
+                                android:id="@+id/row0column1"
+                                android:contentDescription="@string/topLeftPane"
+                                android:background="@drawable/custom_upload_border"
+                                android:layout_width="139dp"
+                                android:layout_height="139dp"
+                                android:onClick="onClickImage"
+                                android:layout_gravity="start|top" />
 
-            <ImageButton
-                android:layout_width="55dp"
-                android:layout_height="46dp"
-                android:id="@+id/imageButton8"
-                android:background="@drawable/ic_action_camera"
-                android:onClick="onClickCamera"
-                android:layout_gravity="center_horizontal|top" />
-        </FrameLayout>
-    </GridLayout>
+                            <ImageButton
+                                android:id="@+id/galleryUpload_r0c1"
+                                android:contentDescription="@string/galleryUpload"
+                                android:layout_width="51dp"
+                                android:layout_height="42dp"
+                                android:background="@drawable/ic_action_new_picture"
+                                android:onClick="onClickGallery"
+                                android:layout_gravity="start|top"
+                                android:layout_margin="10dp"/>
 
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:ems="10"
-        android:inputType="date"
-        android:layout_alignBottom="@+id/imageButton1"
-        android:layout_toStartOf="@+id/textView_username" />
-    <requestFocus />
+                            <ImageButton
+                                android:id="@+id/cameraUpload_r0c1"
+                                android:contentDescription="@string/cameraUpload"
+                                android:layout_width="62dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/ic_action_camera"
+                                android:onClick="onClickCamera"
+                                android:layout_gravity="end|bottom" />
+                        </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/selectdate"
-        android:cropToPadding="true"
-        android:onClick="selectDate"
-        android:src="@drawable/calendar_icon"
-        android:layout_toStartOf="@+id/textView_sign_out"
-        android:layout_above="@+id/button_time" />
+                        <FrameLayout
+                            android:layout_row="1"
+                            android:layout_column="0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:paddingBottom="@dimen/activity_vertical_margin">
 
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:ems="10"
-        android:inputType="date"
-        android:layout_alignBottom="@+id/button_time"
-        android:layout_toStartOf="@+id/textView_username" />
-    <requestFocus />
+                            <ImageView
+                                android:id="@+id/row1column0"
+                                android:contentDescription="@string/topLeftPane"
+                                android:background="@drawable/custom_upload_border"
+                                android:layout_width="139dp"
+                                android:layout_height="139dp"
+                                android:onClick="onClickImage"
+                                android:layout_gravity="start|top" />
 
-    <ImageButton
-        android:id="@+id/button_time"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/selecttime"
-        android:cropToPadding="true"
-        android:onClick="selectTime"
-        android:src="@drawable/alarm_clock"
-        android:layout_toStartOf="@+id/textView_sign_out"
-        android:layout_above="@+id/button_upload" />
+                            <ImageButton
+                                android:id="@+id/galleryUpload_r1c0"
+                                android:contentDescription="@string/galleryUpload"
+                                android:layout_width="51dp"
+                                android:layout_height="42dp"
+                                android:background="@drawable/ic_action_new_picture"
+                                android:onClick="onClickGallery"
+                                android:layout_gravity="start|top"
+                                android:layout_margin="10dp"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textField_pickit_heading"
-        android:inputType="text"
-        android:imeOptions="actionDone"
-        android:layout_below="@+id/button_category"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/textView_sign_out" />
+                            <ImageButton
+                                android:id="@+id/cameraUpload_r1c0"
+                                android:contentDescription="@string/cameraUpload"
+                                android:layout_width="62dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/ic_action_camera"
+                                android:onClick="onClickCamera"
+                                android:layout_gravity="end|bottom" />
+                        </FrameLayout>
 
+                        <FrameLayout
+                            android:layout_row="1"
+                            android:layout_column="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:paddingBottom="@dimen/activity_vertical_margin">
 
-</RelativeLayout>
+                            <ImageView
+                                android:id="@+id/row1column1"
+                                android:contentDescription="@string/topLeftPane"
+                                android:background="@drawable/custom_upload_border"
+                                android:layout_width="139dp"
+                                android:layout_height="139dp"
+                                android:onClick="onClickImage"
+                                android:layout_gravity="start|top" />
+
+                            <ImageButton
+                                android:id="@+id/galleryUpload_r1c1"
+                                android:contentDescription="@string/galleryUpload"
+                                android:layout_width="51dp"
+                                android:layout_height="42dp"
+                                android:background="@drawable/ic_action_new_picture"
+                                android:onClick="onClickGallery"
+                                android:layout_gravity="start|top"
+                                android:layout_margin="10dp"/>
+
+                            <ImageButton
+                                android:id="@+id/cameraUpload_r1c1"
+                                android:contentDescription="@string/cameraUpload"
+                                android:layout_width="62dp"
+                                android:layout_height="52dp"
+                                android:background="@drawable/ic_action_camera"
+                                android:onClick="onClickCamera"
+                                android:layout_gravity="end|bottom" />
+                        </FrameLayout>
+                    </GridLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" >
+
+                        <EditText
+                            android:id="@+id/editDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="date"
+                            android:layout_above="@+id/button_time"
+                            android:layout_centerHorizontal="true"
+                            android:hint="@string/dateHint"/>
+                        <requestFocus />
+
+                        <ImageButton
+                            android:id="@+id/calendarButton"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="#FFFFFF"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/selectdate"
+                            android:cropToPadding="true"
+                            android:onClick="selectDate"
+                            android:src="@drawable/calendar_icon"
+                            android:layout_alignParentTop="true"
+                            android:layout_toStartOf="@+id/editDate" />
+
+                        <EditText
+                            android:id="@+id/editTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="date"
+                            android:layout_alignBottom="@+id/button_time"
+                            android:layout_centerHorizontal="true"
+                            android:hint="@string/timeHint"/>
+                        <requestFocus />
+
+                        <ImageButton
+                            android:id="@+id/button_time"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="#FFFFFF"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/selecttime"
+                            android:cropToPadding="true"
+                            android:onClick="selectTime"
+                            android:src="@drawable/alarm_clock"
+                            android:layout_marginTop="25dp"
+                            android:layout_below="@+id/calendarButton"
+                            android:layout_toStartOf="@+id/editTime" />
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+
+                    <Button
+                        android:id="@+id/button_upload"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upload"
+                        android:onClick="onClickUpload"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/custom_table_border"
+                        android:textColor="#ff417286"
+                        android:textStyle="bold|italic"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+    </TableRow>
+</TableLayout>

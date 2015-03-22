@@ -3,15 +3,19 @@ package com.spun.pickit.fileIO;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +23,10 @@ import java.util.ArrayList;
  */
 public class FileManager {
     final String CREDENTIALS_FILE_NAME = "credentials.txt";
+    final String ENCRYPTED_FILE_NAME = "document.encrypted";
+    final String DECRYPTED_FILE_NAME = "document.decrypted";
+    final String key = "ZxGyPtRbAwRcTxN4";
+
     private Activity activity;
 
     //region Constructors
@@ -129,4 +137,41 @@ public class FileManager {
     }
     //endregion
 
+    //region ...Endpoint
+    public String decryptEndpoint(){
+        File encryptedFile = new File(ENCRYPTED_FILE_NAME);
+        File decryptedFile = new File(DECRYPTED_FILE_NAME);
+
+        String result = "";
+        try{
+
+            if(decryptedFile.exists())
+                decryptedFile.delete();
+
+            decryptedFile.createNewFile();
+
+            CryptoUtils.decrypt(key, encryptedFile, decryptedFile);
+
+            FileInputStream fin = new FileInputStream(decryptedFile);
+            String ret = convertStreamToString(fin);
+            //Make sure you close all streams.
+            fin.close();
+            result = ret;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+    private static String convertStreamToString(InputStream is) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        reader.close();
+        return sb.toString();
+    }
+    //endregion
 }

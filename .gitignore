@@ -36,3 +36,4 @@ Thumbs.db
 
 # Log Files
 *.log
+ClientSide/PickIt/build/intermediates/model_data.bin
