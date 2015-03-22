@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
@@ -304,22 +305,19 @@ public class UploadActivity extends FragmentActivity {
         //gallery
         if (requestCode == LOAD_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             Uri galleryImage = data.getData();
-            Bitmap bitmap = null;
-            try
-            {
-                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), galleryImage);
-                /*need to resize the bitmap somehow to fit the ImageView or display it better*/
-                setImageView(GALLERY_SOURCE, bitmap);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            //Bitmap bitmap = null;
+
+                new LoadBitmapTask().execute(galleryImage);
+                /*bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), galleryImage);
+                /*need to resize the bitmap somehow to fit the ImageView or display it better
+                setImageView(GALLERY_SOURCE, bitmap);*/
+
         }
         else if (requestCode == CAPTURE_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
             Bitmap bitmap = null;
             try
             {
+                new LoadBitmapTask().execute(null, fileUri);
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), fileUri);
                 /*need to resize the bitmap somehow to fit the ImageView or display it better*/
                 setImageView(CAMERA_SOURCE, bitmap);
@@ -361,12 +359,28 @@ public class UploadActivity extends FragmentActivity {
         mTimeEdit.setText(hour+":"+minute);
     }
 
-    /*working on this currently
-    public void loadBitmap(int resId, ImageView imageView) {
-        //the R.drawable.ic_Launcher is just a placeholder
-        mImageView.setImageResource(R.drawable.ic_launcher);
-        BitmapWorkerTask task = new BitmapWorkerTask(mImageView, this);
-        task.execute(resId);
-    }*/
+    /*loads the bitmaps to be set in the ImageViews from the camera and gallery*/
+    private class LoadBitmapTask extends AsyncTask<Uri, Void, Bitmap[]> {
 
+        protected Bitmap[] doInBackground(Uri...uri) {
+            Bitmap bitmap[] = new Bitmap[2];
+            try {
+                if (uri[0] != null)
+                    bitmap[0] = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri[0]);
+                else
+                    bitmap[1] = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri[1]);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap[] result) {
+            if (result[0] != null)
+                setImageView(GALLERY_SOURCE, result[0]);
+            else
+                setImageView(CAMERA_SOURCE, result[1]);
+        }
+    }
 }
