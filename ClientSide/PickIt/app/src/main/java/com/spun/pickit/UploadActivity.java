@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +42,7 @@ public class UploadActivity extends FragmentActivity {
     private static final int GALLERY_SOURCE = 20;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-    private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight;
+    private ImageView imageTopLeft, imageTopRight, imageBottomLeft, imageBottomRight, mImageView;
 
     private int selectedImageId, selectedImage;
     private Uri fileUri;
@@ -133,11 +136,10 @@ public class UploadActivity extends FragmentActivity {
 
     }
     public void onClickImage(View v) {
-        //TODO
-        //identify the right image and bring back the right gallery camera icons
-        //__.setVisibility(VISIBLE);
-
-
+        //if imageView contains an image, bring back gallery and camera buttons
+        if (((ImageView) v).getDrawable() != null) {
+            setViewsVisibility(v);
+        }
     }
     public void onClickGallery(View v) {
         selectedImageId = v.getId();
@@ -165,27 +167,86 @@ public class UploadActivity extends FragmentActivity {
 
     }
 
+    private void setViewsVisibility(View v){
+        ImageButton button;
+        int id = v.getId();
+
+        if (id == R.id.imageViewTopLeft) {
+            button = (ImageButton) findViewById(R.id.cameraButtonTopLeft);
+            button.setVisibility(View.VISIBLE);
+            button = (ImageButton) findViewById(R.id.galleryButtonTopLeft);
+            button.setVisibility(View.VISIBLE);
+        }
+        else if (id == R.id.imageViewTopRight) {
+            button = (ImageButton) findViewById(R.id.cameraButtonTopRight);
+            button.setVisibility(View.VISIBLE);
+            button = (ImageButton) findViewById(R.id.galleryButtonTopRight);
+            button.setVisibility(View.VISIBLE);
+        }
+
+        else if (id == R.id.imageViewBottomLeft) {
+            button = (ImageButton) findViewById(R.id.cameraButtonBottomLeft);
+            button.setVisibility(View.VISIBLE);
+            button = (ImageButton) findViewById(R.id.galleryButtonBottomLeft);
+            button.setVisibility(View.VISIBLE);
+        }
+        else if (id == R.id.imageViewBottomRight) {
+            button = (ImageButton) findViewById(R.id.cameraButtonBottomRight);
+            button.setVisibility(View.VISIBLE);
+            button = (ImageButton) findViewById(R.id.galleryButtonBottomRight);
+            button.setVisibility(View.VISIBLE);
+        }
+
+    }
     private void setImageView(int source, Bitmap bitmap) {
+
+        ImageButton button;
+
         if (source == GALLERY_SOURCE) {  //gallery button was clicked
-            if (selectedImageId == R.id.galleryButtonTopLeft)
+            if (selectedImageId == R.id.galleryButtonTopLeft) {
                 imageTopLeft.setImageBitmap(bitmap);
-            else if (selectedImageId == R.id.galleryButtonTopRight)
+                button = (ImageButton) findViewById(R.id.cameraButtonTopLeft);
+                button.setVisibility(View.INVISIBLE);
+            } else if (selectedImageId == R.id.galleryButtonTopRight) {
                 imageTopRight.setImageBitmap(bitmap);
-            else if (selectedImageId == R.id.galleryButtonBottomLeft)
+                button = (ImageButton) findViewById(R.id.cameraButtonTopRight);
+                button.setVisibility(View.INVISIBLE);
+            } else if (selectedImageId == R.id.galleryButtonBottomLeft) {
                 imageBottomLeft.setImageBitmap(bitmap);
-            else
+                button = (ImageButton) findViewById(R.id.cameraButtonBottomLeft);
+                button.setVisibility(View.INVISIBLE);
+            } else {
                 imageBottomRight.setImageBitmap(bitmap);
+                button = (ImageButton) findViewById(R.id.cameraButtonBottomRight);
+                button.setVisibility(View.INVISIBLE);
+            }
         }
         else {  //camera button was clicked
-            if (selectedImageId == R.id.cameraButtonTopLeft)
+            if (selectedImageId == R.id.cameraButtonTopLeft) {
                 imageTopLeft.setImageBitmap(bitmap);
-            else if (selectedImageId == R.id.cameraButtonTopRight)
+                button = (ImageButton) findViewById(R.id.galleryButtonTopLeft);
+                button.setVisibility(View.INVISIBLE);
+            }
+            else if (selectedImageId == R.id.cameraButtonTopRight) {
                 imageTopRight.setImageBitmap(bitmap);
-            else if (selectedImageId == R.id.cameraButtonBottomLeft)
+                button = (ImageButton) findViewById(R.id.galleryButtonTopRight);
+                button.setVisibility(View.INVISIBLE);
+            }
+            else if (selectedImageId == R.id.cameraButtonBottomLeft) {
                 imageBottomLeft.setImageBitmap(bitmap);
-            else
+                button = (ImageButton) findViewById(R.id.galleryButtonBottomLeft);
+                button.setVisibility(View.INVISIBLE);
+            }
+            else {
                 imageBottomRight.setImageBitmap(bitmap);
+                button = (ImageButton) findViewById(R.id.galleryButtonBottomRight);
+                button.setVisibility(View.INVISIBLE);
+            }
         }
+
+        //set camera or gallery button invisible once bitmap is set in the ImageView
+        button = (ImageButton)findViewById(selectedImageId);
+        button.setVisibility(View.INVISIBLE);
     }
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(int type, Context context){
@@ -299,5 +360,13 @@ public class UploadActivity extends FragmentActivity {
         mTimeEdit = (EditText)findViewById(R.id.editText2);
         mTimeEdit.setText(hour+":"+minute);
     }
+
+    /*working on this currently
+    public void loadBitmap(int resId, ImageView imageView) {
+        //the R.drawable.ic_Launcher is just a placeholder
+        mImageView.setImageResource(R.drawable.ic_launcher);
+        BitmapWorkerTask task = new BitmapWorkerTask(mImageView, this);
+        task.execute(resId);
+    }*/
 
 }
