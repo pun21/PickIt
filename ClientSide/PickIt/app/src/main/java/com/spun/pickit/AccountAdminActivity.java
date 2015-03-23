@@ -292,9 +292,11 @@ public class AccountAdminActivity extends Activity {
             mUsernameRepresentation.setVisibility(View.GONE);
             mPasswordRepresentation.setVisibility(View.GONE);
             mConfirmPasswordRepresentation.setVisibility(View.GONE);
-        }else {
+        }else{
             mUsernameRepresentation.setText(pickItApp.getUsername());
-            mUsernameRepresentation.setEnabled(false);
+
+            if(pickItApp.getUserID() != 0)
+                mUsernameRepresentation.setEnabled(false);
         }
     }
     public void startLoad(){

@@ -84,12 +84,5 @@
     <string name="category_menu">Categories</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="uploadDescription">Upload a PickIt</string>
-    <string name="subjectHeading">Subject Heading</string>
-    <string name="topLeftPane">Top Left Pane</string>
-    <string name="galleryUpload">Upload from gallery</string>
-    <string name="cameraUpload">Take picture</string>
-    <string name="descriptionHint">Upload Description...</string>
-    <string name="dateHint">End Date</string>
-    <string name="timeHint">Stopping Time</string>
 
 </resources>
