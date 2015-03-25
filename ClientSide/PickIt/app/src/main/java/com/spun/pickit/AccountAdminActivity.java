@@ -1,6 +1,7 @@
 package com.spun.pickit;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +12,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
-import com.spun.pickit.fileIO.FileManager;
+import com.spun.pickit.fileIO.LocalFileManager;
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 public class AccountAdminActivity extends Activity {
     //region Class Variables
     PickItApp pickItApp;
-    FileManager fileManager;
+    LocalFileManager localFileManager;
 
     Spinner spin_g;
     Spinner spin_e;
@@ -41,7 +41,7 @@ public class AccountAdminActivity extends Activity {
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
     EditText mConfirmPasswordRepresentation;
-    TextView mBirthday;
+    EditText mBirthday;
     ProgressBar loading;
 
     private static int layoutID;
@@ -54,7 +54,7 @@ public class AccountAdminActivity extends Activity {
         setContentView(R.layout.activity_account_admin);
 
         pickItApp = (PickItApp)getApplication();
-        fileManager = new FileManager(this);
+        localFileManager = new LocalFileManager(this);
 
         spin_g = (Spinner) findViewById(R.id.spinner_gender);
         spin_e = (Spinner) findViewById(R.id.spinner_ethnicity);
@@ -64,7 +64,7 @@ public class AccountAdminActivity extends Activity {
         mUsernameRepresentation = (EditText)findViewById(R.id.usernameDemoTextbox);
         mPasswordRepresentation = (EditText)findViewById(R.id.passwordDemoTextbox);
         mConfirmPasswordRepresentation = (EditText)findViewById(R.id.confirmDemoTextbox);
-        mBirthday = (TextView)findViewById(R.id.textField_bday);
+        mBirthday = (EditText)findViewById(R.id.textField_bday);
         loading = (ProgressBar)findViewById(R.id.loading);
 
         layoutID = R.id.accountAdminLayout;
@@ -103,7 +103,7 @@ public class AccountAdminActivity extends Activity {
         startLoad();
 
         if(isAcceptableData()){
-            if(pickItApp.getUserID() == 0){
+            if(!(pickItApp.getUserID() > 0)){
                 saveUser();
             }else{
                 updateUser();
@@ -132,7 +132,7 @@ public class AccountAdminActivity extends Activity {
 
         try{
             if(pickItApp.isGuest()){
-                tempUsername = "Guest"+new Date().getTime();
+                tempUsername = "Guest"+(new Date().getTime() % 1427000000);
                 tempPassword = "guest";
             }else{
                 tempUsername = mUsernameRepresentation.getText().toString();
@@ -292,11 +292,9 @@ public class AccountAdminActivity extends Activity {
             mUsernameRepresentation.setVisibility(View.GONE);
             mPasswordRepresentation.setVisibility(View.GONE);
             mConfirmPasswordRepresentation.setVisibility(View.GONE);
-        }else{
+        }else {
             mUsernameRepresentation.setText(pickItApp.getUsername());
-
-            if(pickItApp.getUserID() != 0)
-                mUsernameRepresentation.setEnabled(false);
+            mUsernameRepresentation.setEnabled(false);
         }
     }
     public void startLoad(){
@@ -315,6 +313,28 @@ public class AccountAdminActivity extends Activity {
             if(child.getId() != R.id.loading)
                 child.setEnabled(enabled);
         }
+    }
+    public void selectDate(View view) {
+        DialogFragment newFragment = new SelectBirthdayFragment();
+        newFragment.show(getFragmentManager(), "DatePicker");
+    }
+
+    public void populateSetDate(int year, int monthInput, int dayInput) {
+        String month;
+        String day;
+
+        if(monthInput<10)
+            month = "0"+monthInput;
+        else
+            month = ""+monthInput;
+
+        if(dayInput<10)
+            day = "0"+dayInput;
+        else
+            day = ""+dayInput;
+
+
+        mBirthday.setText(month + "/" + day + "/" + year);
     }
     //endregion
 

@@ -1,16 +1,27 @@
 package com.spun.pickit.model;
 
-/**
- * Created by jacob_000 on 3/13/2015.
- */
-public class Choice {
-    private int id;
+import android.graphics.Bitmap;
 
-    public Choice(int id){
-        this.id = id;
+public class Choice {
+    private Bitmap bitmap;
+    private String filename;
+
+    public Choice() {}
+
+    public Choice(Bitmap bitmap){
+        this.bitmap = bitmap;
+        filename = "";
     }
 
-    public int getID(){
-        return this.id;
+    public Choice(Bitmap bitmap, String filename){
+        this.bitmap = bitmap;
+        this.filename = filename;
+    }
+
+    public Bitmap getBitmap(){
+        return bitmap;
+    }
+    public String getFilename(){
+        return filename;
     }
 }

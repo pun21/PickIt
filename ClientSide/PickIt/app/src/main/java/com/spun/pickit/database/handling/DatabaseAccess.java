@@ -3,6 +3,7 @@ package com.spun.pickit.database.handling;
 import android.util.Log;
 
 import com.spun.pickit.database.handling.crud.PasswordValidation;
+import com.spun.pickit.database.handling.crud.PickItCRUD;
 import com.spun.pickit.database.handling.crud.UserCRUD;
 import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
@@ -52,6 +53,26 @@ public class DatabaseAccess {
         return userID;
     }
 
+    public int createPickIt(int userID, String category, String subject, String timestamp, String endTime){
+        PickItCRUD pickIt = new PickItCRUD(userID, category, subject, timestamp, endTime);
+        DataAccess access = new DataAccess(pickIt.create());
+
+        JSONObject json = access.getJson();
+
+        int pickItID = 0;
+        try {
+            if(json.get("Successful") == 1){
+                json = json.getJSONObject("Result");
+                json = new JSONObject((String)json.get("message"));
+                pickItID = Integer.parseInt((String)json.get("UserID"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return pickItID;
+    }
+
     public User readUser(int userID){
         UserCRUD userCRUDOp = new UserCRUD(userID);
         DataAccess access = new DataAccess(userCRUDOp.read());
@@ -81,8 +102,8 @@ public class DatabaseAccess {
         return JSONRequestPass(json);
     }
 
-    public boolean createChoice(String PickitID, String filePath){
-        ChoiceCRUD choice = new ChoiceCRUD(PickitID,filePath);
+    public boolean createChoice(int PickItID, String filePath){
+        ChoiceCRUD choice = new ChoiceCRUD(PickItID,filePath);
         DataAccess access = new DataAccess(choice.create());
 
         JSONObject json = access.getJson();

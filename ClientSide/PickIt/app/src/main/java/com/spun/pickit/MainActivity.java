@@ -8,10 +8,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-
 public class MainActivity extends Activity {
     //region Class Variables
-
+    PickItApp pickItApp;
     //endregion
 
     //region Life-cycle methods
@@ -20,23 +19,26 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //need to set current user's username
-        TextView username = (TextView) findViewById(R.id.textView_username);
-        //username.setText(/*get username here*/);
+        pickItApp = (PickItApp)getApplication();
+
+        setUsername();
     }
     //endregion
 
+    //region UI Handlers
     public void onClickUpload(View v) {
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
     }
 
     public void onClickUsername(View v) {
-
-        //go to Profile Admin Activity
-        Intent intent = new Intent(this, ProfileAdminActivity.class);
-        startActivity(intent);
+        if(!pickItApp.isGuest()){
+            //go to Profile Admin Activity
+            Intent intent = new Intent(this, ProfileAdminActivity.class);
+            startActivity(intent);
+        }
     }
+
     public void onClickSignOut(View v) {
 
         //do any sign out stuff
@@ -60,7 +62,6 @@ public class MainActivity extends Activity {
             //sorting by least recent
             Toast.makeText(this, "Recency On", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void onClickTrendingToggle(View v) {
@@ -74,8 +75,6 @@ public class MainActivity extends Activity {
             //sorting by least trending
             Toast.makeText(this, "Trending On", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     public void onClickTimeRemainingToggle(View v) {
@@ -89,8 +88,18 @@ public class MainActivity extends Activity {
             //sorting by most voting time remaining
             Toast.makeText(this, "Time Remaining On", Toast.LENGTH_SHORT).show();
         }
-
-
     }
+    //endregion
 
+    //region Helper Methods
+    private void setUsername(){
+        TextView username = (TextView)findViewById(R.id.textView_username);
+
+        if(pickItApp.isGuest()){
+            username.setEnabled(false);
+        }
+
+        username.setText(pickItApp.getUsername());
+    }
+    //endregion
 }

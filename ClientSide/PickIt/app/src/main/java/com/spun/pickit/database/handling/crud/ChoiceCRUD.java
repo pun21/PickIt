@@ -5,14 +5,14 @@ public class ChoiceCRUD extends CRUD{
     private static final String READ_CHOICE = "read_choice.php";
     private static final String CREATE_CHOICE = "create_choice.php";
 
-    private String pickItID;
+    private int pickItID;
     private String filepath;
 
-    public ChoiceCRUD(String pickItID){
+    public ChoiceCRUD(int pickItID){
         this.pickItID = pickItID;
     }
 
-    public ChoiceCRUD(String pickItID,String filepath){
+    public ChoiceCRUD(int pickItID,String filepath){
         this.pickItID = pickItID;
         this.filepath = filepath;
     }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 
 public class AppLoginActivity extends Activity {
     //region Activity Variables
-    FileManager fileManager;
+    LocalFileManager localFileManager;
     PickItApp pickItApp;
     EditText mUsernameRepresentation;
     EditText mPasswordRepresentation;
@@ -51,7 +50,7 @@ public class AppLoginActivity extends Activity {
         setContentView(R.layout.activity_app_login);
 
         pickItApp = (PickItApp)getApplication();
-        fileManager = new FileManager(this);
+        localFileManager = new LocalFileManager(this);
         mUsernameRepresentation = (EditText)findViewById(R.id.usernameLoginTextbox);
         mPasswordRepresentation = (EditText)findViewById(R.id.passwordLoginTextbox);
         loading = (ProgressBar)findViewById(R.id.loading);
@@ -152,7 +151,7 @@ public class AppLoginActivity extends Activity {
         pickItApp.setDemographics(demo);
     }
     private void readCredentials(){
-        ArrayList<String> credentials = fileManager.readSavedCredentials();
+        ArrayList<String> credentials = localFileManager.readSavedCredentials();
         if(credentials.size() == 2){
             username = credentials.get(0);
             password = credentials.get(1);
@@ -232,10 +231,10 @@ public class AppLoginActivity extends Activity {
                     //If the password is valid and the checkbox is checked, save username/password locally
                     CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
                     if(rememberMe.isChecked()){
-                        fileManager.saveCredentials(username, password);
+                        localFileManager.saveCredentials(username, password);
                     }else{
-                        if(fileManager.credentialFileExists()){
-                            fileManager.deleteCredentials();
+                        if(localFileManager.credentialFileExists()){
+                            localFileManager.deleteCredentials();
                         }
                     }
 

@@ -15,6 +15,8 @@ public class PickItApp extends Application {
     private String religion;
     private String political;
     private boolean guest;
+
+    public int resultsID;
     //endregion
 
     //region Accessor Methods
@@ -27,7 +29,17 @@ public class PickItApp extends Application {
         setGender(demographics.getGender());
         setReligion(demographics.getReligion());
     }
-
+    public void resetUser(){
+        userID = -1;
+        demographics = null;
+        username = "";
+        birthday = "";
+        gender = "";
+        ethnicity = "";
+        religion = "";
+        political = "";
+        guest = false;
+    }
     public void setUserID(int userID){
         this.userID = userID;
     }

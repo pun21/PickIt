@@ -23,27 +23,6 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-836215e9d83f4544b48dd037fa4e7bbb772cc40f.jar" />
     </item>
     <item
-        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\httpclient-4.3.1\httpclient-4.3.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="0ec13f6423eb6d5858e229939a2bc118473ef94c">
-        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpclient-4.3.1-33bb9bcf6eda1402327b26d071dfcd5cad2655d8.jar" />
-    </item>
-    <item
-        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\commons-net-3.3-sources\commons-net-3.3-sources.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="ccfa0721eae567b3c47cfaf3cca20e2491362bf6">
-        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\commons-net-3.3-sources-6e9122eb66545766059bb96a6a8be9aa354058bc.jar" />
-    </item>
-    <item
-        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\commons-net-3.3\commons-net-3.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="cd0d5510908225f76c5fe5a3f1df4fa44866f81e">
-        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\commons-net-3.3-59c283a3c7d147337ca7f7d8218b3de22d04d9d5.jar" />
-    </item>
-    <item
         jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -58,25 +37,11 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-2738cf88eff34a86eecde7ccd47ab99f71f4ea37.jar" />
     </item>
     <item
-        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\json-simple-1.1.1\json-simple-1.1.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="5d6f9b6a9ddca2a28c0216cc44efb2e20d9c23b5">
-        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\json-simple-1.1.1-bb5fc0d343c56dd3f4cf96f02d14fab3496aa0d2.jar" />
-    </item>
-    <item
         jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\3.21.1\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="0285ad8da812e92dda76ed5d0dcba05724c7911d">
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-decd937792afa4692b09dcfa7fe19451f59823ac.jar" />
-    </item>
-    <item
-        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\commons-net-examples-3.3\commons-net-examples-3.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="a17df39d99df74e21f0c9c3d8fd53c69da0b23ba">
-        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\commons-net-examples-3.3-0d319e6cac25d9cd27d42953aad4079e6d63bc6b.jar" />
     </item>
 
 </items>

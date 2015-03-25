@@ -37,8 +37,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:layout_weight="1"
-            android:layout_margin="10dp" >
+            android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/accountAdminLayout"
@@ -61,6 +60,7 @@
                     android:focusable="true"
                     android:enabled="true"
                     android:focusableInTouchMode="true"
+                    android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true" />
 
                 <EditText
@@ -112,6 +112,21 @@
                     android:maxLines="1"
                     android:layout_below="@+id/textView_bday"
                     android:layout_centerHorizontal="true" />
+
+                <ImageButton
+                    android:id="@+id/calendarButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/custom_date_box"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/selectdate"
+                    android:cropToPadding="true"
+                    android:onClick="selectDate"
+                    android:src="@drawable/calendar_icon"
+                    android:layout_alignBottom="@+id/textField_bday"
+                    android:layout_alignEnd="@+id/textField_bday"
+                    android:layout_alignTop="@+id/textField_bday"
+                    android:layout_toEndOf="@+id/textView_political" />
 
                 <TextView
                     android:id="@+id/textView_gender"

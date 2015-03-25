@@ -1,5 +1,6 @@
 package com.spun.pickit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,12 +9,18 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-public class ProfileAdminActivity extends ActionBarActivity {
+public class ProfileAdminActivity extends Activity {
+    //region Class Variables
+    PickItApp pickItApp;
+    //endregion
 
+    //region Activity Life-cycle Methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_admin);
+
+        pickItApp = (PickItApp)getApplication();
     }
 
 
@@ -38,15 +45,17 @@ public class ProfileAdminActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    //endregion
 
-    /*Handler methods for Navigation menu --------------------------------------------------------------*/
+    //region Input Handlers
     public void onClickNavHome(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     public void onClickUsername(View v) {
-        //already on profile page, reload or do nothing?
+        Intent intent = new Intent(this, AccountAdminActivity.class);
+        startActivity(intent);
     }
 
     public void onClickNavUpload(View v) {
@@ -56,17 +65,16 @@ public class ProfileAdminActivity extends ActionBarActivity {
 
     public void onClickSignOut(View v) {
 
-        //do any sign out stuff
+        pickItApp.resetUser();
 
         //go to login page after signing out
         Intent intent = new Intent(this, AppLoginActivity.class);
         startActivity(intent);
     }
-    /*end of Nav menu methods --------------------------------------------*/
 
-    public void onClickEditProfile(View v) {
-        Intent intent = new Intent(this, AccountAdminActivity.class);
-        startActivity(intent);
+    public void onClickUploaded(View v) {
+
     }
+    //endregion
 
 }
