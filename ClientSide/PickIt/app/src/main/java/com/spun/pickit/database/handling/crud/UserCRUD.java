@@ -18,6 +18,11 @@ public class UserCRUD extends CRUD{
         this.userID = userID;
     }
 
+    public UserCRUD(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
     public UserCRUD(int userID, String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
         this.userID = userID;
         this.username = username;
@@ -39,8 +44,20 @@ public class UserCRUD extends CRUD{
         this.politicalAffiliation = politicalAffiliation;
     }
 
+    protected String createExtension(){
+        String extension = (CREATE_REQUEST + "?Username=" + this.username + "&Password=" + this.password);
+        return extension;
+    }
     protected String readExtension(){
         String extension = READ_REQUEST +"?UserID="+ this.username;
+        return extension;
+    }
+
+    protected String updateExtension(){
+        String extension = (UPDATE_REQUEST + "?UserID=" + this.userID + "&Username=" + this.username
+                + "&Password=" + this.password + "&Birthday=" + this.birthday + "&Gender=" + this.gender
+                + "&Ethnicity=" + this.ethnicity + "&Religion=" + this.religion
+                + "&PoliticalAffiliation=" + this.politicalAffiliation);
         return extension;
     }
 
@@ -51,19 +68,5 @@ public class UserCRUD extends CRUD{
         }catch(Exception e){
         }
         return null;
-    }
-
-    protected String updateExtension(){
-        String extension = (UPDATE_REQUEST + "?UserID=" + this.userID + "&Username=" + this.username
-                + "&Password=" + this.password + "&Birthday=" + this.birthday + "&Gender=" + this.gender
-                + "&Ethnicity=" + this.ethnicity + "&Religion=" + this.religion
-                + "&PoliticalAffiliation=" + this.politicalAffiliation);
-        return extension;
-    }
-    public String createExtension(){
-        String extension = (CREATE_REQUEST + "?Username=" + this.username + "&Password=" + this.password +
-                "&Birthday=" + this.birthday + "&Gender=" + this.gender + "&Ethnicity=" + this.ethnicity
-                + "&Religion=" + this.religion + "&PoliticalAffiliation=" + this.politicalAffiliation);
-        return extension;
     }
 }

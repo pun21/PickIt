@@ -1,26 +1,20 @@
 package com.spun.pickit;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,8 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
-import com.spun.pickit.database.handling.crud.PickItCRUD;
-import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Choice;
 import com.spun.pickit.model.PickIt;
 
@@ -39,7 +31,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -633,7 +624,7 @@ public class UploadActivity extends FragmentActivity {
         }
 
         private void saveImage(){
-            ServerFileManager sm = new ServerFileManager(file.getPath());
+            //ServerFileManager sm = new ServerFileManager(file.getPath());
             //sm.uploadFile();
         }
 

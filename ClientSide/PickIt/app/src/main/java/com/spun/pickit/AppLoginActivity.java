@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -17,10 +18,14 @@ import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.spun.pickit.database.handling.DatabaseAccess;
-import com.spun.pickit.fileIO.*;
+import com.spun.pickit.fileIO.LocalFileManager;
+import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class AppLoginActivity extends Activity {

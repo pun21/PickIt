@@ -9,6 +9,13 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.2-ddc48799f4cbd1e27d1d8b294b1025c848d9ab0f.jar" />
     </item>
     <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\commons-logging-1.2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4bfc12adfe4842bf07b657f0369c4cb522955686">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\commons-logging-1.2-71f0db82cf1065ab98b06953bad883ac96bde524.jar" />
+    </item>
+    <item
         jar="C:\Program Files\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -16,11 +23,53 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-ab659324b689cb5f404aeadb8100caa8d54a17f2.jar" />
     </item>
     <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpclient-win-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d15bf939c81d6f8f730fc6baf15838e205482c94">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpclient-win-4.4-7380691d99c8586c3cff7a3ab17f353930e76757.jar" />
+    </item>
+    <item
         jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-836215e9d83f4544b48dd037fa4e7bbb772cc40f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\jna-4.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1c12d070e602efd8021891cdd7fd18bc129372d4">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\jna-4.1.0-1e5297846996e53011502fc326fe6a679d06d1bd.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpmime-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="54646f004d5b4c37a5a75b1d416c59a3075204e2">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpmime-4.4-19c9631ae0018cc3de569253a8c48f52239708fc.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\commons-codec-1.9.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9ce04e34240f674bc72680f8b843b1457383161a">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\commons-codec-1.9-6565267e9159262433c1fc85ce5f7be101339c89.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpclient-cache-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="d9e249ad4b19cb8ef7d45e8fe6dda49cdd4aa123">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpclient-cache-4.4-3f911e85faa83fe730052c8a074cdd62fd4a4002.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpclient-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6d220441ca681dddc55a189eae81a437309128b8">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpclient-4.4-59d52733c6161a49485ab6ba8b3b516247e67f2d.jar" />
     </item>
     <item
         jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
@@ -37,11 +86,32 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-2738cf88eff34a86eecde7ccd47ab99f71f4ea37.jar" />
     </item>
     <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\jna-platform-4.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="23457ad1cf75c2c16763330de5565a0e67b4bc0a">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\jna-platform-4.1.0-fc24b0e2b7422d5bd9e0698a1de1009b510c40b0.jar" />
+    </item>
+    <item
         jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\3.21.1\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="0285ad8da812e92dda76ed5d0dcba05724c7911d">
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-decd937792afa4692b09dcfa7fe19451f59823ac.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpcore-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="e9b3863fd9c8a273ceed4a7fae10f40bb10a2328">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpcore-4.4-028c31086a52f7d8d815b5297d368dc8d8db0bcb.jar" />
+    </item>
+    <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\fluent-hc-4.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="965f740251d2ce4efaf34b9ac174b1e6dd3c7c3e">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\fluent-hc-4.4-560a85b0d45f7734c5ec02de29f4e261c828fbb3.jar" />
     </item>
 
 </items>

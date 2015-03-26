@@ -2,12 +2,11 @@ package com.spun.pickit.database.handling;
 
 import android.util.Log;
 
+import com.spun.pickit.database.handling.crud.ChoiceCRUD;
+import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.PasswordValidation;
 import com.spun.pickit.database.handling.crud.PickItCRUD;
 import com.spun.pickit.database.handling.crud.UserCRUD;
-import com.spun.pickit.database.handling.crud.Following;
-import com.spun.pickit.database.handling.crud.ChoiceCRUD;
-
 import com.spun.pickit.model.User;
 
 import org.apache.http.client.ResponseHandler;
@@ -17,8 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URI;
 
 public class DatabaseAccess {
 
@@ -33,8 +31,8 @@ public class DatabaseAccess {
         return userToSend;
     }
 
-    public int createUser(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
-        UserCRUD user = new UserCRUD(username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
+    public int createUser(String username, String password, String demographicsFilename){
+        UserCRUD user = new UserCRUD(username, password);
         DataAccess access = new DataAccess(user.create());
 
         JSONObject json = access.getJson();
@@ -183,25 +181,38 @@ public class DatabaseAccess {
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();
                 DefaultHttpClient client = new DefaultHttpClient();
 
-                InputStream content = null;
                 HttpGet request;
                 String response = "";
 
                 try {
-                    Thread.sleep(2500);
-                    request = new HttpGet( url );
+                    request = new HttpGet( new URI(url));
                     response = client.execute( request, responseHandler );
                     json = new JSONObject(response);
                 } catch ( Exception e ) {
                     e.printStackTrace();
-                }finally {
-                    if (content != null)
-                        try {
-                            content.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                 }
+
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpResponse response;
+//                String responseString = null;
+//                try {
+//                    response = httpclient.execute(new HttpGet(uri[0]));
+//                    StatusLine statusLine = response.getStatusLine();
+//                    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+//                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                        response.getEntity().writeTo(out);
+//                        responseString = out.toString();
+//                        out.close();
+//                    } else{
+//                        //Closes the connection.
+//                        response.getEntity().getContent().close();
+//                        throw new IOException(statusLine.getReasonPhrase());
+//                    }
+//                } catch (ClientProtocolException e) {
+//                    //TODO Handle problems..
+//                } catch (IOException e) {
+//                    //TODO Handle problems..
+//                }
 
                 if(json == null){
                     json = new JSONObject();
