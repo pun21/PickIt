@@ -1,31 +1,25 @@
 package com.spun.pickit.fileIO;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.util.Log;
+
+import com.spun.pickit.PickItApp;
+import com.spun.pickit.model.Demographics;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-/**
- * Created by BJClark on 3/10/2015.
- */
 public class LocalFileManager {
     final String CREDENTIALS_FILE_NAME = "credentials.txt";
-    final String ENCRYPTED_FILE_NAME = "document.encrypted";
-    final String DECRYPTED_FILE_NAME = "document.decrypted";
-    final String key = "ZxGyPtRbAwRcTxN4";
+    String DEMOGRAPHICS_FILE_NAME;
 
     private Activity activity;
 
@@ -41,6 +35,109 @@ public class LocalFileManager {
      * We may want to store as much data/metadata locally as we canto reduce database calls
      *
      */
+
+    //region ...Demographics
+    public File getDemographicsFilePath(){
+        File file = activity.getFileStreamPath(DEMOGRAPHICS_FILE_NAME).getAbsoluteFile();
+        return file;
+    }
+
+    public boolean readSavedDemographics(){
+        try {
+            InputStream inputStream = activity.openFileInput(DEMOGRAPHICS_FILE_NAME);
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+
+                String fromFile = stringBuilder.toString();
+
+                JSONObject json = new JSONObject(fromFile);
+
+                String birthday = json.getString("Birthday");
+                String gender = json.getString("Gender");
+                String ethnicity = json.getString("Ethnicity");
+                String religion = json.getString("Religion");
+                String politicalAffiliation = json.getString("Political Affiliation");
+
+                Demographics demo = new Demographics(birthday, gender, ethnicity, religion, politicalAffiliation);
+                ((PickItApp)activity.getApplication()).setDemographics(demo);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean demographicsFileExists(){
+        boolean fileExists = false;
+
+        String[] files = activity.fileList();
+        for (String file : files) {
+            if (file.equals(DEMOGRAPHICS_FILE_NAME)) {
+                fileExists = true;
+                break;
+            }
+        }
+
+        return fileExists;
+    }
+
+    public void deleteDemographics(){
+        String[] files = activity.fileList();
+        for (String file : files) {
+            if (file.equals(DEMOGRAPHICS_FILE_NAME)) {
+                activity.deleteFile(DEMOGRAPHICS_FILE_NAME);
+            }
+        }
+    }
+
+    public void saveDemographics(String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+        JSONObject temp = new JSONObject();
+
+        try {
+            temp.put("Birthday", birthday);
+            temp.put("Gender", gender);
+            temp.put("Ethnicity", ethnicity);
+            temp.put("Religion", religion);
+            temp.put("Political Affiliation", politicalAffiliation);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(temp.length() != 0){
+            final JSONObject demographics = temp;
+            DEMOGRAPHICS_FILE_NAME = ((PickItApp)activity.getApplication()).getUsername()+"_demographics.json";
+            FileOutputStream os = null;
+
+            try{
+                os = activity.openFileOutput(DEMOGRAPHICS_FILE_NAME, Context.MODE_WORLD_READABLE);
+                os.write(demographics.toString().getBytes());
+            }catch(Exception e){
+                e.printStackTrace();
+            }finally{
+                if(os != null)
+                    try {
+                        os.flush();
+                        os.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
+        }
+    }
+    //endregion
 
     //region ...Credentials
     public ArrayList<String> readSavedCredentials(){
@@ -134,44 +231,6 @@ public class LocalFileManager {
                 }
             }).start();
         }
-    }
-    //endregion
-
-    //region ...Endpoint
-    public String decryptEndpoint(){
-        File encryptedFile = new File(ENCRYPTED_FILE_NAME);
-        File decryptedFile = new File(DECRYPTED_FILE_NAME);
-
-        String result = "";
-        try{
-
-            if(decryptedFile.exists())
-                decryptedFile.delete();
-
-            decryptedFile.createNewFile();
-
-            CryptoUtils.decrypt(key, encryptedFile, decryptedFile);
-
-            FileInputStream fin = new FileInputStream(decryptedFile);
-            String ret = convertStreamToString(fin);
-            //Make sure you close all streams.
-            fin.close();
-            result = ret;
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-    private static String convertStreamToString(InputStream is) throws Exception {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            sb.append(line).append("\n");
-        }
-        reader.close();
-        return sb.toString();
     }
     //endregion
 }

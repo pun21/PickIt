@@ -5,10 +5,10 @@ public class User {
     private Demographics demo;
     private int id;
 
-    public User(int id, String username, Demographics demo){
+    public User(int id, String username){
         this.id = id;
         this.username = username;
-        this.demo = demo;
+        demo = null;
     }
 
     public User(int id, String username, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
@@ -24,7 +24,5 @@ public class User {
     public String getEthnicity(){return this.demo.getEthnicity();}
     public String getReligion(){return this.demo.getReligion();}
     public String getPoliticalAffiliation(){return this.demo.getPoliticalAffiliation();}
-    public Demographics getDemographics(){
-        return demo;
-    }
 }
+

@@ -2,11 +2,12 @@ package com.spun.pickit.database.handling;
 
 import android.util.Log;
 
-import com.spun.pickit.database.handling.crud.ChoiceCRUD;
-import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.PasswordValidation;
 import com.spun.pickit.database.handling.crud.PickItCRUD;
 import com.spun.pickit.database.handling.crud.UserCRUD;
+import com.spun.pickit.database.handling.crud.Following;
+import com.spun.pickit.database.handling.crud.ChoiceCRUD;
+
 import com.spun.pickit.model.User;
 
 import org.apache.http.client.ResponseHandler;
@@ -16,6 +17,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 
 public class DatabaseAccess {
@@ -31,15 +34,15 @@ public class DatabaseAccess {
         return userToSend;
     }
 
-    public int createUser(String username, String password, String demographicsFilename){
-        UserCRUD user = new UserCRUD(username, password);
+    public int createUser(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
+        UserCRUD user = new UserCRUD(username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
         DataAccess access = new DataAccess(user.create());
 
         JSONObject json = access.getJson();
 
         int userID = 0;
         try {
-            if(json.get("Successful") == 1){
+            if(json.getInt("Successful") == 1){
                 json = json.getJSONObject("Result");
                 json = new JSONObject((String)json.get("message"));
                 userID = Integer.parseInt((String)json.get("UserID"));
@@ -59,7 +62,7 @@ public class DatabaseAccess {
 
         int pickItID = 0;
         try {
-            if(json.get("Successful") == 1){
+            if(json.getInt("Successful") == 1){
                 json = json.getJSONObject("Result");
                 json = new JSONObject((String)json.get("message"));
                 pickItID = Integer.parseInt((String)json.get("UserID"));
@@ -118,13 +121,8 @@ public class DatabaseAccess {
 
                 int userID = Integer.parseInt((String)json.get("UserID"));
                 String username = (String) json.get("Username");
-                String birthday = (String) json.get("Birthday");
-                String gender = (String)json.get("Gender");
-                String religion = (String) json.get("Religion");
-                String ethnicity = (String) json.get("Ethnicity");
-                String political = (String) json.get("PoliticalAffiliation");
 
-                user = new User(userID, username, birthday, gender, religion, ethnicity, political);
+                user = new User(userID, username);
             } else {
                 Log.v("readUser", "the json object is not accessed correctly,  try json.get(\"Result\").get([whatever])");
             }
@@ -138,11 +136,11 @@ public class DatabaseAccess {
     private boolean JSONRequestPass(JSONObject json){
         boolean pass = false;
         try{
-            pass = json.get("success") == 1;
+            pass = json.getInt("success") == 1;
         }catch(JSONException e){
             try {
                 json = json.getJSONObject("Result");
-                pass = json.get("success") == 1;
+                pass = json.getInt("success") == 1;
             } catch (JSONException e1) {
                 e.printStackTrace();
                 e1.printStackTrace();
@@ -181,38 +179,24 @@ public class DatabaseAccess {
                 ResponseHandler<String> responseHandler = new BasicResponseHandler();
                 DefaultHttpClient client = new DefaultHttpClient();
 
+                InputStream content = null;
                 HttpGet request;
                 String response = "";
 
                 try {
-                    request = new HttpGet( new URI(url));
+                    request = new HttpGet( new URI( url ) );
                     response = client.execute( request, responseHandler );
                     json = new JSONObject(response);
                 } catch ( Exception e ) {
                     e.printStackTrace();
+                }finally {
+                    if (content != null)
+                        try {
+                            content.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                 }
-
-//                HttpClient httpclient = new DefaultHttpClient();
-//                HttpResponse response;
-//                String responseString = null;
-//                try {
-//                    response = httpclient.execute(new HttpGet(uri[0]));
-//                    StatusLine statusLine = response.getStatusLine();
-//                    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-//                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//                        response.getEntity().writeTo(out);
-//                        responseString = out.toString();
-//                        out.close();
-//                    } else{
-//                        //Closes the connection.
-//                        response.getEntity().getContent().close();
-//                        throw new IOException(statusLine.getReasonPhrase());
-//                    }
-//                } catch (ClientProtocolException e) {
-//                    //TODO Handle problems..
-//                } catch (IOException e) {
-//                    //TODO Handle problems..
-//                }
 
                 if(json == null){
                     json = new JSONObject();

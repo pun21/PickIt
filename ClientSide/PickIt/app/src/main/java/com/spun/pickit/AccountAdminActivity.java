@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -20,8 +19,6 @@ import com.spun.pickit.fileIO.LocalFileManager;
 import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -169,9 +166,7 @@ public class AccountAdminActivity extends Activity {
             return;
         }
 
-        Demographics demo = new Demographics(tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
-
-        final User user = new User(0, tempUsername, demo);
+        final User user = new User(0, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
         final AccountAdminActivity activity = this;
 
         new Thread(new Runnable() {
@@ -197,16 +192,16 @@ public class AccountAdminActivity extends Activity {
             tempBirthday = new SimpleDateFormat("yyyy-MM-dd").format(date);
 
             Spinner mGender = (Spinner)findViewById(R.id.spinner_gender);
-            tempGender = mGender.getSelectedItem().toString().replace(" ", "");
+            tempGender = mGender.getSelectedItem().toString();
 
             Spinner mEthnicity = (Spinner)findViewById(R.id.spinner_ethnicity);
-            tempEthnicity = mEthnicity.getSelectedItem().toString().replace(" ", "");
+            tempEthnicity = mEthnicity.getSelectedItem().toString();
 
             Spinner mReligion = (Spinner)findViewById(R.id.spinner_religion);
-            tempReligion = mReligion.getSelectedItem().toString().replace(" ", "");
+            tempReligion = mReligion.getSelectedItem().toString();
 
             Spinner mPolitical = (Spinner)findViewById(R.id.spinner_political);
-            tempPolitical = mPolitical.getSelectedItem().toString().replace(" ", "");
+            tempPolitical = mPolitical.getSelectedItem().toString();
         }catch(Exception e){
             e.printStackTrace();
             Context context = getApplicationContext();
@@ -232,6 +227,16 @@ public class AccountAdminActivity extends Activity {
         pickItApp.setUserID(userID);
         pickItApp.setUsername(username);
         pickItApp.setDemographics(demo);
+
+        saveDemographicsLocally(demo);
+
+        File demographicsFile = localFileManager.getDemographicsFilePath();
+
+        ServerFileManager sm = new ServerFileManager(demographicsFile);
+        sm.uploadDemographics();
+    }
+    private void saveDemographicsLocally(Demographics demographics){
+        localFileManager.saveDemographics(demographics.getBirthday(), demographics.getGender(), demographics.getEthnicity(), demographics.getReligion(), demographics.getPoliticalAffiliation());
     }
     private boolean isAcceptableData(){
         if(pickItApp.isGuest()){
@@ -392,20 +397,13 @@ public class AccountAdminActivity extends Activity {
         @Override
         public void run(){
             DatabaseAccess access = new DatabaseAccess();
-            final int userID= access.createUser(user.getUsername(), password, user.getUsername()+"_demographics.json");
+            final int userID= access.createUser(user.getUsername(), password, user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
 
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (userID != 0){
                         setUserInformation(userID, user.getUsername(), user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
-
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                saveDemographicData(user.getDemographics());
-                            }
-                        }).start();
 
                         Intent intent = new Intent(activity, MainActivity.class);
                         startActivity(intent);
@@ -420,28 +418,6 @@ public class AccountAdminActivity extends Activity {
                     endLoad();
                 }
             });
-        }
-        private void saveDemographicData(Demographics demographics){
-            JSONObject json = new JSONObject();
-
-            try{
-                json.put("Birthday", demographics.getBirthday());
-                json.put("Ethnicity", demographics.getEthnicity());
-                json.put("Gender", demographics.getGender());
-                json.put("Religion", demographics.getReligion());
-                json.put("Political Affiliation", demographics.getPoliticalAffiliation());
-
-                String filename = pickItApp.getUsername() + "_demographics.json";
-                File tempFile = new File(Environment.getExternalStorageDirectory(), filename);
-                boolean successful = tempFile.createNewFile();
-
-                if(successful){
-                    ServerFileManager sm = new ServerFileManager(tempFile);
-                    sm.uploadDemographics();
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
         }
     }
 }
