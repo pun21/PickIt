@@ -2,6 +2,8 @@ package com.spun.pickit.fileIO;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
+import android.widget.Toast;
 
 import com.spun.pickit.PickItApp;
 import com.spun.pickit.model.Demographics;
@@ -11,7 +13,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,9 +23,10 @@ import java.util.ArrayList;
 
 public class LocalFileManager {
     final String CREDENTIALS_FILE_NAME = "credentials.txt";
-    String DEMOGRAPHICS_FILE_NAME;
 
     private Activity activity;
+    String demographicsFileName;
+    String demographicsFilePath;
 
     //region Constructors
     public LocalFileManager(Activity activity){
@@ -37,17 +42,16 @@ public class LocalFileManager {
      */
 
     //region ...Demographics
-    public File getDemographicsFilePath(){
-        File file = activity.getFileStreamPath(DEMOGRAPHICS_FILE_NAME).getAbsoluteFile();
-        return file;
+    public String getDemographicsFilePath(){
+        return demographicsFilePath;
     }
 
     public boolean readSavedDemographics(){
         try {
-            InputStream inputStream = activity.openFileInput(DEMOGRAPHICS_FILE_NAME);
+            FileInputStream demographicsInputStream = activity.openFileInput(demographicsFileName);
 
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            if ( demographicsInputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(demographicsInputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String receiveString = "";
                 StringBuilder stringBuilder = new StringBuilder();
@@ -56,7 +60,7 @@ public class LocalFileManager {
                     stringBuilder.append(receiveString);
                 }
 
-                inputStream.close();
+                demographicsInputStream.close();
 
                 String fromFile = stringBuilder.toString();
 
@@ -85,7 +89,7 @@ public class LocalFileManager {
 
         String[] files = activity.fileList();
         for (String file : files) {
-            if (file.equals(DEMOGRAPHICS_FILE_NAME)) {
+            if (file.equals(demographicsFileName)) {
                 fileExists = true;
                 break;
             }
@@ -97,8 +101,8 @@ public class LocalFileManager {
     public void deleteDemographics(){
         String[] files = activity.fileList();
         for (String file : files) {
-            if (file.equals(DEMOGRAPHICS_FILE_NAME)) {
-                activity.deleteFile(DEMOGRAPHICS_FILE_NAME);
+            if (file.equals(demographicsFileName)) {
+                activity.deleteFile(demographicsFileName);
             }
         }
     }
@@ -118,22 +122,46 @@ public class LocalFileManager {
 
         if(temp.length() != 0){
             final JSONObject demographics = temp;
-            DEMOGRAPHICS_FILE_NAME = ((PickItApp)activity.getApplication()).getUsername()+"_demographics.json";
-            FileOutputStream os = null;
+            demographicsFileName = ((PickItApp)activity.getApplication()).getUsername()+"_demographics.json";
 
             try{
-                os = activity.openFileOutput(DEMOGRAPHICS_FILE_NAME, Context.MODE_WORLD_READABLE);
-                os.write(demographics.toString().getBytes());
+                File file = new File(Environment.getExternalStorageDirectory(), "Demographics");
+
+                if(!file.exists())
+                {
+                    file.mkdirs();
+                }
+
+                File gpxFile = new File(file, demographicsFileName);
+
+                if(gpxFile.exists()){
+                    gpxFile.delete();
+                }
+
+                gpxFile.createNewFile();
+
+                demographicsFilePath = gpxFile.getAbsolutePath();
+
+                FileWriter writer = new FileWriter(gpxFile);
+                writer.append(demographics.toString());
+                writer.flush();
+                writer.close();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity.getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }catch(Exception e){
                 e.printStackTrace();
-            }finally{
-                if(os != null)
-                    try {
-                        os.flush();
-                        os.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity.getApplicationContext(), "Failed to save", Toast.LENGTH_SHORT).show();
                     }
+                });
             }
         }
     }

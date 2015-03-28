@@ -21,6 +21,7 @@ import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -230,9 +231,9 @@ public class AccountAdminActivity extends Activity {
 
         saveDemographicsLocally(demo);
 
-        File demographicsFile = localFileManager.getDemographicsFilePath();
+        String demoFilePath = localFileManager.getDemographicsFilePath();
 
-        ServerFileManager sm = new ServerFileManager(demographicsFile);
+        ServerFileManager sm = new ServerFileManager(this, demoFilePath, pickItApp.getUsername()+"_demographics.json");
         sm.uploadDemographics();
     }
     private void saveDemographicsLocally(Demographics demographics){

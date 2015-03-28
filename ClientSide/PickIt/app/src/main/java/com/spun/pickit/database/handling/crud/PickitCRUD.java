@@ -22,7 +22,7 @@ public class PickItCRUD extends CRUD{
 
     protected String createExtension(){
         try {
-            throw new Exception("Invalid Operation: Can not update a PickIt");
+            throw new Exception("Invalid Operation: Not Implemented");
         }catch(Exception e){}
 
         return null;

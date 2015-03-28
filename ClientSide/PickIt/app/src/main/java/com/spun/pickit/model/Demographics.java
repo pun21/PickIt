@@ -1,8 +1,5 @@
 package com.spun.pickit.model;
 
-/**
- * Created by jacob_000 on 3/13/2015.
- */
 public class Demographics {
     private String birthday;
     private String gender;
