@@ -7,6 +7,7 @@ public class PickIt {
     //region Class Variables
     private ArrayList<Choice> choices;
     private int userID;
+    private String username;
     private String category;
     private String subjectHeader;
     private String timestamp;
@@ -25,7 +26,16 @@ public class PickIt {
         this.subjectHeader = subjectHeader;
         this.endTime = endTime;
     }
-    //endregion
+    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String endTime, String username){
+        this.choices = choices;
+        this.userID = userID;
+        this.category = category;
+        this.subjectHeader = subjectHeader;
+        this.endTime = endTime;
+        this.username = username;
+    }
+
+    //endregion8
 
     //region Accessor Methods
     public ArrayList<Choice> getChoices(){
@@ -46,6 +56,7 @@ public class PickIt {
     public String getEndTime(){
         return endTime;
     }
+    public String getUsername() { return username; }
     public void setChoices(ArrayList<Choice> choices){
         this.choices = choices;
     }
@@ -64,7 +75,7 @@ public class PickIt {
     public void setEndTime(String endTime){
         this.endTime = endTime;
     }
-    //endregion
+    public void setUsername(String username) {this.username = username; }    //endregion
 
     public void addChoice(Choice choice){
         choices.add(choice);

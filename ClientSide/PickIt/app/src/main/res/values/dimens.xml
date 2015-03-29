@@ -5,5 +5,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="heading">17dp</dimen>
+    <dimen name="username">15dip</dimen>
+    <dimen name="category">13dip</dimen>
+    <dimen name="voting_time">12dip</dimen>
 
 </resources>

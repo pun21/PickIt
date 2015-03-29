@@ -1,18 +1,32 @@
 package com.spun.pickit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.spun.pickit.model.Demographics;
+import com.spun.pickit.model.PickIt;
+import com.spun.pickit.model.User;
+
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
     //region Class Variables
     PickItApp pickItApp;
+    Demographics demo;
     //endregion
 
+    ArrayList<PickIt> pickItList = new ArrayList<PickIt>();
     //region Life-cycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +36,80 @@ public class MainActivity extends Activity {
         pickItApp = (PickItApp)getApplication();
 
         setUsername();
+        
+        populatePickItList(/*size*/);
+        populateListView();
+
     }
     //endregion
 
+    private void populatePickItList(int size) {
+        //size = get number of pickIts in database
+
+        //for i = 0 to number of pickIts in the database
+        for (int i = 0;i < size;i++) {
+            pickItList.add(/*username, nthPickIt*/);
+        }
+    }
+
+    private void populateListView() {
+        CustomListAdapter adapter = new CustomListAdapter();
+        ListView list = (ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
+    }
+
+    private class CustomListAdapter extends ArrayAdapter<PickIt> {
+
+        private TextView vHeading, vUsername, vCategory, vVotingTime;
+        private ImageView image_tl, image_tr, image_bl, image_br;
+
+        public CustomListAdapter() {
+            super(MainActivity.this, R.layout.pickit_row, pickItList);
+        }
+
+        @Override
+        public View getView(int position,View view,ViewGroup parent) {
+            super.getView(position, view, parent);
+
+            // Make sure we have a view to work with (may have been given null)
+            View itemView = view;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(R.layout.pickit_row,
+                        parent, false);
+            }
+
+            PickIt item = pickItList.get(position);
+            String votingTimeLeft = "default";
+            // Fill the view
+
+            vHeading = (TextView) itemView.findViewById(R.id.heading);
+            vHeading.setText(item.getSubjectHeader());
+
+            vUsername = (TextView) itemView.findViewById(R.id.username);
+            vUsername.setText(item.getUsername());
+
+            vCategory = (TextView) itemView.findViewById(R.id.category);
+            vCategory.setText(item.getCategory());
+
+            vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
+            /*do something with item.getEndTime() and item.getTimeStamp() to get the time remaining to vote*/
+            vVotingTime.setText(votingTimeLeft);
+
+            image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
+            image_tl.setImageBitmap(item.getChoices().get(0).getBitmap());
+
+            image_tr = (ImageView) itemView.findViewById(R.id.image_tr);
+            image_tr.setImageBitmap(item.getChoices().get(1).getBitmap());
+
+            image_bl = (ImageView) itemView.findViewById(R.id.image_bl);
+            image_bl.setImageBitmap(item.getChoices().get(2).getBitmap());
+
+            image_br = (ImageView) itemView.findViewById(R.id.image_br);
+            image_br.setImageBitmap(item.getChoices().get(3).getBitmap());
+
+            return itemView;
+        }
+    }
     //region UI Handlers
     public void onClickUpload(View v) {
         Intent intent = new Intent(this, UploadActivity.class);
