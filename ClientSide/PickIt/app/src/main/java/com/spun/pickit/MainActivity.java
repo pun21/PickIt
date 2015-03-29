@@ -1,10 +1,8 @@
 package com.spun.pickit;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,7 +14,6 @@ import android.widget.ToggleButton;
 
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.PickIt;
-import com.spun.pickit.model.User;
 
 import java.util.ArrayList;
 
@@ -25,6 +22,13 @@ public class MainActivity extends Activity {
     PickItApp pickItApp;
     Demographics demo;
     //endregion
+    private static final int MOST_RECENT = 10;
+    private static final int LEAST_RECENT = 11;
+    private static final int MOST_TRENDING = 20;
+    private static final int LEAST_TRENDING = 21;
+    private static final int LEAST_TIME_REMAINING = 30;
+    private static final int MOST_TIME_REMAINING = 31;
+    private int mSortingType = MOST_RECENT;
 
     ArrayList<PickIt> pickItList = new ArrayList<PickIt>();
     //region Life-cycle methods
@@ -37,8 +41,8 @@ public class MainActivity extends Activity {
 
         setUsername();
         
-        populatePickItList(/*size*/);
-        populateListView();
+      //  populatePickItList(/*size*/);
+       // populateListView();
 
     }
     //endregion
@@ -48,7 +52,7 @@ public class MainActivity extends Activity {
 
         //for i = 0 to number of pickIts in the database
         for (int i = 0;i < size;i++) {
-            pickItList.add(/*username, nthPickIt*/);
+           // pickItList.add(/*nthPickIt*/);
         }
     }
 

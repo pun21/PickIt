@@ -57,7 +57,6 @@ public class AppLoginActivity extends Activity {
 
         readCredentials();
         updateScreenText();
-        setEventListeners();
     }
 
 
@@ -158,37 +157,6 @@ public class AppLoginActivity extends Activity {
             CheckBox rememberMe = (CheckBox)findViewById(R.id.box_remember_me);
             rememberMe.setChecked(true);
         }
-    }
-    private void setEventListeners(){
-        mUsernameRepresentation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                username = mUsernameRepresentation.getText().toString();
-            }
-        });
-
-        mPasswordRepresentation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                password = mPasswordRepresentation.getText().toString();
-            }
-        });
     }
     private void updateScreenText(){
         mUsernameRepresentation.setText(username);

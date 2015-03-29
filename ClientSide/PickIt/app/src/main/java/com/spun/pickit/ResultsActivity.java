@@ -18,10 +18,10 @@ public class ResultsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        imageTopLeft = (ImageView) findViewById(R.id.imageView);
-        imageTopRight = (ImageView) findViewById(R.id.imageView2);
-        imageBottomLeft = (ImageView) findViewById(R.id.imageView3);
-        imageBottomLeft = (ImageView) findViewById(R.id.imageView4);
+//        imageTopLeft = (ImageView) findViewById(R.id.r);
+//        imageTopRight = (ImageView) findViewById(R.id.imageView2);
+//        imageBottomLeft = (ImageView) findViewById(R.id.imageView3);
+//        imageBottomLeft = (ImageView) findViewById(R.id.imageView4);
 
         //TODO retrieve images from database and set imageViews
 

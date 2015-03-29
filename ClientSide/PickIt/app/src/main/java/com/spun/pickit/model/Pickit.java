@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class PickIt {
     //region Class Variables
+    private int pickItID;
     private ArrayList<Choice> choices;
     private int userID;
     private String username;
@@ -12,6 +13,7 @@ public class PickIt {
     private String subjectHeader;
     private String timestamp;
     private String endTime;
+    private int secondsOfLife;
     //endregion
 
     //region Constructors
@@ -19,12 +21,12 @@ public class PickIt {
         choices = new ArrayList<>();
     }
 
-    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String endTime){
+    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, int secondsOfLife){
         this.choices = choices;
         this.userID = userID;
         this.category = category;
         this.subjectHeader = subjectHeader;
-        this.endTime = endTime;
+        this.secondsOfLife = secondsOfLife;
     }
     public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String endTime, String username){
         this.choices = choices;
@@ -38,6 +40,12 @@ public class PickIt {
     //endregion8
 
     //region Accessor Methods
+    public void setPickItID(int pickItID){
+        this.pickItID = pickItID;
+    }
+    public int getPickItID(){
+        return pickItID;
+    }
     public ArrayList<Choice> getChoices(){
         return choices;
     }
@@ -57,6 +65,9 @@ public class PickIt {
         return endTime;
     }
     public String getUsername() { return username; }
+    public int getSecondsOfLife() {
+        return secondsOfLife;
+    }
     public void setChoices(ArrayList<Choice> choices){
         this.choices = choices;
     }

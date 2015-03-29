@@ -5,23 +5,16 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 //Create response array
 $response = array();
 
-if (isset($_GET["Username"]) && isset($_GET["Password"]) && isset($_GET["Birthday"])
-	&& isset($_GET["Gender"]) && isset($_GET["Ethnicity"]) && isset($_GET["Religion"])
-	&& isset($_GET["PoliticalAffiliation"])){
+if (isset($_GET["Username"]) && isset($_GET["Password"])){
 			
 	$username = $_GET["Username"];
 	$password = $_GET["Password"];
-	$birthday = date("Y-m-d H:i:s", strtotime($_GET["Birthday"]." 00:00:00"));
-	$gender = $_GET["Gender"];
-	$ethnicity = $_GET["Ethnicity"];
-	$religion = $_GET["Religion"];
-	$political = $_GET["PoliticalAffiliation"];	
+	$demographics = $username."_demographics.json";
 		
 	require_once __DIR__ . '/db_connect.php';
 	$db = new DB_CONNECT();
 	
-	$result = mysql_query("INSERT INTO USERS (Username, Password, Birthday, Gender, Ethnicity, Religion, PoliticalAffiliation) 
-							VALUES('$username','$password','$birthday','$gender','$ethnicity','$religion','$political')");
+	$result = mysql_query("INSERT INTO USERS (Username, Password, Demographics) VALUES('$username','$password','$demographics')");
 	
 	if (!$result) {
     echo 'Could not run query: ' . mysql_error();
@@ -39,7 +32,7 @@ if (isset($_GET["Username"]) && isset($_GET["Password"]) && isset($_GET["Birthda
 }
 
 function getUserByUsername($username){	
-	$query_result = mysql_query("SELECT UserID,Username,Gender,Religion,PoliticalAffiliation,Birthday,Ethnicity FROM Users WHERE Username='$username'");
+	$query_result = mysql_query("SELECT UserID FROM Users WHERE Username='$username'");
 	$query_response = array();
 	
 	if($query_result){
