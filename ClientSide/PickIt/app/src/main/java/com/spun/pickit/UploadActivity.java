@@ -1,5 +1,6 @@
 package com.spun.pickit;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
+import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Choice;
 import com.spun.pickit.model.PickIt;
 
@@ -143,20 +145,16 @@ public class UploadActivity extends FragmentActivity {
     }
 
     public void onClickUpload(View v) {
-        boolean validInputs = validatePickItInputData();
+        boolean validInputs = true; //validatePickItInputData();
 
         if(validInputs){
-            final String fileTimeStamp = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
-            final ArrayList<Choice> choices = getChoicesFromView(fileTimeStamp);
+            final ArrayList<Choice> choices = getChoicesFromView();
             final String category = getCategoryFromView();
             final String subjectHeader = getSubjectHeaderFromView();
             final String endTime = getEndTimeFromView();
             final UploadActivity activity = this;
 
-            StringBuilder timeStamp = new StringBuilder(fileTimeStamp);
-            timeStamp = timeStamp.replace(10, 11, " ");
-
-            final PickIt pickIt = new PickIt(choices, pickItApp.getUserID(), category, subjectHeader, timeStamp.toString(), endTime);
+            final PickIt pickIt = new PickIt(choices, pickItApp.getUserID(), category, subjectHeader, endTime);
 
             new Thread(new Runnable() {
                 @Override
@@ -308,14 +306,14 @@ public class UploadActivity extends FragmentActivity {
         EditText dateEdit = (EditText)findViewById(R.id.editDate);
         EditText timeEdit = (EditText)findViewById(R.id.editTime);
 
-        String date = dateEdit.getText() == null ? "" : dateEdit.getText().toString();
-
-        if(date == "")
+//        String date = dateEdit.getText().toString();
+//
+//        if(date == "")
             return "2100-01-01 00:00:00";
-
-        String endTime = date + " " + timeEdit.getText()+":00";
-
-        return endTime;
+//
+//        String endTime = date + " " + timeEdit.getText()+":00";
+//
+//        return endTime;
     }
 
     private String getCategoryFromView(){
@@ -326,12 +324,12 @@ public class UploadActivity extends FragmentActivity {
         return mSubjectHeading.getText().toString();
     }
 
-    private ArrayList<Choice> getChoicesFromView(String timeStamp){
+    private ArrayList<Choice> getChoicesFromView(){
         ArrayList<Choice> choices = new ArrayList<>();
 
         if(imageTopLeft.getDrawable() != null){
             Bitmap bitmap = ((BitmapDrawable)imageTopLeft.getDrawable()).getBitmap();
-            String filename = IMAGE_PREFIX + pickItApp.getUsername() + "_" + timeStamp + "_" + "1.png";
+            String filename = "1.png";
 
             Choice choice = new Choice(bitmap, filename);
             choices.add(choice);
@@ -339,7 +337,7 @@ public class UploadActivity extends FragmentActivity {
 
         if(imageTopRight.getDrawable() != null){
             Bitmap bitmap = ((BitmapDrawable)imageTopRight.getDrawable()).getBitmap();
-            String filename = IMAGE_PREFIX + pickItApp.getUsername() + "_" + timeStamp + "_" + "2.png";
+            String filename = "2.png";
 
             Choice choice = new Choice(bitmap, filename);
             choices.add(choice);
@@ -347,7 +345,7 @@ public class UploadActivity extends FragmentActivity {
 
         if(imageBottomLeft.getDrawable() != null){
             Bitmap bitmap = ((BitmapDrawable)imageBottomLeft.getDrawable()).getBitmap();
-            String filename = IMAGE_PREFIX + pickItApp.getUsername() + "_" + timeStamp + "_" + "3.png";
+            String filename = "3.png";
 
             Choice choice = new Choice(bitmap, filename);
             choices.add(choice);
@@ -355,7 +353,7 @@ public class UploadActivity extends FragmentActivity {
 
         if(imageBottomRight.getDrawable() != null){
             Bitmap bitmap = ((BitmapDrawable)imageBottomRight.getDrawable()).getBitmap();
-            String filename = IMAGE_PREFIX + pickItApp.getUsername() + "_" + timeStamp + "_" + "4.png";
+            String filename = "4.png";
 
             Choice choice = new Choice(bitmap, filename);
             choices.add(choice);
@@ -602,14 +600,18 @@ public class UploadActivity extends FragmentActivity {
     }
 
     private class SaveChoice extends Thread{
-        Choice choice;
-        File file;
-        int pickItID;
+        final Activity activity;
+        final Choice choice;
+        final File file;
+        final String filename;
+        final int pickItID;
 
-        public SaveChoice(Choice choice, File file, int pickItID){
+        public SaveChoice(Activity activity, Choice choice, File file, int pickItID, String filename){
+            this.activity = activity;
             this.choice = choice;
             this.file = file;
             this.pickItID = pickItID;
+            this.filename = filename;
         }
 
         @Override
@@ -624,8 +626,8 @@ public class UploadActivity extends FragmentActivity {
         }
 
         private void saveImage(){
-            //ServerFileManager sm = new ServerFileManager(file.getPath());
-            //sm.uploadFile();
+            ServerFileManager sm = new ServerFileManager(activity, file.getPath(), String.valueOf(pickItID)+"_"+filename);
+            sm.uploadPicture();
         }
 
     }
@@ -643,7 +645,7 @@ public class UploadActivity extends FragmentActivity {
         public void run(){
             //Create PickItID for results reference
             DatabaseAccess access = new DatabaseAccess();
-            int pickItID = access.createPickIt(pickIt.getUserID(), pickIt.getCategory(), pickIt.getSubjectHeader(), pickIt.getTimestamp(), pickIt.getEndtime());
+            int pickItID = access.createPickIt(pickIt.getUserID(), 60*60*24);
             String error = pickItID != 0 ? "" : "Error saving PickIt to database!";
 
             if(error != ""){
@@ -653,7 +655,7 @@ public class UploadActivity extends FragmentActivity {
 
             ArrayList<Choice> choices = pickIt.getChoices();
             for(int a = 0; a < choices.size(); a++){
-                File savedFile = persistImage(choices.get(a).getBitmap(), choices.get(a).getFilename());
+                File savedFile = writeTempFile(choices.get(a).getBitmap(), choices.get(a).getFilename());
 
                 if(savedFile == null){
                     error = "Could not save image locally";
@@ -661,8 +663,10 @@ public class UploadActivity extends FragmentActivity {
                     return;
                 }
 
-                new SaveChoice(choices.get(a), savedFile, pickItID).start();
+                new SaveChoice(activity, choices.get(a), savedFile, pickItID, choices.get(a).getFilename()).start();
             }
+
+            updateScreen("", pickItID);
         }
 
         private void updateScreen(final String error, final int pickItID){
@@ -674,7 +678,7 @@ public class UploadActivity extends FragmentActivity {
             });
         }
 
-        private File persistImage(Bitmap bitmap, String name) {
+        private File writeTempFile(Bitmap bitmap, String name) {
             File filesDir = activity.getApplicationContext().getFilesDir();
             File imageFile = new File(filesDir, name);
 
@@ -695,6 +699,7 @@ public class UploadActivity extends FragmentActivity {
         private void UpdateScreen(final UploadActivity activity, final String error, final int nextResultID){
             if(error.length() == 0 && nextResultID != 0){
                 pickItApp.resultsID = nextResultID;
+                activity.enableFrontEnd();
                 SendUserToResultsActivity(activity);
             }
             else{

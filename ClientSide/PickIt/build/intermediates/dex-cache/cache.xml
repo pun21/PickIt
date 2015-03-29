@@ -30,18 +30,18 @@
         <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpmime-4.4-2dff0994ed6249c25b3871b091c92428e605aec3.jar" />
     </item>
     <item
-        jar="C:\Users\Ben\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-e0f9dada2797889927d822bae2ff7aef1ad45a5a.jar" />
-    </item>
-    <item
         jar="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\httpclient-win-4.4.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="d15bf939c81d6f8f730fc6baf15838e205482c94">
         <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\httpclient-win-4.4-9d5c9d1842209333844a1432fb029e577ca6cb9f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ben\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-e0f9dada2797889927d822bae2ff7aef1ad45a5a.jar" />
     </item>
     <item
         jar="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\3.21.1\classes.jar"

@@ -6,15 +6,15 @@ public class ChoiceCRUD extends CRUD{
     private static final String CREATE_CHOICE = "create_choice.php";
 
     private int pickItID;
-    private String filepath;
+    private String slot;
 
     public ChoiceCRUD(int pickItID){
         this.pickItID = pickItID;
     }
 
-    public ChoiceCRUD(int pickItID,String filepath){
+    public ChoiceCRUD(int pickItID, String slot){
         this.pickItID = pickItID;
-        this.filepath = filepath;
+        this.slot = slot;
     }
 
     //TODO
@@ -37,7 +37,7 @@ public class ChoiceCRUD extends CRUD{
         return null;
     }
     public String createExtension(){
-        String extension = CREATE_CHOICE + "?PickItID=" + this.pickItID + "&Filepath=" + this.filepath;
+        String extension = CREATE_CHOICE + "?PickItID=" + this.pickItID + "&Slot=" + this.slot;
         return extension;
     }
 }

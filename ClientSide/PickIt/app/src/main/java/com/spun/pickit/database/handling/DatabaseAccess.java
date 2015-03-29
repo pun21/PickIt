@@ -54,8 +54,8 @@ public class DatabaseAccess {
         return userID;
     }
 
-    public int createPickIt(int userID, String category, String subject, String timestamp, String endTime){
-        PickItCRUD pickIt = new PickItCRUD(userID, category, subject, timestamp, endTime);
+    public int createPickIt(int userID, int endTime){
+        PickItCRUD pickIt = new PickItCRUD(userID, endTime);
         DataAccess access = new DataAccess(pickIt.create());
 
         JSONObject json = access.getJson();
@@ -65,7 +65,7 @@ public class DatabaseAccess {
             if(json.getInt("Successful") == 1){
                 json = json.getJSONObject("Result");
                 json = new JSONObject((String)json.get("message"));
-                pickItID = Integer.parseInt((String)json.get("UserID"));
+                pickItID = Integer.parseInt((String)json.get("PickItID"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -103,8 +103,8 @@ public class DatabaseAccess {
         return JSONRequestPass(json);
     }
 
-    public boolean createChoice(int PickItID, String filePath){
-        ChoiceCRUD choice = new ChoiceCRUD(PickItID,filePath);
+    public boolean createChoice(int PickItID, String slot){
+        ChoiceCRUD choice = new ChoiceCRUD(PickItID,slot);
         DataAccess access = new DataAccess(choice.create());
 
         JSONObject json = access.getJson();

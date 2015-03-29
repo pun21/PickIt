@@ -15,8 +15,8 @@ public class Posting {
     final FileUpload fileUploadPreparer;
     final Activity activity;
 
-    public Posting(Activity activity, String fileToUpload, String url, String fileName){
-        fileUploadPreparer = new FileUpload(fileToUpload,url, fileName);
+    public Posting(Activity activity, String fileToUpload, String url, String fileName, boolean deleteAfterwards){
+        fileUploadPreparer = new FileUpload(fileToUpload,url, fileName, deleteAfterwards);
         this.activity = activity;
     }
 
@@ -33,11 +33,13 @@ public class Posting {
         final private String fileString;
         final private String urlString;
         final private String fileName;
+        final private boolean deleteAfterwards;
 
-        public FileUpload(String fileString, String url, String fileName) {
+        public FileUpload(String fileString, String url, String fileName, boolean deleteAfterwards) {
             this.fileString = fileString;
             this.urlString = url;
             this.fileName = fileName;
+            this.deleteAfterwards = deleteAfterwards;
         }
 
         public int uploadFile() {
@@ -63,8 +65,6 @@ public class Posting {
 
                 return 0;
             }
-            else
-            {
                 try {
 
                     // open a URL connection to the Servlet
@@ -73,9 +73,9 @@ public class Posting {
 
                     // Open a HTTP  connection to  the URL
                     conn = (HttpURLConnection) url.openConnection();
-                    conn.setDoInput(true); // Allow Inputs
-                    conn.setDoOutput(true); // Allow Outputs
-                    conn.setUseCaches(false); // Don't use a Cached Copy
+                    conn.setDoInput(true);      // Allow Inputs
+                    conn.setDoOutput(true);     // Allow Outputs
+                    conn.setUseCaches(false);   // Don't use a Cached Copy
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Connection", "Keep-Alive");
                     conn.setRequestProperty("ENCTYPE", "multipart/form-data");
@@ -108,7 +108,7 @@ public class Posting {
 
                     }
 
-                    // send multipart form data necesssary after file data...
+                    // send multipart form data necessary after file data...
                     dos.writeBytes(lineEnd);
                     dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
@@ -131,6 +131,10 @@ public class Posting {
                     dos.flush();
                     dos.close();
 
+                    if(deleteAfterwards){
+                        file.delete();
+                    }
+
                 } catch (MalformedURLException ex) {
                     ex.printStackTrace();
 
@@ -144,7 +148,6 @@ public class Posting {
                 }
 
                 return serverResponseCode;
-            }
         }
     }
 }

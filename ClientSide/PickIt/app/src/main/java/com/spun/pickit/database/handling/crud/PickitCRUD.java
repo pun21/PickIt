@@ -5,27 +5,17 @@ public class PickItCRUD extends CRUD{
     private static final String READ_PICKIT = "read_pickit.php";
     private static final String DELETE_PICKIT = "delete_pickit.pnp";
 
-    private int userId, pickItID;
-    private String category, subject, timestamp, endTime;
+    private int userID, pickItID, endTime;
+    private String category, subject;
 
-    public PickItCRUD(int pickItId){
-        this.pickItID = pickItId;
-    }
-
-    public PickItCRUD(int userID, String category, String subject, String timestamp, String endTime){
-        this.userId = userID;
-        this.category = category;
-        this.subject = subject;
-        this.timestamp = timestamp;
+    public PickItCRUD(int userID, int endTime){
+        this.userID = userID;
         this.endTime = endTime;
     }
 
     protected String createExtension(){
-        try {
-            throw new Exception("Invalid Operation: Not Implemented");
-        }catch(Exception e){}
-
-        return null;
+        String extension = CREATE_PICKIT + "?UserID=" + userID + "&EndTime=" + endTime;
+        return extension;
     }
 
     protected String readExtension(){

@@ -10,7 +10,7 @@ public class PickIt {
     private String category;
     private String subjectHeader;
     private String timestamp;
-    private String endtime;
+    private String endTime;
     //endregion
 
     //region Constructors
@@ -18,13 +18,12 @@ public class PickIt {
         choices = new ArrayList<>();
     }
 
-    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String timestamp, String endtime){
+    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String endTime){
         this.choices = choices;
         this.userID = userID;
         this.category = category;
         this.subjectHeader = subjectHeader;
-        this.timestamp = timestamp;
-        this.endtime = endtime;
+        this.endTime = endTime;
     }
     //endregion
 
@@ -44,8 +43,8 @@ public class PickIt {
     public String getTimestamp(){
         return timestamp;
     }
-    public String getEndtime(){
-        return endtime;
+    public String getEndTime(){
+        return endTime;
     }
     public void setChoices(ArrayList<Choice> choices){
         this.choices = choices;
@@ -62,8 +61,8 @@ public class PickIt {
     public void setTimestamp(String timestamp){
         this.timestamp = timestamp;
     }
-    public void setEndtime(String endtime){
-        this.endtime = endtime;
+    public void setEndTime(String endTime){
+        this.endTime = endTime;
     }
     //endregion
 
