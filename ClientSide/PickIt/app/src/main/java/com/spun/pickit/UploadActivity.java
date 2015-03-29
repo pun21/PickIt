@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spun.pickit.database.handling.DatabaseAccess;
+import com.spun.pickit.fileIO.LocalFileManager;
 import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Choice;
 import com.spun.pickit.model.PickIt;
@@ -39,7 +41,6 @@ import java.util.Date;
 
 public class UploadActivity extends FragmentActivity {
     //region Class Variables
-    private static final String IMAGE_PREFIX = "IMG_";
     private static final int CAPTURE_IMAGE_REQUEST_CODE = 100;
     private static final int LOAD_IMAGE_REQUEST_CODE = 200;
     public static final int MEDIA_TYPE_IMAGE = 1;
@@ -51,6 +52,9 @@ public class UploadActivity extends FragmentActivity {
     private EditText mEdit, mTimeEdit, mSubjectHeading;
     private Spinner mCategory;
     private ProgressBar loading;
+    private LocalFileManager localFileManager;
+
+    ArrayAdapter<CharSequence> mCategoriesAdapter;
 
     private int selectedImageId;
     private Uri fileUri;
@@ -74,7 +78,10 @@ public class UploadActivity extends FragmentActivity {
         mSubjectHeading = (EditText) findViewById(R.id.upload_description);
         mCategory = (Spinner) findViewById(R.id.category_spinner);
 
+        localFileManager = new LocalFileManager(this);
+
         setUsername();
+        setSpinners();
     }
 
     @Override
@@ -145,16 +152,16 @@ public class UploadActivity extends FragmentActivity {
     }
 
     public void onClickUpload(View v) {
-        boolean validInputs = true; //validatePickItInputData();
+        boolean validInputs = validatePickItInputData();
 
-        if(validInputs){
+            if(validInputs){
             final ArrayList<Choice> choices = getChoicesFromView();
             final String category = getCategoryFromView();
             final String subjectHeader = getSubjectHeaderFromView();
             final String endTime = getEndTimeFromView();
             final UploadActivity activity = this;
 
-            final PickIt pickIt = new PickIt(choices, pickItApp.getUserID(), category, subjectHeader, endTime);
+            final PickIt pickIt = new PickIt(choices, pickItApp.getUserID(), category, subjectHeader, Integer.parseInt(endTime));
 
             new Thread(new Runnable() {
                 @Override
@@ -275,14 +282,6 @@ public class UploadActivity extends FragmentActivity {
             Toast.makeText(context, error, length).show();
             return false;
         }
-        if(getCategoryFromView() == ""){
-            Context context = getApplicationContext();
-            CharSequence error = "Please select a category";
-            int length = Toast.LENGTH_SHORT;
-
-            Toast.makeText(context, error, length).show();
-            return false;
-        }
 
         return true;
     }
@@ -303,13 +302,13 @@ public class UploadActivity extends FragmentActivity {
     }
 
     private String getEndTimeFromView(){
-        EditText dateEdit = (EditText)findViewById(R.id.editDate);
-        EditText timeEdit = (EditText)findViewById(R.id.editTime);
+//        EditText dateEdit = (EditText)findViewById(R.id.editDate);
+//        EditText timeEdit = (EditText)findViewById(R.id.editTime);
 
 //        String date = dateEdit.getText().toString();
 //
 //        if(date == "")
-            return "2100-01-01 00:00:00";
+            return String.valueOf(7*60*60*24);
 //
 //        String endTime = date + " " + timeEdit.getText()+":00";
 //
@@ -508,6 +507,7 @@ public class UploadActivity extends FragmentActivity {
         File mediaStorageDir = new File(context.getExternalFilesDir(
                 Environment.DIRECTORY_PICTURES), "MyCameraApp");
 
+
         /*// This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
@@ -524,6 +524,7 @@ public class UploadActivity extends FragmentActivity {
         }
 
         // Create a media file name
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
@@ -535,6 +536,7 @@ public class UploadActivity extends FragmentActivity {
         } else {
             return null;
         }
+
 
         return mediaFile;
     }
@@ -558,10 +560,17 @@ public class UploadActivity extends FragmentActivity {
         mTimeEdit = (EditText)findViewById(R.id.editTime);
         mTimeEdit.setText(hour + ":" + minute);
     }
+
+    public void setSpinners() {
+        //Gender options
+        mCategoriesAdapter = ArrayAdapter.createFromResource(this, R.array.categories_array, android.R.layout.simple_spinner_item);
+        mCategoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCategory.setAdapter(mCategoriesAdapter);
+    }
     //endregion
 
     /* Asynchronous Operations */
-    private class LoadBitmapTask extends Thread {
+    class LoadBitmapTask extends Thread {
         Uri uri;
         UploadActivity activity;
         int viewID;
@@ -583,6 +592,7 @@ public class UploadActivity extends FragmentActivity {
                 return;
             }
 
+            //Scaling
             int nh = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
             final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 512, nh, true);
 
@@ -599,7 +609,7 @@ public class UploadActivity extends FragmentActivity {
         }
     }
 
-    private class SaveChoice extends Thread{
+    class SaveChoice extends Thread{
         final Activity activity;
         final Choice choice;
         final File file;
@@ -632,7 +642,7 @@ public class UploadActivity extends FragmentActivity {
 
     }
 
-    private class SaveToServer extends Thread{
+    class SaveToServer extends Thread{
         final UploadActivity activity;
         final PickIt pickIt;
 
@@ -645,7 +655,7 @@ public class UploadActivity extends FragmentActivity {
         public void run(){
             //Create PickItID for results reference
             DatabaseAccess access = new DatabaseAccess();
-            int pickItID = access.createPickIt(pickIt.getUserID(), 60*60*24);
+            int pickItID = access.createPickIt(pickIt.getUserID(), pickIt.getSecondsOfLife());
             String error = pickItID != 0 ? "" : "Error saving PickIt to database!";
 
             if(error != ""){
@@ -653,9 +663,13 @@ public class UploadActivity extends FragmentActivity {
                 return;
             }
 
+            pickIt.setPickItID(pickItID);
+
+            sendPickItFile(pickIt);
+
             ArrayList<Choice> choices = pickIt.getChoices();
             for(int a = 0; a < choices.size(); a++){
-                File savedFile = writeTempFile(choices.get(a).getBitmap(), choices.get(a).getFilename());
+                File savedFile = writeTempImageFile(choices.get(a).getBitmap(), choices.get(a).getFilename());
 
                 if(savedFile == null){
                     error = "Could not save image locally";
@@ -678,7 +692,7 @@ public class UploadActivity extends FragmentActivity {
             });
         }
 
-        private File writeTempFile(Bitmap bitmap, String name) {
+        private File writeTempImageFile(Bitmap bitmap, String name) {
             File filesDir = activity.getApplicationContext().getFilesDir();
             File imageFile = new File(filesDir, name);
 
@@ -694,6 +708,19 @@ public class UploadActivity extends FragmentActivity {
             }
 
             return imageFile;
+        }
+
+        private void sendPickItFile(final PickIt pickIt){
+            savePickItLocally(pickIt);
+
+            String pickItFilePath = localFileManager.getPickItFilePath();
+
+            ServerFileManager sm = new ServerFileManager(activity, pickItFilePath, pickIt.getPickItID()+".json");
+            sm.uploadPickIt();
+        }
+
+        private void savePickItLocally(final PickIt pickIt){
+            localFileManager.savePickIt(pickIt.getCategory(), pickIt.getSubjectHeader(), pickIt.getPickItID());
         }
 
         private void UpdateScreen(final UploadActivity activity, final String error, final int nextResultID){

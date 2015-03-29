@@ -41,15 +41,17 @@
     <string-array name="gender_array">
         <item>Female</item>
         <item>Male</item>
+        <item>Other</item>
     </string-array>
     <string-array name="ethnicity_array">
+        <item>African</item>
         <item>African American</item>
         <item>Asian</item>
-        <item>Pacific Islander</item>
         <item>Caucasian</item>
         <item>Hispanic</item>
         <item>Latino</item>
         <item>Native American</item>
+        <item>Pacific Islander</item>
         <item>Other</item>
     </string-array>
     <string-array name="political_affiliation_array">
@@ -60,15 +62,21 @@
         <item>None</item>
     </string-array>
     <string-array name="religion_array">
-        <item>Agnostic</item>
-        <item>Atheist</item>
-        <item>Buddhist</item>
-        <item>Catholic</item>
-        <item>Christian</item>
-        <item>Hindu</item>
-        <item>Jewish</item>
-        <item>Muslim</item>
+        <item>Buddhism</item>
+        <item>Christianity</item>
+        <item>Hinduism</item>
+        <item>Islam</item>
+        <item>Judaism</item>
         <item>Other</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="categories_array">
+        <item>Entertainment</item>
+        <item>Fashion</item>
+        <item>People</item>
+        <item>Food</item>
+        <item>Sports</item>
+        <item>Technology</item>
     </string-array>
 
     <string name="title_activity_temp">temp</string>

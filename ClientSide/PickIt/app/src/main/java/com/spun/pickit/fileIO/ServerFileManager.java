@@ -11,6 +11,8 @@ public class ServerFileManager {
     final private String KEY_URL_PREFIX = "http://www.bcdev.me:8080/PickIt/";
     final private String KEY_PICTURE_UPLOAD = "upload_image.php";
     final private String KEY_PICTURE_DOWNLOAD = "download_image.php";
+    final private String KEY_PICKIT_UPLOAD = "upload_pickit.php";
+    final private String KEY_PICKIT_DOWNLOAD = "download_pickit.php";
     final private String KEY_DEMOGRAPHICS_UPLOAD = "upload_demographics.php";
     final private String KEY_DEMOGRAPHICS_DOWNLOAD = "download_demographics.php";
     final private Activity activity;
@@ -40,6 +42,17 @@ public class ServerFileManager {
         new AsyncFileUploaderThread(posting).start();
     }
     public File downloadDemographics(String username){
+        String url = KEY_URL_PREFIX + KEY_DEMOGRAPHICS_DOWNLOAD;
+
+        return null;
+    }
+    public void uploadPickIt(){
+        final String url = KEY_URL_PREFIX + KEY_PICKIT_UPLOAD;
+        final Posting posting = new Posting(activity, file, url, filename, false);
+
+        new AsyncFileUploaderThread(posting).start();
+    }
+    public File downloadPickIt(int username){
         String url = KEY_URL_PREFIX + KEY_DEMOGRAPHICS_DOWNLOAD;
 
         return null;

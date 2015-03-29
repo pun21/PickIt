@@ -121,8 +121,13 @@ public class DatabaseAccess {
 
                 int userID = Integer.parseInt((String)json.get("UserID"));
                 String username = (String) json.get("Username");
+                String birthday = (String) json.get("Birthday");
+                String ethnicity = (String) json.get("Ethnicity");
+                String gender = (String) json.get("Gender");
+                String religion = (String) json.get("Religion");
+                String political = (String) json.get("Political Affiliation");
 
-                user = new User(userID, username);
+                user = new User(userID, username, birthday, gender, ethnicity, religion, political);
             } else {
                 Log.v("readUser", "the json object is not accessed correctly,  try json.get(\"Result\").get([whatever])");
             }

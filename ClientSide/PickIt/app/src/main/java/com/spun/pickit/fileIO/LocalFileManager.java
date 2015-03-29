@@ -27,6 +27,8 @@ public class LocalFileManager {
     private Activity activity;
     String demographicsFileName;
     String demographicsFilePath;
+    String pickItFileName;
+    String pickItFilePath;
 
     //region Constructors
     public LocalFileManager(Activity activity){
@@ -41,70 +43,71 @@ public class LocalFileManager {
      *
      */
 
+    //region ...PickIts
+    public String getPickItFilePath(){
+        return pickItFilePath;
+    }
+
+    public void savePickIt(String category, String subjectHeader, int pickItID){
+        JSONObject temp = new JSONObject();
+
+        try {
+            temp.put("Category", category);
+            temp.put("Subject Header", subjectHeader);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(temp.length() != 0){
+            final JSONObject pickIt = temp;
+            pickItFileName = String.valueOf(pickItID)+".json";
+
+            try{
+                File file = new File(Environment.getExternalStorageDirectory(), "PickIts");
+
+                if(!file.exists())
+                {
+                    file.mkdirs();
+                }
+
+                File gpxFile = new File(file, pickItFileName);
+
+                if(gpxFile.exists()){
+                    gpxFile.delete();
+                }
+
+                gpxFile.createNewFile();
+
+                pickItFilePath = gpxFile.getAbsolutePath();
+
+                FileWriter writer = new FileWriter(gpxFile);
+                writer.append(pickIt.toString());
+                writer.flush();
+                writer.close();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity.getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }catch(Exception e){
+                e.printStackTrace();
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(activity.getApplicationContext(), "Failed to save", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    }
+    //endregion
+
     //region ...Demographics
     public String getDemographicsFilePath(){
         return demographicsFilePath;
-    }
-
-    public boolean readSavedDemographics(){
-        try {
-            FileInputStream demographicsInputStream = activity.openFileInput(demographicsFileName);
-
-            if ( demographicsInputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(demographicsInputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                demographicsInputStream.close();
-
-                String fromFile = stringBuilder.toString();
-
-                JSONObject json = new JSONObject(fromFile);
-
-                String birthday = json.getString("Birthday");
-                String gender = json.getString("Gender");
-                String ethnicity = json.getString("Ethnicity");
-                String religion = json.getString("Religion");
-                String politicalAffiliation = json.getString("Political Affiliation");
-
-                Demographics demo = new Demographics(birthday, gender, ethnicity, religion, politicalAffiliation);
-                ((PickItApp)activity.getApplication()).setDemographics(demo);
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-
-    public boolean demographicsFileExists(){
-        boolean fileExists = false;
-
-        String[] files = activity.fileList();
-        for (String file : files) {
-            if (file.equals(demographicsFileName)) {
-                fileExists = true;
-                break;
-            }
-        }
-
-        return fileExists;
-    }
-
-    public void deleteDemographics(){
-        String[] files = activity.fileList();
-        for (String file : files) {
-            if (file.equals(demographicsFileName)) {
-                activity.deleteFile(demographicsFileName);
-            }
-        }
     }
 
     public void saveDemographics(String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
