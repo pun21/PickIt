@@ -21,6 +21,15 @@ public class PickIt {
         choices = new ArrayList<>();
     }
 
+    public PickIt(int pickItID, String username, String category, String subjectHeader, int secondsOfLife, ArrayList<Choice> choices){
+        this.username = username;
+        this.choices = choices;
+        this.pickItID = pickItID;
+        this.category = category;
+        this.subjectHeader = subjectHeader;
+        this.secondsOfLife = secondsOfLife;
+    }
+
     public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, int secondsOfLife){
         this.choices = choices;
         this.userID = userID;

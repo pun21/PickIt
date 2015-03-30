@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.PickIt;
 
@@ -19,18 +20,18 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     //region Class Variables
+    private static final int MAX_NUMBER_PICKIT_ROWS = 10;
+
+    private static final String TRENDING = "0";
+    private static final String MOST_RECENT = "1";
+    private static final String LEAST_TIME_REMAINING = "2";
+    private String mSortingType;
+
+    ArrayList<PickIt> pickItList;
     PickItApp pickItApp;
     Demographics demo;
     //endregion
-    private static final int MOST_RECENT = 10;
-    private static final int LEAST_RECENT = 11;
-    private static final int MOST_TRENDING = 20;
-    private static final int LEAST_TRENDING = 21;
-    private static final int LEAST_TIME_REMAINING = 30;
-    private static final int MOST_TIME_REMAINING = 31;
-    private int mSortingType = MOST_RECENT;
 
-    ArrayList<PickIt> pickItList = new ArrayList<PickIt>();
     //region Life-cycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,19 +41,34 @@ public class MainActivity extends Activity {
         pickItApp = (PickItApp)getApplication();
 
         setUsername();
-        
-      //  populatePickItList(/*size*/);
-       // populateListView();
 
+        mSortingType = MOST_RECENT;
+        
+        populatePickItList();
+       // populateListView();
     }
     //endregion
 
-    private void populatePickItList(int size) {
-        //size = get number of pickIts in database
+    private void populatePickItList() {
+        //TODO - something to clear out the grid if it has components already in it
 
-        //for i = 0 to number of pickIts in the database
-        for (int i = 0;i < size;i++) {
-           // pickItList.add(/*nthPickIt*/);
+        pickItList = new ArrayList<>();
+
+        switch (mSortingType){
+            case TRENDING:
+
+                break;
+            case MOST_RECENT:
+                ServerFileManager sm = new ServerFileManager();
+                pickItList = sm.downloadMostRecentPickIts(MAX_NUMBER_PICKIT_ROWS);
+                break;
+            default:
+                try {
+                    throw new Exception("Invalid sorting type");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 

@@ -3,7 +3,11 @@ package com.spun.pickit.fileIO;
 import android.app.Activity;
 import android.graphics.Bitmap;
 
+import com.spun.pickit.database.handling.DatabaseAccess;
+import com.spun.pickit.model.PickIt;
+
 import java.io.File;
+import java.util.ArrayList;
 
 public class ServerFileManager {
     //region Class variables
@@ -14,7 +18,7 @@ public class ServerFileManager {
     final private String KEY_PICKIT_DOWNLOAD = "download_pickit.php";
     final private String KEY_DEMOGRAPHICS_UPLOAD = "upload_demographics.php";
     final private String KEY_DEMOGRAPHICS_DOWNLOAD = "download_demographics.php";
-    final private String KEY_RECENT_PICKITS_DOWNLOAD = "recent_uploads.php";
+    final private String KEY_MOST_RECENT_UPLOADS = "most_recent_uploads.php";
     final private Activity activity;
     final private String file;
     final private String filename;
@@ -42,22 +46,20 @@ public class ServerFileManager {
 
         new AsyncFileUploaderThread(posting).start();
     }
-    public File downloadDemographics(String username){
-        String url = KEY_URL_PREFIX + KEY_DEMOGRAPHICS_DOWNLOAD;
 
-        return null;
-    }
     public void uploadPickIt(){
         final String url = KEY_URL_PREFIX + KEY_PICKIT_UPLOAD;
         final Posting posting = new Posting(activity, file, url, filename, false);
 
         new AsyncFileUploaderThread(posting).start();
     }
-    public File downloadPickIt(int username){
-        String url = KEY_URL_PREFIX + KEY_DEMOGRAPHICS_DOWNLOAD;
-
-        return null;
+    public ArrayList<PickIt> downloadMostRecentPickIts(int quantity){
+        String url = KEY_URL_PREFIX + KEY_MOST_RECENT_UPLOADS + "?NumPickIts=" + String.valueOf(quantity);
+        DatabaseAccess access = new DatabaseAccess();
+        ArrayList<PickIt> pickIts = access.getPickIts(url);
+        return pickIts;
     }
+
     public void uploadPicture(){
         final String url = KEY_URL_PREFIX + KEY_PICTURE_UPLOAD;
         final Posting posting = new Posting(activity, file, url, filename, true);

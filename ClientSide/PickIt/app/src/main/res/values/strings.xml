@@ -17,16 +17,17 @@
     <string name="createAccount">Create account</string>
     <string name="date_format">mm/dd/yyyy</string>
     <string name="bday">Birthday</string>
-    <string name="account_admin_blurb">Please input the following information about yourself so that we may provide a breakdown of the voters\' demographics.</string>
 
     <!-- toggle buttons -->
-    <string name="recency">Recency</string>
+    <string name="recency">Recent</string>
     <string name="trending">Trending</string>
-    <string name="time_remaining">Time Remaining</string>
+    <string name="expiring">Expiring</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="upload">Upload</string>
 
-    <string name="uploaded">Uploaded</string>
+    <string name="uploaded">Your Uploads</string>
+    <string name="friendsRecentUploads">Friends\' Uploads</string>
+    <string name="friends">Friends</string>
 
     <string name="selectdate">mm/dd/yyyy</string>
     <string name="selecttime">hh:mm</string>

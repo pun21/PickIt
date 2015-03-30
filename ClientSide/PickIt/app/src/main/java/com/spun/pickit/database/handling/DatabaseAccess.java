@@ -8,6 +8,8 @@ import com.spun.pickit.database.handling.crud.UserCRUD;
 import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
 
+import com.spun.pickit.model.Choice;
+import com.spun.pickit.model.PickIt;
 import com.spun.pickit.model.User;
 
 import org.apache.http.client.ResponseHandler;
@@ -20,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 
 public class DatabaseAccess {
 
@@ -32,6 +35,62 @@ public class DatabaseAccess {
         User userToSend = this.retrieveUserFromJSON(json);
 
         return userToSend;
+    }
+
+    public ArrayList<PickIt> getPickIts(String uri){
+        DataAccess access = new DataAccess(uri);
+
+        JSONObject json = access.getJson();
+
+        ArrayList<PickIt> pickIts = retrievePickItListFromJSON(json);
+
+        return pickIts;
+    }
+
+    private ArrayList<PickIt> retrievePickItListFromJSON(JSONObject json){
+        ArrayList<PickIt> pickIts = new ArrayList<>();
+
+        try {
+            if(json.getInt("Successful") == 1){
+                try{
+                    json = json.getJSONObject("Result");
+
+                    for(int a = 0; ;a++){
+                        JSONObject temp = new JSONObject(json.getString("'" + a + "'"));
+
+                        int pickItID = temp.getInt("PickItID");
+                        String username = temp.getString("Username");
+                        String category = temp.getString("Category");
+                        String subjectHeader = temp.getString("Subject Header");
+                        int secondsOfLife = temp.getInt("EndTime");
+
+                        ArrayList<Choice> choices = new ArrayList<>();
+                        try{
+                            for(int b = 0; ; b++){
+                                JSONObject tempChoice = new JSONObject(new JSONObject(temp.getString("Choices")).getString("'"+b+"'"));
+
+                                int choiceID = tempChoice.getInt("ChoiceID");
+                                String filepath = tempChoice.getString("Filepath");
+
+                                choices.add(new Choice(choiceID, filepath));
+                            }
+                        }catch(Exception e){ }
+
+                        PickIt pickIt = new PickIt(pickItID, username, category, subjectHeader, secondsOfLife, choices);
+
+                        pickIts.add(pickIt);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+        return pickIts;
     }
 
     public int createUser(String username, String password, String birthday, String gender, String ethnicity, String religion, String politicalAffiliation){
@@ -85,7 +144,7 @@ public class DatabaseAccess {
     }
 
     public boolean updateUser(int userID, String username,String password,String birthday, String gender, String ethnicity,String religion,String politicalAffiliation){
-        UserCRUD userCRUD = new UserCRUD(userID, username,password,birthday,gender,ethnicity,religion,politicalAffiliation);
+        UserCRUD userCRUD = new UserCRUD(userID, username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
         DataAccess access = new DataAccess(userCRUD.update());
 
         JSONObject json = access.getJson();
