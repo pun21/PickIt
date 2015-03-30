@@ -55,9 +55,7 @@ public class UserCRUD extends CRUD{
 
     protected String updateExtension(){
         String extension = (UPDATE_REQUEST + "?UserID=" + this.userID + "&Username=" + this.username
-                + "&Password=" + this.password + "&Birthday=" + this.birthday + "&Gender=" + this.gender
-                + "&Ethnicity=" + this.ethnicity + "&Religion=" + this.religion
-                + "&PoliticalAffiliation=" + this.politicalAffiliation);
+                + "&Password=" + this.password);
         return extension;
     }
 

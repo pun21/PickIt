@@ -19,6 +19,8 @@ public class ServerFileManager {
     final private String KEY_DEMOGRAPHICS_UPLOAD = "upload_demographics.php";
     final private String KEY_DEMOGRAPHICS_DOWNLOAD = "download_demographics.php";
     final private String KEY_MOST_RECENT_UPLOADS = "most_recent_uploads.php";
+    final private String KEY_TRENDING_UPLOADS = "trending_uploads.php";
+    final private String KEY_EXPIRING_UPLOADS = "expiring_uploads.php";
     final private Activity activity;
     final private String file;
     final private String filename;
@@ -55,6 +57,18 @@ public class ServerFileManager {
     }
     public ArrayList<PickIt> downloadMostRecentPickIts(int quantity){
         String url = KEY_URL_PREFIX + KEY_MOST_RECENT_UPLOADS + "?NumPickIts=" + String.valueOf(quantity);
+        DatabaseAccess access = new DatabaseAccess();
+        ArrayList<PickIt> pickIts = access.getPickIts(url);
+        return pickIts;
+    }
+    public ArrayList<PickIt> downloadTrendingPickIts(int quantity){
+        String url = KEY_URL_PREFIX + KEY_TRENDING_UPLOADS + "?NumPickIts=" + String.valueOf(quantity);
+        DatabaseAccess access = new DatabaseAccess();
+        ArrayList<PickIt> pickIts = access.getPickIts(url);
+        return pickIts;
+    }
+    public ArrayList<PickIt> downloadExpiringPickIts(int quantity){
+        String url = KEY_URL_PREFIX + KEY_EXPIRING_UPLOADS + "?NumPickIts=" + String.valueOf(quantity);
         DatabaseAccess access = new DatabaseAccess();
         ArrayList<PickIt> pickIts = access.getPickIts(url);
         return pickIts;

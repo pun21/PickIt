@@ -20,16 +20,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     //region Class Variables
-    private static final int MAX_NUMBER_PICKIT_ROWS = 10;
-
+    private static final int MAX_NUMBER_GRID_ROWS = 10;
     private static final String TRENDING = "0";
     private static final String MOST_RECENT = "1";
-    private static final String LEAST_TIME_REMAINING = "2";
+    private static final String EXPIRING = "2";
     private String mSortingType;
 
     ArrayList<PickIt> pickItList;
     PickItApp pickItApp;
-    Demographics demo;
     //endregion
 
     //region Life-cycle methods
@@ -46,21 +44,81 @@ public class MainActivity extends Activity {
         
         populatePickItList();
        // populateListView();
+
+        setToggles();
     }
     //endregion
 
+    //region UI Handlers
+    public void onClickUpload(View v) {
+        Intent intent = new Intent(this, UploadActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickUsername(View v) {
+        if(!pickItApp.isGuest()){
+            //go to Profile Admin Activity
+            Intent intent = new Intent(this, ProfileAdminActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void onClickSignOut(View v) {
+
+        //do any sign out stuff
+
+        //go to login page after signing out
+        Intent intent = new Intent(this, AppLoginActivity.class);
+        startActivity(intent);
+    }
+
+
+    /*Handler methods for results pane toggles ---------------------------------------------------*/
+
+    public void onClickRecencyToggle(View v) {
+        mSortingType = MOST_RECENT;
+
+        populatePickItList();
+        // populateListView();
+
+        setToggles();
+    }
+
+    public void onClickTrendingToggle(View v) {
+        mSortingType = TRENDING;
+
+        populatePickItList();
+        // populateListView();
+
+        setToggles();
+    }
+
+    public void onClickTimeRemainingToggle(View v) {
+        mSortingType = EXPIRING;
+
+        populatePickItList();
+        // populateListView();
+
+        setToggles();
+    }
+    //endregion
+
+    //region Helper Methods
     private void populatePickItList() {
         //TODO - something to clear out the grid if it has components already in it
 
+        ServerFileManager sm = new ServerFileManager();
         pickItList = new ArrayList<>();
 
         switch (mSortingType){
             case TRENDING:
-
+                pickItList = sm.downloadTrendingPickIts(MAX_NUMBER_GRID_ROWS);
                 break;
             case MOST_RECENT:
-                ServerFileManager sm = new ServerFileManager();
-                pickItList = sm.downloadMostRecentPickIts(MAX_NUMBER_PICKIT_ROWS);
+                pickItList = sm.downloadMostRecentPickIts(MAX_NUMBER_GRID_ROWS);
+                break;
+            case EXPIRING:
+                pickItList = sm.downloadExpiringPickIts(MAX_NUMBER_GRID_ROWS);
                 break;
             default:
                 try {
@@ -71,13 +129,48 @@ public class MainActivity extends Activity {
                 break;
         }
     }
-
     private void populateListView() {
         CustomListAdapter adapter = new CustomListAdapter();
         ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
     }
+    private void setUsername(){
+        TextView username = (TextView)findViewById(R.id.textView_username);
 
+        if(pickItApp.isGuest()){
+            username.setEnabled(false);
+        }
+
+        username.setText(pickItApp.getUsername());
+    }
+    private void setToggles(){
+        ToggleButton recentlyAddedToggle = (ToggleButton) findViewById(R.id.toggle_recency);
+        ToggleButton trendingToggle = (ToggleButton) findViewById(R.id.toggle_trending);
+        ToggleButton expiringToggle = (ToggleButton) findViewById(R.id.toggle_time_remaining);
+
+        switch(mSortingType){
+            case MOST_RECENT:
+                recentlyAddedToggle.setChecked(true);
+                trendingToggle.setChecked(false);
+                expiringToggle.setChecked(false);
+                break;
+            case TRENDING:
+                recentlyAddedToggle.setChecked(false);
+                trendingToggle.setChecked(true);
+                expiringToggle.setChecked(false);
+                break;
+            case EXPIRING:
+                recentlyAddedToggle.setChecked(false);
+                trendingToggle.setChecked(false);
+                expiringToggle.setChecked(true);
+                break;
+            default:
+                break;
+        }
+    }
+    //endregion
+
+    //Adapter
     private class CustomListAdapter extends ArrayAdapter<PickIt> {
 
         private TextView vHeading, vUsername, vCategory, vVotingTime;
@@ -130,81 +223,4 @@ public class MainActivity extends Activity {
             return itemView;
         }
     }
-    //region UI Handlers
-    public void onClickUpload(View v) {
-        Intent intent = new Intent(this, UploadActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickUsername(View v) {
-        if(!pickItApp.isGuest()){
-            //go to Profile Admin Activity
-            Intent intent = new Intent(this, ProfileAdminActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    public void onClickSignOut(View v) {
-
-        //do any sign out stuff
-
-        //go to login page after signing out
-        Intent intent = new Intent(this, AppLoginActivity.class);
-        startActivity(intent);
-    }
-
-
-    /*Handler methods for results pane toggles ---------------------------------------------------*/
-
-    public void onClickRecencyToggle(View v) {
-        ToggleButton tog = (ToggleButton) findViewById(R.id.toggle_recency);
-        //toggle button default is sorting by most recent
-        if (!tog.isChecked()) {
-            //sorting by most recent
-            Toast.makeText(this, "Recency Off", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            //sorting by least recent
-            Toast.makeText(this, "Recency On", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void onClickTrendingToggle(View v) {
-        ToggleButton tog = (ToggleButton) findViewById(R.id.toggle_trending);
-
-        if (!tog.isChecked()) {
-            //sorting by most trending
-            Toast.makeText(this, "Trending Off", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            //sorting by least trending
-            Toast.makeText(this, "Trending On", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void onClickTimeRemainingToggle(View v) {
-        ToggleButton tog = (ToggleButton) findViewById(R.id.toggle_time_remaining);
-
-        if (!tog.isChecked()) {
-            //sorting by least voting time remaining
-            Toast.makeText(this, "Time Remaining Off", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            //sorting by most voting time remaining
-            Toast.makeText(this, "Time Remaining On", Toast.LENGTH_SHORT).show();
-        }
-    }
-    //endregion
-
-    //region Helper Methods
-    private void setUsername(){
-        TextView username = (TextView)findViewById(R.id.textView_username);
-
-        if(pickItApp.isGuest()){
-            username.setEnabled(false);
-        }
-
-        username.setText(pickItApp.getUsername());
-    }
-    //endregion
 }

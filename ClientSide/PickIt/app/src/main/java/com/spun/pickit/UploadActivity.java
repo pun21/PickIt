@@ -316,7 +316,7 @@ public class UploadActivity extends FragmentActivity {
     }
 
     private String getCategoryFromView(){
-        return mCategory.getSelectedItem() == null ? "" : mCategory.getSelectedItem().toString();
+        return mCategory.getSelectedItem().toString().equals("Select a category?") ? "" : mCategory.getSelectedItem().toString();
     }
 
     private String getSubjectHeaderFromView(){
