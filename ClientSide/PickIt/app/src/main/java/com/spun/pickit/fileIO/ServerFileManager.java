@@ -6,12 +6,11 @@ import android.graphics.Bitmap;
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.model.PickIt;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ServerFileManager {
     //region Class variables
-    final private String KEY_URL_PREFIX = "http://www.bcdev.me:8080/PickIt/";
+    final private String KEY_URL_PREFIX = "http://www.bcdev.me:8080/PickIt/php/";
     final private String KEY_PICTURE_UPLOAD = "upload_image.php";
     final private String KEY_PICTURE_DOWNLOAD = "download_image.php";
     final private String KEY_PICKIT_UPLOAD = "upload_pickit.php";

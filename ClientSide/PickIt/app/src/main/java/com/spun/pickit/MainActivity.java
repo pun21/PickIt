@@ -2,6 +2,7 @@ package com.spun.pickit;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.spun.pickit.fileIO.ServerFileManager;
-import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.PickIt;
 
 import java.util.ArrayList;
@@ -21,6 +20,8 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     //region Class Variables
     private static final int MAX_NUMBER_GRID_ROWS = 10;
+    private static final int DAY_IN_SECS = 86400;
+
     private static final String TRENDING = "0";
     private static final String MOST_RECENT = "1";
     private static final String EXPIRING = "2";
@@ -43,7 +44,8 @@ public class MainActivity extends Activity {
         mSortingType = MOST_RECENT;
         
         populatePickItList();
-       // populateListView();
+
+        populateListView();
 
         setToggles();
     }
@@ -79,7 +81,7 @@ public class MainActivity extends Activity {
         mSortingType = MOST_RECENT;
 
         populatePickItList();
-        // populateListView();
+        populateListView();
 
         setToggles();
     }
@@ -88,7 +90,7 @@ public class MainActivity extends Activity {
         mSortingType = TRENDING;
 
         populatePickItList();
-        // populateListView();
+        populateListView();
 
         setToggles();
     }
@@ -97,9 +99,11 @@ public class MainActivity extends Activity {
         mSortingType = EXPIRING;
 
         populatePickItList();
-        // populateListView();
+        populateListView();
 
         setToggles();
+
+
     }
     //endregion
 
@@ -174,14 +178,14 @@ public class MainActivity extends Activity {
     private class CustomListAdapter extends ArrayAdapter<PickIt> {
 
         private TextView vHeading, vUsername, vCategory, vVotingTime;
-        private ImageView image_tl, image_tr, image_bl, image_br;
 
         public CustomListAdapter() {
-            super(MainActivity.this, R.layout.pickit_row, pickItList);
+            super(MainActivity.this, R.layout.pickit_row, R.id.heading, pickItList);
         }
 
         @Override
         public View getView(int position,View view,ViewGroup parent) {
+
             super.getView(position, view, parent);
 
             // Make sure we have a view to work with (may have been given null)
@@ -191,8 +195,9 @@ public class MainActivity extends Activity {
                         parent, false);
             }
 
-            PickIt item = pickItList.get(position);
+            final PickIt item = pickItList.get(position);
             String votingTimeLeft = "default";
+            int secondsLeft;
             // Fill the view
 
             vHeading = (TextView) itemView.findViewById(R.id.heading);
@@ -206,19 +211,35 @@ public class MainActivity extends Activity {
 
             vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
             /*do something with item.getEndTime() and item.getTimeStamp() to get the time remaining to vote*/
+            secondsLeft = item.getSecondsOfLife();
+
+            int seconds = secondsLeft % 60;
+            secondsLeft = (secondsLeft - seconds) / 60;
+
+            int minutes = secondsLeft % 60;
+            secondsLeft = (secondsLeft - minutes) / 60;
+
+            int hours = secondsLeft % 24;
+            secondsLeft = (secondsLeft - hours) / 24;
+
+            int days = secondsLeft;
+
+            votingTimeLeft = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
             vVotingTime.setText(votingTimeLeft);
 
-            image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
-            image_tl.setImageBitmap(item.getChoices().get(0).getBitmap());
+            final ImageView image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
+            image_tl.setImageResource(R.drawable.pickaxe);
 
-            image_tr = (ImageView) itemView.findViewById(R.id.image_tr);
-            image_tr.setImageBitmap(item.getChoices().get(1).getBitmap());
+            final ServerFileManager sm = new ServerFileManager();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = sm.downloadPicture(item.getChoices().get(0).getFilename());
+                    image_tl.setImageBitmap(bitmap);
+                }
+            }).start();
 
-            image_bl = (ImageView) itemView.findViewById(R.id.image_bl);
-            image_bl.setImageBitmap(item.getChoices().get(2).getBitmap());
 
-            image_br = (ImageView) itemView.findViewById(R.id.image_br);
-            image_br.setImageBitmap(item.getChoices().get(3).getBitmap());
 
             return itemView;
         }
