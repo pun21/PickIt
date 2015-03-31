@@ -2,7 +2,6 @@ package com.spun.pickit;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -230,14 +229,14 @@ public class MainActivity extends Activity {
             final ImageView image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
             image_tl.setImageResource(R.drawable.pickaxe);
 
-            final ServerFileManager sm = new ServerFileManager();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Bitmap bitmap = sm.downloadPicture(item.getChoices().get(0).getFilename());
-                    image_tl.setImageBitmap(bitmap);
-                }
-            }).start();
+//            final ServerFileManager sm = new ServerFileManager();
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Bitmap bitmap = sm.downloadPicture(item.getChoices().get(0).getFilename());
+//                    image_tl.setImageBitmap(bitmap);
+//                }
+//            }).start();
 
 
 
