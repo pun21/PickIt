@@ -1,7 +1,7 @@
 package com.spun.pickit.database.handling.crud;
 
 abstract class CRUD implements CRUDable{
-    private final static String urlPrefix = "http://www.bcdev.me:8080/PickIt/php/";//new FileManager(null).decryptEndpoint();
+    private final static String urlPrefix = "http://www.bcdev.me:8080/";//new FileManager(null).decryptEndpoint();
 
     protected abstract String createExtension();
     protected abstract String readExtension();

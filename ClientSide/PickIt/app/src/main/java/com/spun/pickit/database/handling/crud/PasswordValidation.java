@@ -1,12 +1,7 @@
 package com.spun.pickit.database.handling.crud;
 
-import org.json.JSONObject;
-
-/**
- * Created by jacob_000 on 2/22/2015.
- */
 public class PasswordValidation extends CRUD{
-    private static final String VALIDATE = "validate_password.php";
+    private static final String VALIDATE = "PickIt/php/validate_password.php";
     private String username;
     private String password;
 

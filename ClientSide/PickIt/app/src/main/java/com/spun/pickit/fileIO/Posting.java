@@ -43,8 +43,8 @@ public class Posting {
         }
 
         public int uploadFile() {
-            HttpURLConnection conn = null;
-            DataOutputStream dos = null;
+            HttpURLConnection conn;
+            DataOutputStream dos;
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";

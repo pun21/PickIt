@@ -1,8 +1,10 @@
 package com.spun.pickit.fileIO;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
+import android.widget.ImageView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.spun.pickit.database.handling.DatabaseAccess;
 import com.spun.pickit.model.PickIt;
 
@@ -10,16 +12,14 @@ import java.util.ArrayList;
 
 public class ServerFileManager {
     //region Class variables
-    final private String KEY_URL_PREFIX = "http://www.bcdev.me:8080/PickIt/php/";
-    final private String KEY_PICTURE_UPLOAD = "upload_image.php";
-    final private String KEY_PICTURE_DOWNLOAD = "download_image.php";
-    final private String KEY_PICKIT_UPLOAD = "upload_pickit.php";
-    final private String KEY_PICKIT_DOWNLOAD = "download_pickit.php";
-    final private String KEY_DEMOGRAPHICS_UPLOAD = "upload_demographics.php";
-    final private String KEY_DEMOGRAPHICS_DOWNLOAD = "download_demographics.php";
-    final private String KEY_MOST_RECENT_UPLOADS = "most_recent_uploads.php";
-    final private String KEY_TRENDING_UPLOADS = "trending_uploads.php";
-    final private String KEY_EXPIRING_UPLOADS = "expiring_uploads.php";
+    final private String KEY_URL_PREFIX = "http://www.bcdev.me:8080/";
+    final private String KEY_PICTURE_UPLOAD = "PickIt/php/upload_image.php";
+    final private String KEY_PICTURE_DOWNLOAD = "PickIt/data/Images/";
+    final private String KEY_PICKIT_UPLOAD = "PickIt/php/upload_pickit.php";
+    final private String KEY_DEMOGRAPHICS_UPLOAD = "PickIt/php/upload_demographics.php";
+    final private String KEY_MOST_RECENT_UPLOADS = "PickIt/php/most_recent_uploads.php";
+    final private String KEY_TRENDING_UPLOADS = "PickIt/php/trending_uploads.php";
+    final private String KEY_EXPIRING_UPLOADS = "PickIt/php/expiring_uploads.php";
     final private Activity activity;
     final private String file;
     final private String filename;
@@ -79,10 +79,17 @@ public class ServerFileManager {
 
         new AsyncFileUploaderThread(posting).start();
     }
-    public Bitmap downloadPicture(String fileName) {
-        String url = KEY_URL_PREFIX + KEY_PICTURE_DOWNLOAD;
+    public void downloadPicture(ImageView view, String filename) {
+        String url = KEY_URL_PREFIX + KEY_PICTURE_DOWNLOAD + filename;
 
-        return null;
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .showImageForEmptyUri(null)
+                .showImageOnFail(null)
+                .showImageOnLoading(null).build();
+
+        imageLoader.displayImage(url, view, options);
     }
     //endregion
 

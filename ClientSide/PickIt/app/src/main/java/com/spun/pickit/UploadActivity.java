@@ -609,7 +609,7 @@ public class UploadActivity extends FragmentActivity {
         }
     }
 
-    class SaveChoice extends Thread{
+    class SaveChoice {
         final Activity activity;
         final Choice choice;
         final File file;
@@ -624,8 +624,7 @@ public class UploadActivity extends FragmentActivity {
             this.filename = filename;
         }
 
-        @Override
-        public void run(){
+        public void start(){
             saveImage();
             saveChoice();
         }
@@ -725,7 +724,7 @@ public class UploadActivity extends FragmentActivity {
 
         private void UpdateScreen(final UploadActivity activity, final String error, final int nextResultID){
             if(error.length() == 0 && nextResultID != 0){
-                pickItApp.resultsID = nextResultID;
+                pickItApp.setResultPickItID(nextResultID);
                 activity.enableFrontEnd();
                 SendUserToResultsActivity(activity);
             }

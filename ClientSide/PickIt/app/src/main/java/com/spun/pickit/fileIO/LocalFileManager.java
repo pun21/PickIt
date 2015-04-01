@@ -25,10 +25,10 @@ public class LocalFileManager {
     final String CREDENTIALS_FILE_NAME = "credentials.txt";
 
     private Activity activity;
-    String demographicsFileName;
-    String demographicsFilePath;
-    String pickItFileName;
-    String pickItFilePath;
+    private String demographicsFileName;
+    private String demographicsFilePath;
+    private String pickItFileName;
+    private String pickItFilePath;
 
     //region Constructors
     public LocalFileManager(Activity activity){
@@ -36,13 +36,7 @@ public class LocalFileManager {
     }
     //endregion
 
-    /**
-     *
-     * Create your own regions for specific file IO based on the page.
-     * We may want to store as much data/metadata locally as we canto reduce database calls
-     *
-     */
-
+    //region File IO API
     //region ...PickIts
     public String getPickItFilePath(){
         return pickItFilePath;
@@ -263,5 +257,6 @@ public class LocalFileManager {
             }).start();
         }
     }
+    //endregion
     //endregion
 }

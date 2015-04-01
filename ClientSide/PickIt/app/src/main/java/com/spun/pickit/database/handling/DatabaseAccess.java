@@ -5,7 +5,6 @@ import android.util.Log;
 import com.spun.pickit.database.handling.crud.PasswordValidation;
 import com.spun.pickit.database.handling.crud.PickItCRUD;
 import com.spun.pickit.database.handling.crud.UserCRUD;
-import com.spun.pickit.database.handling.crud.Following;
 import com.spun.pickit.database.handling.crud.ChoiceCRUD;
 
 import com.spun.pickit.model.Choice;
@@ -133,29 +132,9 @@ public class DatabaseAccess {
         return pickItID;
     }
 
-    public User readUser(int userID){
-        UserCRUD userCRUDOp = new UserCRUD(userID);
-        DataAccess access = new DataAccess(userCRUDOp.read());
-
-        JSONObject json = access.getJson();
-        User user = this.retrieveUserFromJSON(json);
-
-        return user;
-    }
-
     public boolean updateUser(int userID, String username,String password,String birthday, String gender, String ethnicity,String religion,String politicalAffiliation){
         UserCRUD userCRUD = new UserCRUD(userID, username, password, birthday, gender, ethnicity, religion, politicalAffiliation);
         DataAccess access = new DataAccess(userCRUD.update());
-
-        JSONObject json = access.getJson();
-
-        return JSONRequestPass(json);
-    }
-
-
-    public boolean createFollowing(String followerID,String leaderID){
-        Following following = new Following(followerID,leaderID);
-        DataAccess access = new DataAccess(following.create());
 
         JSONObject json = access.getJson();
 
@@ -250,7 +229,7 @@ public class DatabaseAccess {
                 try {
                     request = new HttpGet( new URI( url ) );
                     response = client.execute( request, responseHandler );
-                    json = new JSONObject(response);
+                    json = new JSONObject(response.toString());
                 } catch ( Exception e ) {
                     e.printStackTrace();
                 }finally {
