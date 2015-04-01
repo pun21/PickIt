@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -19,33 +21,38 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     //region Class Variables
     private static final int MAX_NUMBER_GRID_ROWS = 10;
-    private static final int DAY_IN_SECS = 86400;
 
-    private static final String TRENDING = "0";
-    private static final String MOST_RECENT = "1";
-    private static final String EXPIRING = "2";
-    private String mSortingType;
+    private static final int TRENDING = 0;
+    private static final int MOST_RECENT = 1;
+    private static final int EXPIRING = 2;
+    private int mSortingType;
 
     ArrayList<PickIt> pickItList;
     PickItApp pickItApp;
+
+    ProgressBar loading;
     //endregion
 
     //region Life-cycle methods
+    @Override
+    protected void onStart(){
+        super.onStart();
+        loading = (ProgressBar)findViewById(R.id.loading);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         pickItApp = (PickItApp)getApplication();
+        loading = (ProgressBar)findViewById(R.id.loading);
 
         setUsername();
 
         mSortingType = MOST_RECENT;
-        
+
         populatePickItList();
-
         populateListView();
-
         setToggles();
     }
     //endregion
@@ -66,7 +73,7 @@ public class MainActivity extends Activity {
 
     public void onClickSignOut(View v) {
 
-        //do any sign out stuff
+        pickItApp.resetUser();
 
         //go to login page after signing out
         Intent intent = new Intent(this, AppLoginActivity.class);
@@ -101,8 +108,6 @@ public class MainActivity extends Activity {
         populateListView();
 
         setToggles();
-
-
     }
     //endregion
 
@@ -171,6 +176,23 @@ public class MainActivity extends Activity {
                 break;
         }
     }
+    public void startLoad(){
+        setEnabled(false);
+        loading.setVisibility(View.VISIBLE);
+    }
+    public void endLoad(){
+        setEnabled(true);
+        loading.setVisibility(View.INVISIBLE);
+    }
+    private void setEnabled(boolean enabled){
+        TableLayout layout = (TableLayout) findViewById(R.id.main_activity_table);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+
+            if(child.getId() != R.id.loading)
+                child.setEnabled(enabled);
+        }
+    }
     //endregion
 
     //Adapter
@@ -184,7 +206,6 @@ public class MainActivity extends Activity {
 
         @Override
         public View getView(int position,View view,ViewGroup parent) {
-
             super.getView(position, view, parent);
 
             // Make sure we have a view to work with (may have been given null)
@@ -194,51 +215,47 @@ public class MainActivity extends Activity {
                         parent, false);
             }
 
-            final PickIt item = pickItList.get(position);
-            String votingTimeLeft = "default";
-            int secondsLeft;
-            // Fill the view
+            final ImageView image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
+            final ServerFileManager sm = new ServerFileManager();
+            final PickIt pickIt = pickItList.get(position);
 
+            //Convert seconds to d h m s
+            int time = pickIt.getSecondsOfLife();
+
+            int seconds = time % 60;
+            time = (time - seconds) / 60;
+
+            int minutes = time % 60;
+            time = (time - minutes) / 60;
+
+            int hours = time % 24;
+            time = (time - hours) / 24;
+
+            int days = time;
+
+            //Assign values
+            String votingTimeLeft = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+            // Fill the view
             vHeading = (TextView) itemView.findViewById(R.id.heading);
-            vHeading.setText(item.getSubjectHeader());
+            vHeading.setText(pickIt.getSubjectHeader());
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
-            vUsername.setText(item.getUsername());
+            vUsername.setText(pickIt.getUsername());
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
-            vCategory.setText(item.getCategory());
+            vCategory.setText(pickIt.getCategory());
 
             vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
-            /*do something with item.getEndTime() and item.getTimeStamp() to get the time remaining to vote*/
-            secondsLeft = item.getSecondsOfLife();
-
-            int seconds = secondsLeft % 60;
-            secondsLeft = (secondsLeft - seconds) / 60;
-
-            int minutes = secondsLeft % 60;
-            secondsLeft = (secondsLeft - minutes) / 60;
-
-            int hours = secondsLeft % 24;
-            secondsLeft = (secondsLeft - hours) / 24;
-
-            int days = secondsLeft;
-
-            votingTimeLeft = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
             vVotingTime.setText(votingTimeLeft);
 
-            final ImageView image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
-            image_tl.setImageResource(R.drawable.pickaxe);
-
-//            final ServerFileManager sm = new ServerFileManager();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Bitmap bitmap = sm.downloadPicture(item.getChoices().get(0).getFilename());
-//                    image_tl.setImageBitmap(bitmap);
-//                }
-//            }).start();
-
-
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run(){
+                    String filename = pickIt.getChoices().get(0).getFilename();
+                    sm.downloadPicture(image_tl, filename);
+                }
+            });
 
             return itemView;
         }
