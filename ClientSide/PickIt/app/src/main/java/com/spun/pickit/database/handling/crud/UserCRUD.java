@@ -1,9 +1,9 @@
 package com.spun.pickit.database.handling.crud;
 
 public class UserCRUD extends CRUD{
-    private static final String UPDATE_REQUEST = "update_user.php";
-    private static final String CREATE_REQUEST = "create_user.php";
-    private static final String READ_REQUEST = "read_user.php";
+    private static final String UPDATE_REQUEST = "PickIt/php/update_user.php";
+    private static final String CREATE_REQUEST = "PickIt/php/create_user.php";
+    private static final String READ_REQUEST = "PickIt/php/read_user.php";
 
     private int userID;
     private String username;

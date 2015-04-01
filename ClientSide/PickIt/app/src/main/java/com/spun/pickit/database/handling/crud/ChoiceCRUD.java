@@ -2,8 +2,8 @@ package com.spun.pickit.database.handling.crud;
 import org.json.JSONObject;
 
 public class ChoiceCRUD extends CRUD{
-    private static final String READ_CHOICE = "read_choice.php";
-    private static final String CREATE_CHOICE = "create_choice.php";
+    private static final String READ_CHOICE = "PickIt/php/read_choice.php";
+    private static final String CREATE_CHOICE = "PickIt/php/create_choice.php";
 
     private int pickItID;
     private String slot;

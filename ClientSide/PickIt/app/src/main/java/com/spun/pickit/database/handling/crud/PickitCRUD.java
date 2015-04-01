@@ -1,9 +1,9 @@
 package com.spun.pickit.database.handling.crud;
 
 public class PickItCRUD extends CRUD{
-    private static final String CREATE_PICKIT = "create_pickit.php";
-    private static final String READ_PICKIT = "read_pickit.php";
-    private static final String DELETE_PICKIT = "delete_pickit.pnp";
+    private static final String CREATE_PICKIT = "PickIt/php/create_pickit.php";
+    private static final String READ_PICKIT = "PickIt/php/read_pickit.php";
+    private static final String DELETE_PICKIT = "PickIt/php/delete_pickit.pnp";
 
     private int userID, pickItID, endTime;
     private String category, subject;

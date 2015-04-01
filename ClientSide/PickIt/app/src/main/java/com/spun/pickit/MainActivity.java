@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart(){
         super.onStart();
-        loading = (ProgressBar)findViewById(R.id.loading);
+        startLoad();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,8 @@ public class MainActivity extends Activity {
         populatePickItList();
         populateListView();
         setToggles();
+
+        endLoad();
     }
     //endregion
 
@@ -113,8 +115,6 @@ public class MainActivity extends Activity {
 
     //region Helper Methods
     private void populatePickItList() {
-        //TODO - something to clear out the grid if it has components already in it
-
         ServerFileManager sm = new ServerFileManager();
         pickItList = new ArrayList<>();
 
@@ -251,9 +251,10 @@ public class MainActivity extends Activity {
 
             runOnUiThread(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     String filename = pickIt.getChoices().get(0).getFilename();
                     sm.downloadPicture(image_tl, filename);
+                    endLoad();
                 }
             });
 
