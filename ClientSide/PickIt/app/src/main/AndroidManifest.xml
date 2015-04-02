@@ -56,7 +56,7 @@
         </activity>
 
         <activity
-            android:name=".ProfileAdminActivity"
+            android:name=".ProfileActivity"
             android:label="@string/title_activity_profile_admin"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">

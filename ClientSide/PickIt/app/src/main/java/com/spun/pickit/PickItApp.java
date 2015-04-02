@@ -33,6 +33,7 @@ public class PickItApp extends Application {
     private static final String KEY_POLITICAL = "political";
     private static final String KEY_GUEST = "guest";
     private static final String KEY_RESULT_ID = "nextResultID";
+    private static final String KEY_NEXT_USER_ID = "nextUserID";
     //endregion
 
     //region Demographics and user identification
@@ -47,6 +48,7 @@ public class PickItApp extends Application {
     private boolean guest;
 
     private int resultPickItID;
+    private int nextUserID;
     //endregion
     //endregion
 
@@ -79,6 +81,17 @@ public class PickItApp extends Application {
         setInSharedPreferences(KEY_RESULT_ID, resultPickItID);
     }
     public int getResultPickItID(){
+        if(nextUserID != 0)
+            return nextUserID;
+
+        return getFromSharedPreferences(KEY_NEXT_USER_ID, 0);
+    }
+    public void setNextUserID(int nextUserID){
+        this.nextUserID = nextUserID;
+
+        setInSharedPreferences(KEY_NEXT_USER_ID, nextUserID);
+    }
+    public int getNextUserID(){
         if(resultPickItID != 0)
             return resultPickItID;
 

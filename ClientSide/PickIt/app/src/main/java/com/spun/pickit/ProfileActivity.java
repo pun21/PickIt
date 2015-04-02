@@ -7,8 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
-public class ProfileAdminActivity extends Activity {
+public class ProfileActivity extends Activity {
     //region Class Variables
     PickItApp pickItApp;
     //endregion
@@ -17,7 +16,7 @@ public class ProfileAdminActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_admin);
+        setContentView(R.layout.activity_profile);
 
         pickItApp = (PickItApp)getApplication();
     }

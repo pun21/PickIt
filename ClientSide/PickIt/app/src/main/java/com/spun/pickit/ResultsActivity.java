@@ -68,7 +68,7 @@ public class ResultsActivity extends ActionBarActivity {
     public void onClickUsername(View v) {
 
         //go to Profile Admin Activity
-        Intent intent = new Intent(this, ProfileAdminActivity.class);
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
     public void onClickSignOut(View v) {

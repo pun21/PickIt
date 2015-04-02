@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
 
     public void onClickUsername(View v) {
         //go to Profile Admin Activity
-        Intent intent = new Intent(this, ProfileAdminActivity.class);
+        Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 
@@ -219,7 +219,7 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public View getView(int position,View view,ViewGroup parent) {
+        public View getView(final int position,View view,ViewGroup parent) {
             super.getView(position, view, parent);
 
             // Make sure we have a view to work with (may have been given null)
@@ -228,6 +228,21 @@ public class MainActivity extends Activity {
                 itemView = mainActivity.getLayoutInflater().inflate(R.layout.pickit_row,
                         parent, false);
             }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(mainActivity, ResultsActivity.class);
+                            pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
+
+                            startActivity(intent);
+                        }
+                    });
+                }
+            });
 
 //            ImageView temp = (ImageView) itemView.findViewById(R.id.image_tl);
 //            temp.setId(ID_ADDITIVE+temp.getId());
@@ -243,6 +258,23 @@ public class MainActivity extends Activity {
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
             vUsername.setText(pickIt.getUsername());
+
+            vUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(mainActivity, ProfileActivity.class);
+                            pickItApp.setNextUserID(pickIt.getUserID());
+
+                            startActivity(intent);
+                        }
+                    });
+                }
+            });
+
+
 //                vUsername.setId(ID_ADDITIVE+2000+pickIt.getPickItID());
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
