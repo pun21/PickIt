@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -27,18 +28,23 @@ public class MainActivity extends Activity {
     private static final int EXPIRING = 2;
     private int mSortingType;
 
-    ArrayList<PickIt> pickItList;
-    PickItApp pickItApp;
+    private ArrayAdapter<CharSequence> mCategoriesAdapter;
 
-    ProgressBar loading;
+    private static ArrayList<PickIt> pickItList;
+    private PickItApp pickItApp;
+
+    private Spinner mCategory;
+    private ProgressBar loading;
+
+
     //endregion
 
     //region Life-cycle methods
     @Override
     protected void onStart(){
         super.onStart();
-        startLoad();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,7 @@ public class MainActivity extends Activity {
 
         pickItApp = (PickItApp)getApplication();
         loading = (ProgressBar)findViewById(R.id.loading);
+        mCategory = (Spinner) findViewById(R.id.category_menu_main);
 
         setUsername();
 
@@ -54,6 +61,7 @@ public class MainActivity extends Activity {
         populatePickItList();
         populateListView();
         setToggles();
+        setSpinners();
 
         endLoad();
     }
@@ -66,22 +74,18 @@ public class MainActivity extends Activity {
     }
 
     public void onClickUsername(View v) {
-        if(!pickItApp.isGuest()){
-            //go to Profile Admin Activity
-            Intent intent = new Intent(this, ProfileAdminActivity.class);
-            startActivity(intent);
-        }
+        //go to Profile Admin Activity
+        Intent intent = new Intent(this, ProfileAdminActivity.class);
+        startActivity(intent);
     }
 
     public void onClickSignOut(View v) {
-
         pickItApp.resetUser();
 
         //go to login page after signing out
         Intent intent = new Intent(this, AppLoginActivity.class);
         startActivity(intent);
     }
-
 
     /*Handler methods for results pane toggles ---------------------------------------------------*/
 
@@ -115,6 +119,8 @@ public class MainActivity extends Activity {
 
     //region Helper Methods
     private void populatePickItList() {
+        startLoad();
+
         ServerFileManager sm = new ServerFileManager();
         pickItList = new ArrayList<>();
 
@@ -138,9 +144,11 @@ public class MainActivity extends Activity {
         }
     }
     private void populateListView() {
-        CustomListAdapter adapter = new CustomListAdapter();
+        CustomListAdapter adapter = new CustomListAdapter(this);
         ListView list = (ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+
+        endLoad();
     }
     private void setUsername(){
         TextView username = (TextView)findViewById(R.id.textView_username);
@@ -193,15 +201,21 @@ public class MainActivity extends Activity {
                 child.setEnabled(enabled);
         }
     }
+    private void setSpinners() {
+        mCategoriesAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.categories_array, android.R.layout.simple_spinner_item);
+        mCategoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCategory.setAdapter(mCategoriesAdapter);
+    }
     //endregion
 
     //Adapter
     private class CustomListAdapter extends ArrayAdapter<PickIt> {
-
+        private MainActivity mainActivity;
         private TextView vHeading, vUsername, vCategory, vVotingTime;
 
-        public CustomListAdapter() {
-            super(MainActivity.this, R.layout.pickit_row, R.id.heading, pickItList);
+        public CustomListAdapter(MainActivity mainActivity) {
+            super(mainActivity.getApplicationContext(), R.layout.pickit_row, R.id.heading, pickItList);
+            this.mainActivity = mainActivity;
         }
 
         @Override
@@ -211,54 +225,49 @@ public class MainActivity extends Activity {
             // Make sure we have a view to work with (may have been given null)
             View itemView = view;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(R.layout.pickit_row,
+                itemView = mainActivity.getLayoutInflater().inflate(R.layout.pickit_row,
                         parent, false);
             }
 
-            final ImageView image_tl = (ImageView) itemView.findViewById(R.id.image_tl);
+//            ImageView temp = (ImageView) itemView.findViewById(R.id.image_tl);
+//            temp.setId(ID_ADDITIVE+temp.getId());
+
+            final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
             final ServerFileManager sm = new ServerFileManager();
             final PickIt pickIt = pickItList.get(position);
-
-            //Convert seconds to d h m s
-            int time = pickIt.getSecondsOfLife();
-
-            int seconds = time % 60;
-            time = (time - seconds) / 60;
-
-            int minutes = time % 60;
-            time = (time - minutes) / 60;
-
-            int hours = time % 24;
-            time = (time - hours) / 24;
-
-            int days = time;
-
-            //Assign values
-            String votingTimeLeft = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
 
             // Fill the view
             vHeading = (TextView) itemView.findViewById(R.id.heading);
             vHeading.setText(pickIt.getSubjectHeader());
+//                vHeading.setId(ID_ADDITIVE+1000+pickIt.getPickItID());
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
             vUsername.setText(pickIt.getUsername());
+//                vUsername.setId(ID_ADDITIVE+2000+pickIt.getPickItID());
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
             vCategory.setText(pickIt.getCategory());
+//                vCategory.setId(ID_ADDITIVE+3000+pickIt.getPickItID());
 
             vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
-            vVotingTime.setText(votingTimeLeft);
+//                vVotingTime.setId(ID_ADDITIVE+4000+pickIt.getPickItID());
 
-            runOnUiThread(new Runnable() {
+            vVotingTime.setText(pickIt.getLifeString());
+
+            //endregion
+
+            mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     String filename = pickIt.getChoices().get(0).getFilename();
                     sm.downloadPicture(image_tl, filename);
-                    endLoad();
                 }
             });
 
             return itemView;
         }
     }
+
+    //Timer
+
 }

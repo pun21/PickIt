@@ -9,18 +9,18 @@
         <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-67bff7e63c0c225dafd2014e53193452edb32e35.jar" />
     </item>
     <item
-        jar="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-69dcf35a9581b68800911b1a42c1da9308631e14.jar" />
-    </item>
-    <item
         jar="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
         <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-02a43934f6d012fbab52a0d042c2b15f30c4bff2.jar" />
+    </item>
+    <item
+        jar="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\Users\Ben\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\classes-69dcf35a9581b68800911b1a42c1da9308631e14.jar" />
     </item>
     <item
         jar="C:\Users\Ben\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.1.2\91c20388c9a45f62b5ed8fe0502bb76ff6251fc7\bolts-android-1.1.2.jar"

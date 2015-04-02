@@ -1,24 +1,26 @@
 package com.spun.pickit.model;
 
-import java.util.ArrayList;
+import android.os.CountDownTimer;
 
+import java.util.ArrayList;
 
 public class PickIt {
     //region Class Variables
-    private int pickItID;
+    private AsyncTimer timer;
     private ArrayList<Choice> choices;
     private int userID;
+    private int pickItID;
+    private int secondsOfLife;
     private String username;
     private String category;
     private String subjectHeader;
-    private String timestamp;
-    private String endTime;
-    private int secondsOfLife;
     //endregion
 
     //region Constructors
     public PickIt(){
         choices = new ArrayList<>();
+
+        timer = null;
     }
 
     public PickIt(int pickItID, String username, String category, String subjectHeader, int secondsOfLife, ArrayList<Choice> choices){
@@ -28,6 +30,8 @@ public class PickIt {
         this.category = category;
         this.subjectHeader = subjectHeader;
         this.secondsOfLife = secondsOfLife;
+
+        timer = null;
     }
 
     public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, int secondsOfLife){
@@ -36,14 +40,6 @@ public class PickIt {
         this.category = category;
         this.subjectHeader = subjectHeader;
         this.secondsOfLife = secondsOfLife;
-    }
-    public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, String endTime, String username){
-        this.choices = choices;
-        this.userID = userID;
-        this.category = category;
-        this.subjectHeader = subjectHeader;
-        this.endTime = endTime;
-        this.username = username;
     }
 
     //endregion8
@@ -67,37 +63,92 @@ public class PickIt {
     public String getSubjectHeader(){
         return subjectHeader;
     }
-    public String getTimestamp(){
-        return timestamp;
+    public String getUsername() {
+        return username;
     }
-    public String getEndTime(){
-        return endTime;
+    public String getLifeString(){
+        int seconds = secondsOfLife % 60;
+        secondsOfLife = (secondsOfLife - seconds) / 60;
+
+        int minutes = secondsOfLife % 60;
+        secondsOfLife = (secondsOfLife - minutes) / 60;
+
+        int hours = secondsOfLife % 24;
+        secondsOfLife = (secondsOfLife - hours) / 24;
+
+        int days = secondsOfLife;
+
+        String dateStructuredText = "Expired: Legacy view available";
+        if(days != 0 || hours != 0 || minutes != 0 || seconds != 0){
+            dateStructuredText = days + " d, " + hours + " h, " + minutes + " m, " + seconds + " s";
+        }
+
+        return dateStructuredText;
     }
-    public String getUsername() { return username; }
     public int getSecondsOfLife() {
         return secondsOfLife;
-    }
-    public void setChoices(ArrayList<Choice> choices){
-        this.choices = choices;
-    }
-    public void setUserID(int userId){
-        this.userID = userId;
     }
     public void setCategory(String category){
         this.category = category;
     }
-    public void setSubjectHeader(String subjectHeader){
-        this.subjectHeader = subjectHeader;
-    }
-    public void setTimestamp(String timestamp){
-        this.timestamp = timestamp;
-    }
-    public void setEndTime(String endTime){
-        this.endTime = endTime;
-    }
-    public void setUsername(String username) {this.username = username; }    //endregion
+    public void setUsername(String username) {this.username = username; }
+    public void setSecondsOfLife(int secondsOfLife){
+        if(timerIsRunning())
+            return;
 
-    public void addChoice(Choice choice){
-        choices.add(choice);
+        this.secondsOfLife = secondsOfLife;
+
+        startTimer();
+    }
+
+    //region ...Timer
+    private void startTimer(){
+        if(timer == null){
+            timer = new AsyncTimer(this);
+
+            timer.setTimer(secondsOfLife);
+        }
+    }
+    private void stopTimer(){
+        if(timer != null)
+            timer.stopTimer();
+    }
+    private boolean timerIsRunning(){
+        if(timer != null)
+            return true;
+
+        return false;
+    }
+    //endregion
+    //endregion
+
+    class AsyncTimer{
+        private PickIt pickIt;
+        private CountDownTimer timer;
+
+        public AsyncTimer(PickIt pickIt) {
+            this.pickIt = pickIt;
+            timer = null;
+        }
+
+        public void setTimer(final int time) {
+            if(timer != null){
+                return;
+            }
+
+            timer = new CountDownTimer(time*1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    pickIt.setSecondsOfLife((int)(millisUntilFinished/1000));
+                }
+                public void onFinish() {
+                    pickIt.setSecondsOfLife(0);
+                }
+            }.start();
+        }
+
+        public void stopTimer(){
+            if(timer != null)
+                timer.cancel();
+        }
     }
 }
