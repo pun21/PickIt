@@ -49,6 +49,7 @@ public class PickItApp extends Application {
 
     private int resultPickItID;
     private int nextUserID;
+    private String nextUsername;
     //endregion
     //endregion
 
@@ -160,6 +161,14 @@ public class PickItApp extends Application {
             return gender;
 
         return getFromSharedPreferences(KEY_GENDER, "");
+    }
+
+    public void setNextUsername(String username){
+        this.nextUsername = username;
+    }
+
+    public String getNextUsername(){
+        return this.nextUsername;
     }
     public void setEthnicity(String ethnicity){
         this.ethnicity = ethnicity;

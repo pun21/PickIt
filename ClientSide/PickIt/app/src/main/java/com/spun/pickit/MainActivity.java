@@ -75,6 +75,9 @@ public class MainActivity extends Activity {
 
     public void onClickUsername(View v) {
         //go to Profile Admin Activity
+        //Everytime we go to a ProfileActivity,  set the nextUserName as
+        // the profile page that we are viewing
+        this.pickItApp.setNextUsername(this.pickItApp.getUsername());
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
@@ -267,6 +270,7 @@ public class MainActivity extends Activity {
                         public void run() {
                             Intent intent = new Intent(mainActivity, ProfileActivity.class);
                             pickItApp.setNextUserID(pickIt.getUserID());
+                            pickItApp.setNextUsername(pickIt.getUsername());
 
                             startActivity(intent);
                         }
