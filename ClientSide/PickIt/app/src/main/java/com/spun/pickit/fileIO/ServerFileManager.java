@@ -20,7 +20,8 @@ public class ServerFileManager {
     final private String KEY_MOST_RECENT_UPLOADS = "PickIt/php/most_recent_uploads.php";
     final private String KEY_TRENDING_UPLOADS = "PickIt/php/trending_uploads.php";
     final private String KEY_EXPIRING_UPLOADS = "PickIt/php/expiring_uploads.php";
-    final private String KEY_USER_ID_PICKITS = "PickIt/php/user_id_pickit_uploads.php";
+    final private String KEY_USER_UPLOADS = "PickIt/php/users_uploads.php";
+    final private String KEY_RECENT_USER_ACTIVITY = "PickIt/php/users_recent_activity.php";
     final private Activity activity;
     final private String file;
     final private String filename;
@@ -55,9 +56,14 @@ public class ServerFileManager {
         new AsyncFileUploaderThread(posting).start();
     }
 
-    public ArrayList<PickIt> downloadUserIDPickIts(int quantity, int userID){
-        //TODO complete this php query
-        String url = KEY_URL_PREFIX + KEY_USER_ID_PICKITS + "?NumPickIts=" + String.valueOf(quantity) + "?UserID=" + String.valueOf(userID);
+    public ArrayList<PickIt> getUploadedPickIts(String username){
+        String url = KEY_URL_PREFIX + KEY_USER_UPLOADS + "?Username=" + username;
+        DatabaseAccess access = new DatabaseAccess();
+        ArrayList<PickIt> pickIts = access.getPickIts(url);
+        return pickIts;
+    }
+    public ArrayList<PickIt> getRecentActivityPickIts(String username){
+        String url = KEY_URL_PREFIX + KEY_RECENT_USER_ACTIVITY + "?Username=" + username;
         DatabaseAccess access = new DatabaseAccess();
         ArrayList<PickIt> pickIts = access.getPickIts(url);
         return pickIts;

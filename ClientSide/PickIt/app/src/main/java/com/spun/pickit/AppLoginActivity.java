@@ -102,14 +102,6 @@ public class AppLoginActivity extends Activity {
         //Fb's Insights Dashboard - Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
     }
-
-    @Override
-    protected void onStop(){
-        username = "";
-        password = "";
-
-        super.onStop();
-    }
     //endregion
 
     //region Input Handlers

@@ -19,8 +19,6 @@ public class PickIt {
     //region Constructors
     public PickIt(){
         choices = new ArrayList<>();
-
-        timer = null;
     }
 
     public PickIt(int pickItID, String username, String category, String subjectHeader, int secondsOfLife, ArrayList<Choice> choices){
@@ -31,7 +29,7 @@ public class PickIt {
         this.subjectHeader = subjectHeader;
         this.secondsOfLife = secondsOfLife;
 
-        timer = null;
+        startTimer();
     }
 
     public PickIt(ArrayList<Choice> choices, int userID, String category, String subjectHeader, int secondsOfLife){
@@ -93,12 +91,11 @@ public class PickIt {
     }
     public void setUsername(String username) {this.username = username; }
     public void setSecondsOfLife(int secondsOfLife){
-        if(timerIsRunning())
-            return;
-
         this.secondsOfLife = secondsOfLife;
 
-        startTimer();
+        if(!timerIsRunning()){
+            startTimer();
+        }
     }
 
     //region ...Timer
@@ -109,7 +106,7 @@ public class PickIt {
             timer.setTimer(secondsOfLife);
         }
     }
-    private void stopTimer(){
+    public void stopTimer(){
         if(timer != null)
             timer.stopTimer();
     }

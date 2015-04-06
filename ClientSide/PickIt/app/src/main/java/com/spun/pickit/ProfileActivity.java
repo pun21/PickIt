@@ -16,22 +16,19 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.spun.pickit.fileIO.ServerFileManager;
+import com.spun.pickit.model.Enums;
 import com.spun.pickit.model.PickIt;
 
 import java.util.ArrayList;
 
-
 public class ProfileActivity extends Activity {
-    private static final int USER_NAME = 78445;
-    private static final int VOTED_ON = 4588;
     //region Class Variables
-    private static final int MAX_NUMBER_GRID_ROWS = 10;
-
-    private int viewSortingType = USER_NAME;
-
-    PickItApp pickItApp;
+    private PickItApp pickItApp;
     private static ArrayList<PickIt> pickItList;
     private ProgressBar loading;
+    private TextView username;
+
+    private Enums.Toggles viewSortingType;
     //endregion
 
     //region Activity Life-cycle Methods
@@ -43,9 +40,14 @@ public class ProfileActivity extends Activity {
 
         pickItApp = (PickItApp)getApplication();
         loading = (ProgressBar)findViewById(R.id.loading);
+        username = (TextView)findViewById(R.id.username);
 
-        setUsername();
-        populatePickItList();
+        username.setText(pickItApp.getNextUsername());
+
+        viewSortingType  = Enums.Toggles.UPLOADED;
+
+        setEditProfile();
+        populateUploadedPickItList();
         populateListView();
         setToggles();
         endLoad();
@@ -73,6 +75,15 @@ public class ProfileActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onStop(){
+        for(int a = 0; a < pickItList.size(); a++){
+            pickItList.get(a).stopTimer();
+        }
+
+        super.onStop();
+    }
     //endregion
 
     //region Input Handlers
@@ -82,24 +93,8 @@ public class ProfileActivity extends Activity {
     }
 
     public void onClickUsername(View v) {
-        boolean nextUserEqualsThisUser = pickItApp.getUsername() == pickItApp.getNextUsername();
-        boolean nextUserNotEqualToThisUser = !nextUserEqualsThisUser;
-
-        // Highest Priority:  if the profile is NextUsers, then setNextUser
-        // If it is the users Profile Page, then set the UsersProfile page
-        // else if it is a guest dont enable the thing
-
-        if (nextUserNotEqualToThisUser){
-            // does Nothing,  you cant not click it
-        }
-        else if (nextUserEqualsThisUser){
-            // if the user is you, then do something
             Intent intent = new Intent(this, AccountAdminActivity.class);
             startActivity(intent);
-        }
-        else if(pickItApp.isGuest()){
-            // if its a Guest do nothing
-        }
     }
 
     public void onClickNavUpload(View v) {
@@ -108,7 +103,6 @@ public class ProfileActivity extends Activity {
     }
 
     public void onClickSignOut(View v) {
-
         pickItApp.resetUser();
 
         //go to login page after signing out
@@ -116,23 +110,37 @@ public class ProfileActivity extends Activity {
         startActivity(intent);
     }
 
-    public void onClickUploaded(View v) {
+    public void onClickUploadedToggle(View v) {
+        viewSortingType = Enums.Toggles.UPLOADED;
 
+        populateUploadedPickItList();
+        populateListView();
+
+        setToggles();
+    }
+
+    public void onClickRecentActivityToggle(View v) {
+        viewSortingType = Enums.Toggles.RECENT_ACTIVITY;
+
+        populateRecentActivityPickItList();
+        populateListView();
+
+        setToggles();
     }
     //endregion
 
 
     private void setToggles(){
-        ToggleButton usernameToggle = (ToggleButton) findViewById(R.id.toggle_username);
+        ToggleButton uploadedToggle = (ToggleButton) findViewById(R.id.toggle_uploaded);
         ToggleButton votedOnToggle = (ToggleButton) findViewById(R.id.toggle_voted_on);
 
         switch(viewSortingType){
-            case USER_NAME:
-                usernameToggle.setChecked(true);
+            case UPLOADED:
+                uploadedToggle.setChecked(true);
                 votedOnToggle.setChecked(false);
                 break;
-            case VOTED_ON:
-                usernameToggle.setChecked(false);
+            case RECENT_ACTIVITY:
+                uploadedToggle.setChecked(false);
                 votedOnToggle.setChecked(true);
                 break;
             default:
@@ -140,44 +148,28 @@ public class ProfileActivity extends Activity {
         }
     }
 
+    private void setEditProfile(){
+        boolean nextUserIsThisUser = pickItApp.getUsername().equals(pickItApp.getNextUsername());
 
-
-
-    private void setUsername(){
-        TextView username = (TextView)findViewById(R.id.textView_username);
-        boolean nextUserEqualsThisUser = pickItApp.getUsername() == pickItApp.getNextUsername();
-        boolean nextUserNotEqualToThisUser = !nextUserEqualsThisUser;
-
-           // Highest Priority:  if the profile is NextUsers, then setNextUser
-           // If it is the users Profile Page, then set the UsersProfile page
-           // else if it is a guest dont enable the thing
-
-
-        if (nextUserNotEqualToThisUser){
-            username.setEnabled(true);
-            username.setText(pickItApp.getNextUsername());
-        }
-        else if (nextUserEqualsThisUser){
-            username.setEnabled(true);
-            username.setText(pickItApp.getUsername());
-        }
-        else if(pickItApp.isGuest()){
-            username.setEnabled(false);
-            username.setText(pickItApp.getNextUserID());
+        if (nextUserIsThisUser){
+            TextView editProfile = (TextView)findViewById(R.id.textView_EditProfile);
+            editProfile.setEnabled(true);
+            editProfile.setVisibility(View.VISIBLE);
         }
     }
 
-    private void populatePickItList() {
+    private void populateUploadedPickItList() {
         startLoad();
 
         ServerFileManager sm = new ServerFileManager();
-        pickItList = new ArrayList<>();
-        pickItList = sm.downloadMostRecentPickIts(MAX_NUMBER_GRID_ROWS);
-        try {
-            throw new Exception("Invalid sorting type");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        pickItList = sm.getUploadedPickIts(pickItApp.getNextUsername());
+    }
+
+    private void populateRecentActivityPickItList() {
+        startLoad();
+
+        ServerFileManager sm = new ServerFileManager();
+        pickItList = sm.getRecentActivityPickIts(pickItApp.getNextUsername());
     }
 
     private void populateListView() {
@@ -193,6 +185,11 @@ public class ProfileActivity extends Activity {
         loading.setVisibility(View.VISIBLE);
     }
 
+    public void endLoad(){
+        setEnabled(true);
+        loading.setVisibility(View.INVISIBLE);
+    }
+
     private void setEnabled(boolean enabled){
         TableLayout layout = (TableLayout) findViewById(R.id.profile_activity_table);
         for (int i = 0; i < layout.getChildCount(); i++) {
@@ -202,12 +199,6 @@ public class ProfileActivity extends Activity {
                 child.setEnabled(enabled);
         }
     }
-
-    public void endLoad(){
-        setEnabled(true);
-        loading.setVisibility(View.INVISIBLE);
-    }
-
 
     //Adapter
     private class CustomListAdapter extends ArrayAdapter<PickIt> {
@@ -230,9 +221,6 @@ public class ProfileActivity extends Activity {
                         parent, false);
             }
 
-//            ImageView temp = (ImageView) itemView.findViewById(R.id.image_tl);
-//            temp.setId(ID_ADDITIVE+temp.getId());
-
             final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
             final ServerFileManager sm = new ServerFileManager();
             final PickIt pickIt = pickItList.get(position);
@@ -240,11 +228,6 @@ public class ProfileActivity extends Activity {
             // Fill the view
             vHeading = (TextView) itemView.findViewById(R.id.heading);
             vHeading.setText(pickIt.getSubjectHeader());
-//                vHeading.setId(ID_ADDITIVE+1000+pickIt.getPickItID());
-
-//            vUsername = (TextView) itemView.findViewById(R.id.username);
-//            vUsername.setText(pickIt.getUsername());
-//            vUsername.setId(ID_ADDITIVE+2000+pickIt.getPickItID());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -263,14 +246,9 @@ public class ProfileActivity extends Activity {
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
             vCategory.setText(pickIt.getCategory());
-//                vCategory.setId(ID_ADDITIVE+3000+pickIt.getPickItID());
 
             vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
-//                vVotingTime.setId(ID_ADDITIVE+4000+pickIt.getPickItID());
-
             vVotingTime.setText(pickIt.getLifeString());
-
-            //endregion
 
             profileActivity.runOnUiThread(new Runnable() {
                 @Override
@@ -283,6 +261,4 @@ public class ProfileActivity extends Activity {
             return itemView;
         }
     }
-
-
 }

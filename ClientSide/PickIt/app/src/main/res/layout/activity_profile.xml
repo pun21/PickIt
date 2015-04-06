@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:onClick="onClickRecentActivityToggle">
 
     <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +24,7 @@
             android:paddingTop="@dimen/activity_vertical_margin">
 
             <TextView
-                android:id = "@+id/sign_out_alternative"
+                android:id = "@+id/sign_out"
                 android:text = "@string/sign_out"
                 android:clickable = "true"
                 android:onClick = "onClickSignOut"
@@ -35,8 +36,9 @@
                 android:textColor="#FF417286" />
 
             <TextView
-                android:id="@+id/textView_username"
-                android:text="@string/username"
+                android:id="@+id/textView_EditProfile"
+                android:text="@string/edit_profile"
+                android:visibility="invisible"
                 android:clickable="true"
                 android:onClick="onClickUsername"
                 android:layout_height="wrap_content"
@@ -47,66 +49,52 @@
                 android:gravity="end"
                 android:textColor="#FF417286" />
         </TableRow>
-
         <TableRow
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <TextView
+            android:id = "@+id/username"
+            android:text = "@string/username"
+            android:clickable = "true"
+            android:onClick = "onClickSignOut"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:paddingBottom="15dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:layout_margin="5dp">
-
-            <Spinner
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/category_menu_main"
-                android:text="@string/category_menu"
-                android:background="@drawable/custom_dropdown"
-                android:layout_height="fill_parent"
-                android:layout_width="0dp"
-                android:layout_weight="5"
-                android:layout_marginEnd="75dp" />
-
-
-            <ImageButton
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/button_upload"
-                android:contentDescription="@string/uploadDescription"
-                android:background="@drawable/ic_action_new"
-                android:layout_height="40dp"
-                android:layout_width="40dp"
-                android:onClick="onClickUpload" />
+            android:layout_width="0dp"
+            android:textStyle="bold"
+            android:textSize="50sp"
+            android:layout_weight="1"
+            android:textColor="#FF417286"
+            android:gravity="center"/>
         </TableRow>
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#ffffff"
+            android:layout_marginTop="15dp"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin" >
 
             <ToggleButton
-                android:id="@+id/toggle_username"
+                android:id="@+id/toggle_uploaded"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:textOff="@string/users_pictures"
                 android:textOn="@string/users_pictures"
-                android:onClick="onClickTrendingToggle"
+                android:onClick="onClickUploadedToggle"
                 android:layout_weight="1"
                 android:layout_marginEnd="5dp"
-                android:checked="false"
-                android:text="Users Pictures" />
+                android:checked="false" />
 
             <ToggleButton
                 android:id="@+id/toggle_voted_on"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:textOff="@string/voted_on"
-                android:textOn="@string/voted_on"
-                android:onClick="onClickRecencyToggle"
-                android:layout_weight="1"/>
+                android:textOff="@string/recentActivity"
+                android:textOn="@string/recentActivity"
+                android:onClick="onClickRecentActivityToggle"
+                android:layout_weight="1"
+                android:checked="false" />
         </TableRow>
-
         <TableRow
             android:background="#FF417286"
             android:layout_height="fill_parent"
@@ -130,12 +118,10 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1">
-
                 </ListView>
             </LinearLayout>
         </TableRow>
     </TableLayout>
-
 
     <ProgressBar
         android:id="@+id/loading"
@@ -147,150 +133,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true" />
-
-
-    <TableRow
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#ffffff"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
-
-        <TextView
-            android:id = "@+id/sign_out"
-            android:text = "@string/sign_out"
-            android:clickable = "true"
-            android:onClick = "onClickSignOut"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:textStyle="bold"
-            android:textSize="25sp"
-            android:layout_weight="1"
-            android:textColor="#FF417286" />
-
-        <TextView
-            android:id="@+id/textView_EditProfile"
-            android:text="@string/edit_profile"
-            android:clickable="true"
-            android:onClick="onClickUsername"
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:textStyle="bold|italic"
-            android:textSize="25sp"
-            android:layout_weight="2"
-            android:gravity="end"
-            android:textColor="#FF417286" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#ffffff"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin" >
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:textOff="@string/uploaded"
-            android:textOn="@string/uploaded"
-            android:id="@+id/toggle_uploaded"
-            android:onClick="onClickUploaded"
-            android:layout_weight="1"
-            android:layout_gravity="start"/>
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:textOff="@string/friendsRecentUploads"
-            android:textOn="@string/friendsRecentUploads"
-            android:id="@+id/toggle_friendsRecentUploads"
-            android:onClick="onClickTrendingToggle"
-            android:layout_weight="1"
-            android:layout_gravity="center"/>
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:textOff="@string/expiring"
-            android:textOn="@string/expiring"
-            android:id="@+id/toggle_time_remaining"
-            android:onClick="onClickTimeRemainingToggle"
-            android:layout_weight="1"
-            android:layout_gravity="right"/>
-    </TableRow>
-
-    <TableRow
-        android:background="@drawable/custom_table_border"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:layout_weight="1"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin" >
-
-            <ScrollView
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <TableLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#ffffff"
-                    android:id="@+id/resultTable">
-
-                    <TableRow>
-                        <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="Example1"
-                            android:textSize="25sp"
-                            android:textColor="#FF417286"/>
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="Example2"
-                            android:textSize="25sp"
-                            android:textColor="#FF417286" />
-                    </TableRow>
-
-                    <TableRow
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="Example3"
-                            android:textSize="25sp"
-                            android:textColor="#FF417286"
-                            android:enabled="true"
-                            android:background="#FF417286"
-                            android:textStyle="bold|italic" />
-                    </TableRow>
-                </TableLayout>
-            </ScrollView>
-        </LinearLayout>
-    </TableRow>
-</TableLayout>
+</RelativeLayout>

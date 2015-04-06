@@ -1,23 +1,21 @@
 package com.spun.pickit;
 
-import android.annotation.TargetApi;
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.os.StrictMode;
 
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Demographics;
+import com.spun.pickit.model.Enums;
+import com.spun.pickit.model.PickIt;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class PickItApp extends Application {
@@ -108,7 +106,6 @@ public class PickItApp extends Application {
         setReligion(demographics.getReligion());
     }
     public void resetUser(){
-        setDemographics(null);
         setUserID(0);
         setUsername("");
         setBirthday("");
@@ -135,7 +132,7 @@ public class PickItApp extends Application {
         setInSharedPreferences(KEY_USERNAME, username);
     }
     public String getUsername(){
-        if(!username.equals(""))
+        if(username != null && !username.equals(""))
             return username;
 
         return getFromSharedPreferences(KEY_USERNAME, "");
@@ -252,6 +249,34 @@ public class PickItApp extends Application {
         boolean value = settings.getBoolean(key, defaultValue);
 
         return value;
+    }
+    //endregion
+
+    //region Common methods
+    public ArrayList<PickIt>  getPickIts(Enums.Toggles mode, int MAX_NUMBER_GRID_ROWS){
+        ServerFileManager sm = new ServerFileManager();
+        ArrayList<PickIt> pickItList = new ArrayList<>();
+
+        switch (mode){
+            case TRENDING:
+                pickItList = sm.downloadTrendingPickIts(MAX_NUMBER_GRID_ROWS);
+                break;
+            case MOST_RECENT:
+                pickItList = sm.downloadMostRecentPickIts(MAX_NUMBER_GRID_ROWS);
+                break;
+            case EXPIRING:
+                pickItList = sm.downloadExpiringPickIts(MAX_NUMBER_GRID_ROWS);
+                break;
+            default:
+                try {
+                    throw new Exception("Invalid Enum for Toggle Mode!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+
+        return pickItList;
     }
     //endregion
 }

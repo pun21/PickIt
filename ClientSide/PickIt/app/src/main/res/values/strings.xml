@@ -24,8 +24,9 @@
     <string name="expiring">Expiring</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="upload">Upload</string>
-    <string name="users_pictures">Users Pictures</string>
+    <string name="users_pictures">Uploaded Pictures</string>
     <string name="voted_on">Voted On</string>
+    <string name="recentActivity">Recent Activity</string>
 
     <string name="uploaded">Your Uploads</string>
     <string name="friendsRecentUploads">Friends\' Uploads</string>

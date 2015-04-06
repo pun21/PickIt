@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.spun.pickit.fileIO.ServerFileManager;
+import com.spun.pickit.model.Enums;
 import com.spun.pickit.model.PickIt;
 
 import java.util.ArrayList;
@@ -23,10 +24,7 @@ public class MainActivity extends Activity {
     //region Class Variables
     private static final int MAX_NUMBER_GRID_ROWS = 10;
 
-    private static final int TRENDING = 0;
-    private static final int MOST_RECENT = 1;
-    private static final int EXPIRING = 2;
-    private int mSortingType;
+    private Enums.Toggles mSortingType;
 
     private ArrayAdapter<CharSequence> mCategoriesAdapter;
 
@@ -56,7 +54,7 @@ public class MainActivity extends Activity {
 
         setUsername();
 
-        mSortingType = MOST_RECENT;
+        mSortingType = Enums.Toggles.MOST_RECENT;
 
         populatePickItList();
         populateListView();
@@ -64,6 +62,15 @@ public class MainActivity extends Activity {
         setSpinners();
 
         endLoad();
+    }
+
+    @Override
+    protected void onStop(){
+        for(int a = 0; a < pickItList.size(); a++){
+            pickItList.get(a).stopTimer();
+        }
+
+        super.onStop();
     }
     //endregion
 
@@ -74,10 +81,10 @@ public class MainActivity extends Activity {
     }
 
     public void onClickUsername(View v) {
-        //go to Profile Admin Activity
-        //Everytime we go to a ProfileActivity,  set the nextUserName as
-        // the profile page that we are viewing
+        // When we go to the ProfileActivity,  set the nextUserName as
+        // the profile page that we are intending to view
         this.pickItApp.setNextUsername(this.pickItApp.getUsername());
+
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
@@ -93,7 +100,7 @@ public class MainActivity extends Activity {
     /*Handler methods for results pane toggles ---------------------------------------------------*/
 
     public void onClickRecencyToggle(View v) {
-        mSortingType = MOST_RECENT;
+        mSortingType = Enums.Toggles.MOST_RECENT;
 
         populatePickItList();
         populateListView();
@@ -102,7 +109,7 @@ public class MainActivity extends Activity {
     }
 
     public void onClickTrendingToggle(View v) {
-        mSortingType = TRENDING;
+        mSortingType = Enums.Toggles.TRENDING;
 
         populatePickItList();
         populateListView();
@@ -111,7 +118,7 @@ public class MainActivity extends Activity {
     }
 
     public void onClickTimeRemainingToggle(View v) {
-        mSortingType = EXPIRING;
+        mSortingType = Enums.Toggles.EXPIRING;
 
         populatePickItList();
         populateListView();
@@ -155,10 +162,6 @@ public class MainActivity extends Activity {
     }
     private void setUsername(){
         TextView username = (TextView)findViewById(R.id.textView_username);
-
-        if(pickItApp.isGuest()){
-            username.setEnabled(false);
-        }
 
         username.setText(pickItApp.getUsername());
     }
@@ -247,9 +250,6 @@ public class MainActivity extends Activity {
                 }
             });
 
-//            ImageView temp = (ImageView) itemView.findViewById(R.id.image_tl);
-//            temp.setId(ID_ADDITIVE+temp.getId());
-
             final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
             final ServerFileManager sm = new ServerFileManager();
             final PickIt pickIt = pickItList.get(position);
@@ -257,7 +257,6 @@ public class MainActivity extends Activity {
             // Fill the view
             vHeading = (TextView) itemView.findViewById(R.id.heading);
             vHeading.setText(pickIt.getSubjectHeader());
-//                vHeading.setId(ID_ADDITIVE+1000+pickIt.getPickItID());
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
             vUsername.setText(pickIt.getUsername());
@@ -278,19 +277,11 @@ public class MainActivity extends Activity {
                 }
             });
 
-
-//                vUsername.setId(ID_ADDITIVE+2000+pickIt.getPickItID());
-
             vCategory = (TextView) itemView.findViewById(R.id.category);
             vCategory.setText(pickIt.getCategory());
-//                vCategory.setId(ID_ADDITIVE+3000+pickIt.getPickItID());
 
             vVotingTime = (TextView) itemView.findViewById(R.id.voting_time);
-//                vVotingTime.setId(ID_ADDITIVE+4000+pickIt.getPickItID());
-
             vVotingTime.setText(pickIt.getLifeString());
-
-            //endregion
 
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
@@ -303,7 +294,4 @@ public class MainActivity extends Activity {
             return itemView;
         }
     }
-
-    //Timer
-
 }
