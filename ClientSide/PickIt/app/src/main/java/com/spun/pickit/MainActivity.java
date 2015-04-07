@@ -241,7 +241,7 @@ public class MainActivity extends Activity {
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(mainActivity, ResultsActivity.class);
+                            Intent intent = new Intent(mainActivity, Voting_ResultsActivity.class);
                             pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
 
                             startActivity(intent);

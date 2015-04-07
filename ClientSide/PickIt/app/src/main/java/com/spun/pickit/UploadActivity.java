@@ -743,7 +743,7 @@ public class UploadActivity extends FragmentActivity {
 
         private void SendUserToResultsActivity(final UploadActivity activity){
             //go to Results Activity
-            Intent intent = new Intent(activity, ResultsActivity.class);
+            Intent intent = new Intent(activity, Voting_ResultsActivity.class);
             startActivity(intent);
         }
     }

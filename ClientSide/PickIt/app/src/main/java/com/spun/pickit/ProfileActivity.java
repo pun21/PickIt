@@ -235,7 +235,7 @@ public class ProfileActivity extends Activity {
                     profileActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(profileActivity, ResultsActivity.class);
+                            Intent intent = new Intent(profileActivity, Voting_ResultsActivity.class);
                             pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
 
                             startActivity(intent);
