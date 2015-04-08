@@ -230,11 +230,16 @@ public class MainActivity extends Activity {
 
             // Make sure we have a view to work with (may have been given null)
             View itemView = view;
+
+
             if (itemView == null) {
                 itemView = mainActivity.getLayoutInflater().inflate(R.layout.pickit_row,
                         parent, false);
             }
 
+            final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
+            final ServerFileManager sm = new ServerFileManager();
+            final PickIt pickIt = pickItList.get(position);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -242,6 +247,10 @@ public class MainActivity extends Activity {
                         @Override
                         public void run() {
                             Intent intent = new Intent(mainActivity, Voting_ResultsActivity.class);
+                            Bundle b = new Bundle();
+                            b.putParcelable("com.spun.pickit.PickItParcel", pickIt);
+                            intent.putExtra("bundledParcel", b);
+                            intent.putExtra("TEST", 45);
                             pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
 
                             startActivity(intent);
@@ -249,10 +258,6 @@ public class MainActivity extends Activity {
                     });
                 }
             });
-
-            final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
-            final ServerFileManager sm = new ServerFileManager();
-            final PickIt pickIt = pickItList.get(position);
 
             // Fill the view
             vHeading = (TextView) itemView.findViewById(R.id.heading);

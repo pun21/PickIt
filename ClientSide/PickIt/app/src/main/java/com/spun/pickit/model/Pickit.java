@@ -1,10 +1,12 @@
 package com.spun.pickit.model;
 
 import android.os.CountDownTimer;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class PickIt {
+public class PickIt implements Parcelable {
     //region Class Variables
     private AsyncTimer timer;
     private ArrayList<Choice> choices;
@@ -116,8 +118,44 @@ public class PickIt {
 
         return false;
     }
+
+
+    public PickIt (Parcel in) {
+        this();
+
+        this.username = in.readString();
+        this.userID = in.readInt();
+        this.pickItID = in.readInt();
+        in.readTypedList(choices, Choice.CREATOR);
+        this.category = in.readString();
+        this.subjectHeader = in.readString();
+        this.secondsOfLife = in.readInt();
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeInt(userID);
+        dest.writeInt(pickItID);
+        dest.writeList(choices);
+        dest.writeString(category);
+        dest.writeString(subjectHeader);
+        dest.writeInt(secondsOfLife);
+    }
     //endregion
-    //endregion
+
+    public static final Parcelable.Creator<PickIt> CREATOR = new Parcelable.Creator<PickIt>() {
+        public PickIt createFromParcel(Parcel in) {
+            return new PickIt(in);
+        }
+        public PickIt[] newArray(int size) {
+            return new PickIt[size];
+        }
+    };
 
     class AsyncTimer{
         private PickIt pickIt;

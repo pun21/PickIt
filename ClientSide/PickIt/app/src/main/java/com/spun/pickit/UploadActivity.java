@@ -744,6 +744,7 @@ public class UploadActivity extends FragmentActivity {
         private void SendUserToResultsActivity(final UploadActivity activity){
             //go to Results Activity
             Intent intent = new Intent(activity, Voting_ResultsActivity.class);
+            intent.putExtra("com.spun.pickit", pickIt);
             startActivity(intent);
         }
     }

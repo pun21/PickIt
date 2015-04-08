@@ -236,6 +236,7 @@ public class ProfileActivity extends Activity {
                         @Override
                         public void run() {
                             Intent intent = new Intent(profileActivity, Voting_ResultsActivity.class);
+                            intent.putExtra("com.spun.pickit", pickIt);
                             pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
 
                             startActivity(intent);

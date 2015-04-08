@@ -9,6 +9,13 @@
         <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\bolts-android-1.1.2-ddc48799f4cbd1e27d1d8b294b1025c848d9ab0f.jar" />
     </item>
     <item
+        jar="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\libs\achartengine-1.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9932e3fb9fbe54e80873e77f72a99f79e33b3250">
+        <dex dex="C:\Users\Roxy\Documents\GitHub\PickIt\ClientSide\PickIt\app\build\intermediates\pre-dexed\debug\achartengine-1.1.0-20aa048df467093001abe61e30069163d911e86e.jar" />
+    </item>
+    <item
         jar="C:\Program Files\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"

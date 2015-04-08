@@ -8,7 +8,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.Demographics;
@@ -16,7 +15,6 @@ import com.spun.pickit.model.Enums;
 import com.spun.pickit.model.PickIt;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PickItApp extends Application {
     //region Class variables
