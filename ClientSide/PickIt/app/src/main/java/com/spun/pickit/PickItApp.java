@@ -43,9 +43,6 @@ public class PickItApp extends Application {
     private String political;
     private boolean guest;
 
-    private int resultPickItID;
-    private int nextUserID;
-    private String nextUsername;
     //endregion
     //endregion
 
@@ -72,28 +69,6 @@ public class PickItApp extends Application {
     //endregion
 
     //region Accessor Methods
-    public void setResultPickItID(int resultPickItID){
-        this.resultPickItID = resultPickItID;
-
-        setInSharedPreferences(KEY_RESULT_ID, resultPickItID);
-    }
-    public int getResultPickItID(){
-        if(nextUserID != 0)
-            return nextUserID;
-
-        return getFromSharedPreferences(KEY_NEXT_USER_ID, 0);
-    }
-    public void setNextUserID(int nextUserID){
-        this.nextUserID = nextUserID;
-
-        setInSharedPreferences(KEY_NEXT_USER_ID, nextUserID);
-    }
-    public int getNextUserID(){
-        if(resultPickItID != 0)
-            return resultPickItID;
-
-        return getFromSharedPreferences(KEY_RESULT_ID, 0);
-    }
     public void setDemographics(Demographics demographics){
         this.demographics = demographics;
 
@@ -156,14 +131,6 @@ public class PickItApp extends Application {
             return gender;
 
         return getFromSharedPreferences(KEY_GENDER, "");
-    }
-
-    public void setNextUsername(String username){
-        this.nextUsername = username;
-    }
-
-    public String getNextUsername(){
-        return this.nextUsername;
     }
     public void setEthnicity(String ethnicity){
         this.ethnicity = ethnicity;

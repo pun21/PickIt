@@ -658,7 +658,7 @@ public class UploadActivity extends FragmentActivity {
             String error = pickItID != 0 ? "" : "Error saving PickIt to database!";
 
             if(error != ""){
-                updateScreen(error, pickItID);
+                updateScreen(error, null);
                 return;
             }
 
@@ -672,21 +672,21 @@ public class UploadActivity extends FragmentActivity {
 
                 if(savedFile == null){
                     error = "Could not save image locally";
-                    updateScreen(error, pickItID);
+                    updateScreen(error, null);
                     return;
                 }
 
                 new SaveChoice(activity, choices.get(a), savedFile, pickItID, choices.get(a).getFilename()).start();
             }
 
-            updateScreen("", pickItID);
+            updateScreen("", pickIt);
         }
 
-        private void updateScreen(final String error, final int pickItID){
+        private void updateScreen(final String error, final PickIt pickIt){
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    UpdateScreen(activity, error, pickItID);
+                    UpdateScreen(activity, error, pickIt);
                 }
             });
         }
@@ -722,13 +722,12 @@ public class UploadActivity extends FragmentActivity {
             localFileManager.savePickIt(pickIt.getCategory(), pickIt.getSubjectHeader(), pickIt.getPickItID());
         }
 
-        private void UpdateScreen(final UploadActivity activity, final String error, final int nextResultID){
-            if(error.length() == 0 && nextResultID != 0){
-                pickItApp.setResultPickItID(nextResultID);
+        private void UpdateScreen(final UploadActivity activity, final String error, final PickIt pickIt){
+            if(error.length() == 0 && pickIt != null){
+                Globals.pickIt = pickIt;
                 activity.enableFrontEnd();
                 SendUserToResultsActivity(activity);
-            }
-            else{
+            }else{
                 EnableUIAndShowError(activity, error);
             }
         }

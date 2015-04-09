@@ -42,7 +42,7 @@ public class ProfileActivity extends Activity {
         loading = (ProgressBar)findViewById(R.id.loading);
         username = (TextView)findViewById(R.id.username);
 
-        username.setText(pickItApp.getNextUsername());
+        username.setText(Globals.nextUsername);
 
         viewSortingType  = Enums.Toggles.UPLOADED;
 
@@ -149,7 +149,7 @@ public class ProfileActivity extends Activity {
     }
 
     private void setEditProfile(){
-        boolean nextUserIsThisUser = pickItApp.getUsername().equals(pickItApp.getNextUsername());
+        boolean nextUserIsThisUser = pickItApp.getUsername().equals(Globals.nextUsername);
 
         if (nextUserIsThisUser){
             TextView editProfile = (TextView)findViewById(R.id.textView_EditProfile);
@@ -162,14 +162,14 @@ public class ProfileActivity extends Activity {
         startLoad();
 
         ServerFileManager sm = new ServerFileManager();
-        pickItList = sm.getUploadedPickIts(pickItApp.getNextUsername());
+        pickItList = sm.getUploadedPickIts(Globals.nextUsername);
     }
 
     private void populateRecentActivityPickItList() {
         startLoad();
 
         ServerFileManager sm = new ServerFileManager();
-        pickItList = sm.getRecentActivityPickIts(pickItApp.getNextUsername());
+        pickItList = sm.getRecentActivityPickIts(Globals.nextUsername);
     }
 
     private void populateListView() {
@@ -236,8 +236,8 @@ public class ProfileActivity extends Activity {
                         @Override
                         public void run() {
                             Intent intent = new Intent(profileActivity, Voting_ResultsActivity.class);
-                            intent.putExtra("com.spun.pickit", pickIt);
-                            pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
+
+                            Globals.pickIt = pickIt;
 
                             startActivity(intent);
                         }

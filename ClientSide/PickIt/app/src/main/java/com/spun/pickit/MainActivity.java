@@ -24,17 +24,14 @@ public class MainActivity extends Activity {
     //region Class Variables
     private static final int MAX_NUMBER_GRID_ROWS = 10;
 
-    private Enums.Toggles mSortingType;
-
     private ArrayAdapter<CharSequence> mCategoriesAdapter;
-
     private static ArrayList<PickIt> pickItList;
-    private PickItApp pickItApp;
 
+    private PickItApp pickItApp;
     private Spinner mCategory;
     private ProgressBar loading;
 
-
+    private Enums.Toggles mSortingType;
     //endregion
 
     //region Life-cycle methods
@@ -83,7 +80,7 @@ public class MainActivity extends Activity {
     public void onClickUsername(View v) {
         // When we go to the ProfileActivity,  set the nextUserName as
         // the profile page that we are intending to view
-        this.pickItApp.setNextUsername(this.pickItApp.getUsername());
+        Globals.nextUsername = pickItApp.getUsername();
 
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
@@ -246,13 +243,9 @@ public class MainActivity extends Activity {
                     mainActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(mainActivity, Voting_ResultsActivity.class);
-                            Bundle b = new Bundle();
-                            b.putParcelable("com.spun.pickit.PickItParcel", pickIt);
-                            intent.putExtra("bundledParcel", b);
-                            intent.putExtra("TEST", 45);
-                            pickItApp.setResultPickItID(pickItList.get(position).getPickItID());
+                            Globals.pickIt = pickIt;
 
+                            Intent intent = new Intent(mainActivity, Voting_ResultsActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -273,8 +266,8 @@ public class MainActivity extends Activity {
                         @Override
                         public void run() {
                             Intent intent = new Intent(mainActivity, ProfileActivity.class);
-                            pickItApp.setNextUserID(pickIt.getUserID());
-                            pickItApp.setNextUsername(pickIt.getUsername());
+                            Globals.nextUserID = pickIt.getUserID();
+                            Globals.nextUsername = pickIt.getUsername();
 
                             startActivity(intent);
                         }

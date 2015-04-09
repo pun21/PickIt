@@ -4,9 +4,10 @@ import android.os.CountDownTimer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PickIt implements Parcelable {
+public class PickIt implements Serializable {
     //region Class Variables
     private AsyncTimer timer;
     private ArrayList<Choice> choices;
@@ -131,21 +132,21 @@ public class PickIt implements Parcelable {
         this.subjectHeader = in.readString();
         this.secondsOfLife = in.readInt();
     }
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(username);
-        dest.writeInt(userID);
-        dest.writeInt(pickItID);
-        dest.writeList(choices);
-        dest.writeString(category);
-        dest.writeString(subjectHeader);
-        dest.writeInt(secondsOfLife);
-    }
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeString(username);
+//        dest.writeInt(userID);
+//        dest.writeInt(pickItID);
+//        dest.writeList(choices);
+//        dest.writeString(category);
+//        dest.writeString(subjectHeader);
+//        dest.writeInt(secondsOfLife);
+//    }
     //endregion
 
     public static final Parcelable.Creator<PickIt> CREATOR = new Parcelable.Creator<PickIt>() {

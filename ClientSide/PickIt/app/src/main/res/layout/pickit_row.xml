@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp" >
+    android:layout_height="wrap_content">
 
-    <!-- Thumbnail Image -->
-    <ImageView
-        android:id="@+id/image_tl"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="8dp" />
+    <TableRow>
+        <ImageView
+            android:id="@+id/image_tl"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="8dp" />
 
-    <!-- Subject Heading -->
-    <TextView
-        android:id="@+id/heading"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/image_tl"
-        android:layout_toEndOf="@+id/image_tl"
-        android:textSize="@dimen/heading"
-        android:textStyle="bold"
-        android:textColor="#000000" />
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp" >
+            <!-- Subject Heading -->
+            <TextView
+                android:id="@+id/heading"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/heading"
+                android:textStyle="bold"
+                android:textColor="#000000" />
 
-    <!-- Username -->
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/heading"
-        android:layout_marginTop="1dip"
-        android:layout_toEndOf="@+id/image_tl"
-        android:textSize="@dimen/username"
-        android:textColor="#ff1024ff" />
+            <!-- Username -->
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/heading"
+                android:layout_marginTop="1dip"
+                android:textSize="@dimen/username"
+                android:textColor="#ff1024ff" />
 
-    <!-- Category -->
-    <TextView
-        android:id="@+id/category"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/username"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/image_tl"
-        android:textColor="#000000"
-        android:textSize="@dimen/category" />
+            <!-- Category -->
+            <TextView
+                android:id="@+id/category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/username"
+                android:layout_marginTop="5dp"
+                android:textColor="#000000"
+                android:textSize="@dimen/category" />
 
-    <!-- Time Remaining -->
-    <TextView
-        android:id="@+id/voting_time"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/category"
-        android:layout_toEndOf="@+id/image_tl"
-        android:textColor="#000000"
-        android:textSize="@dimen/voting_time" />
+            <!-- Time Remaining -->
+            <TextView
+                android:id="@+id/voting_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/category"
+                android:textColor="#000000"
+                android:textSize="@dimen/voting_time" />
+        </RelativeLayout>
+    </TableRow>
+</TableLayout>
 
-</RelativeLayout>
 
 

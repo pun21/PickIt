@@ -52,10 +52,7 @@ public class Voting_ResultsActivity extends ActionBarActivity {
         voting_resultsActivity = this;
         pickItApp = (PickItApp)getApplication();
 
-        //todo get PickIt by pickItApp.getResultPickItId from one of the ArrayLists of pickIts downloaded into results pane
-        Bundle b = getIntent().getExtras();
-        pickIt = b.getParcelable("com.spun.pickit.PickIt");
-
+        pickIt = Globals.pickIt;
 
         mChart = openChart(1, 1);
         mCustomPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), this);
@@ -106,7 +103,8 @@ public class Voting_ResultsActivity extends ActionBarActivity {
         //go to Profile Admin Activity
         //Everytime we go to a ProfileActivity,  set the nextUserName as
         // the profile page that we are viewing
-        this.pickItApp.setNextUsername(this.pickItApp.getUsername());
+        Globals.nextUsername = pickItApp.getUsername();
+
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
