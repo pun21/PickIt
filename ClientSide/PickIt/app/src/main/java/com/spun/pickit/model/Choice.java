@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Choice implements Parcelable{
     private int choiceID;
     private Bitmap bitmap;

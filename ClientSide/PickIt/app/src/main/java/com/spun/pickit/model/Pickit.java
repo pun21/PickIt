@@ -11,6 +11,7 @@ public class PickIt implements Serializable {
     //region Class Variables
     private AsyncTimer timer;
     private ArrayList<Choice> choices;
+    private ArrayList<Vote> votes;
     private int userID;
     private int pickItID;
     private int secondsOfLife;

@@ -1,10 +1,13 @@
 package com.spun.pickit;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
@@ -23,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.spun.pickit.fileIO.ServerFileManager;
 import com.spun.pickit.model.PickIt;
@@ -33,40 +37,44 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
+import java.util.HashMap;
 
-public class Voting_ResultsActivity extends ActionBarActivity {
+public class Voting_ResultsActivity extends FragmentActivity {
+    //region Class variables
+    private static HashMap<Integer, ImageView> map;
+    private static PickIt pickIt;
+    private static GraphicalView mChart;
 
-    CustomPagerAdapter mCustomPagerAdapter;
-    ViewPager mViewPager;
-    PagerTabStrip mTabStrip;
-    static GraphicalView mChart;
-    RelativeLayout layout;
+    private CustomPagerAdapter mCustomPagerAdapter;
+    private ViewPager mViewPager;
+    private PagerTabStrip mTabStrip;
+    private RelativeLayout layout;
     private PickItApp pickItApp;
-    private PickIt pickIt;
-    static Voting_ResultsActivity voting_resultsActivity;
+    private ServerFileManager sm;
+    //endregion
 
+    //region Activity life-cycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting_results);
-        voting_resultsActivity = this;
         pickItApp = (PickItApp)getApplication();
 
         pickIt = Globals.pickIt;
+        sm = new ServerFileManager();
+        getBitmaps();
 
         mChart = openChart(1, 1);
-        mCustomPagerAdapter = new CustomPagerAdapter(getSupportFragmentManager(), this);
+        mCustomPagerAdapter = new CustomPagerAdapter(this, getSupportFragmentManager(), getApplicationContext());
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mCustomPagerAdapter);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_results, menu);
+//        getMenuInflater().inflate(R.menu.menu_results, menu);
         return true;
     }
 
@@ -84,7 +92,9 @@ public class Voting_ResultsActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    //endregion
 
+    //region UI handlers
     public void onClickNavHome(View v) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -94,6 +104,7 @@ public class Voting_ResultsActivity extends ActionBarActivity {
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
     }
+
     public void onClickUpload(View v) {
         Intent intent = new Intent(this, UploadActivity.class);
         startActivity(intent);
@@ -120,6 +131,7 @@ public class Voting_ResultsActivity extends ActionBarActivity {
     public void onClickVote(View v) {
         //todo
     }
+
     public void onClickChoice(View v) {
         int source = v.getId();
 
@@ -136,12 +148,76 @@ public class Voting_ResultsActivity extends ActionBarActivity {
             default:
         }
     }
-    public class CustomPagerAdapter extends FragmentStatePagerAdapter {
+    //endregion
 
+    //region Helper methods
+    private void getBitmaps(){
+        map = new HashMap<>();
+
+        for(int a = 0; a < pickIt.getChoices().size(); a++){
+            ImageView view = new ImageView(this);
+            sm.downloadPicture(view, pickIt.getChoices().get(a).getFilename());
+
+            map.put(a, view);
+        }
+    }
+
+    private GraphicalView openChart(int choice, int demoCategory){
+        //also take in a json object or something to get the votes by demographic
+
+        // Pie Chart Section Names
+        String[][] code = new String[][] {{"Male", "Female", "Other"},
+                {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
+                {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
+                {"Democrat", "Independent", "Republican", "Other", "None"}};
+
+        String[] categoryTitle = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
+
+        // Pie Chart Section Value
+        double[] distribution /*= { 3.9, 12.9 }*/ = new double[2];
+        distribution[0] = 2;
+        distribution[1] = 4;
+
+        int Fuschia = this.getResources().getColor(R.color.Fuchsia);
+        int Purple = this.getResources().getColor(R.color.MediumPurple);
+        // Color of each Pie Chart Sections
+        int[] colors = { Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN, Color.GRAY, Color.CYAN, Color.MAGENTA, Fuschia, Purple};
+
+        // Instantiating CategorySeries to plot Pie Chart
+        CategorySeries distributionSeries = new CategorySeries(" Android version distribution as on October 1, 2012");
+        for(int i=0 ;i < distribution.length;i++){
+            // Adding a slice with its values and name to the Pie Chart
+            distributionSeries.add(code[demoCategory][i], distribution[i]);
+        }
+
+        // Instantiating a renderer for the Pie Chart
+        DefaultRenderer defaultRenderer  = new DefaultRenderer();
+        for(int i = 0 ;i<distribution.length;i++){
+            SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
+            seriesRenderer.setColor(colors[i]);
+            seriesRenderer.setDisplayChartValues(true);
+            // Adding a renderer for a slice
+            defaultRenderer.addSeriesRenderer(seriesRenderer);
+        }
+
+        defaultRenderer.setChartTitle("Votes for Choice "+choice+" by "+categoryTitle[demoCategory]);
+        defaultRenderer.setChartTitleTextSize(40);
+        defaultRenderer.setZoomButtonsVisible(true);
+        defaultRenderer.setDisplayValues(true);
+
+        return ChartFactory.getPieChartView(getBaseContext(), distributionSeries, defaultRenderer);
+
+    }
+    //endregion
+
+    //Adapter
+    public class CustomPagerAdapter extends FragmentStatePagerAdapter {
+        private Voting_ResultsActivity activity;
         protected Context mContext;
 
-        public CustomPagerAdapter(FragmentManager fm, Context context) {
+        public CustomPagerAdapter(Voting_ResultsActivity activity, FragmentManager fm, Context context) {
             super(fm);
+            this.activity = activity;
             mContext = context;
         }
 
@@ -152,7 +228,6 @@ public class Voting_ResultsActivity extends ActionBarActivity {
         // It is called when the Adapter needs a fragment
         // and it does not exists.
         public Fragment getItem(int position) {
-
             switch(position) {
                 case 0: VoteFragment frag0 = new VoteFragment();
                     Fragment a = frag0.newInstance("VoteFragment, Instance 1");
@@ -194,6 +269,7 @@ public class Voting_ResultsActivity extends ActionBarActivity {
 
     }
 
+    //Demo Fragment
     public static class DemoFragment extends Fragment {
         View rootView;
         @Override
@@ -226,75 +302,69 @@ public class Voting_ResultsActivity extends ActionBarActivity {
         }
     }
 
+    //Vote Fragment
     public static class VoteFragment extends Fragment {
-        View v;
-        VoteFragment vot = this;
+        private View v;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             v = inflater.inflate(R.layout.fragment_vote, container, false);
 
-            ServerFileManager sm = new ServerFileManager();
             //to get to the ImageViews
-            RelativeLayout b = (RelativeLayout)v;
-            TableRow tr = (TableRow)b.getChildAt(0);
-            EditText ed = (EditText)tr.getChildAt(0);
-            //todo set subjectHeader
-            //ed.setText(pickIt.getSubjectHeader());
-
-            ScrollView a = (ScrollView) b.getChildAt(1);
-            TableLayout tl = (TableLayout)a.getChildAt(0);
-            GridLayout gl = (GridLayout)tl.getChildAt(0);
+//            RelativeLayout b = (RelativeLayout)v;
+//            TableRow tr = (TableRow)b.getChildAt(0);
+//            TextView ed = (TextView)tr.getChildAt(0);
+//            ed.setText(pickIt.getSubjectHeader());
+//
+//            ScrollView a = (ScrollView) b.getChildAt(1);
+//            TableLayout tl = (TableLayout)a.getChildAt(0);
+//            GridLayout gl = (GridLayout)tl.getChildAt(0);
 
             //ImageViews on Vote page
-            FrameLayout fl_0 = (FrameLayout)gl.getChildAt(0);
-            ImageView r0c0 = (ImageView)fl_0.getChildAt(0);
-//            voting_resultsActivity.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String filename = pickIt.getChoices().get(0).getFilename();
-//                    sm.downloadPicture(r0c0, filename);
-//                }
-//            });
+//            FrameLayout fl_0 = (FrameLayout)gl.getChildAt(0);
+            final ImageView r0c0 = (ImageView)v.findViewById(R.id.row0column0);
 
-            FrameLayout fl_1 = (FrameLayout)gl.getChildAt(1);
-            ImageView r0c1 = (ImageView)fl_1.getChildAt(0);
-            //todo set ImageView
-//            voting_resultsActivity.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String filename = pickIt.getChoices().get(1).getFilename();
-//                    sm.downloadPicture(r0c1, filename);
-//                }
-//            });
+            final ServerFileManager serverFileManager = new ServerFileManager();
+            serverFileManager.downloadPicture(r0c0, pickIt.getChoices().get(0).getFilename());
 
-            FrameLayout fl_2 = (FrameLayout)gl.getChildAt(2);
-            ImageView r1c0 = (ImageView)fl_1.getChildAt(0);
-            //todo setImageView
-//            voting_resultsActivity.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String filename = pickIt.getChoices().get(2).getFilename();
-//                    sm.downloadPicture(r1c0, filename);
-//                }
-//            });
-
-            FrameLayout fl_3 = (FrameLayout)gl.getChildAt(3);
-            ImageView r1c1 = (ImageView)fl_1.getChildAt(0);
-            //todo setImageView
-//            voting_resultsActivity.runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    String filename = pickIt.getChoices().get(3).getFilename();
-//                    sm.downloadPicture(r1c1, filename);
-//                }
-//            });
+//            FrameLayout fl_1 = (FrameLayout)gl.getChildAt(1);
+//            ImageView r0c1 = (ImageView)fl_1.getChildAt(0);
+//            //todo set ImageView
+////            voting_resultsActivity.runOnUiThread(new Runnable() {
+////                @Override
+////                public void run() {
+////                    String filename = pickIt.getChoices().get(1).getFilename();
+////                    sm.downloadPicture(r0c1, filename);
+////                }
+////            });
+//
+//            FrameLayout fl_2 = (FrameLayout)gl.getChildAt(2);
+//            ImageView r1c0 = (ImageView)fl_1.getChildAt(0);
+//            //todo setImageView
+////            voting_resultsActivity.runOnUiThread(new Runnable() {
+////                @Override
+////                public void run() {
+////                    String filename = pickIt.getChoices().get(2).getFilename();
+////                    sm.downloadPicture(r1c0, filename);
+////                }
+////            });
+//
+//            FrameLayout fl_3 = (FrameLayout)gl.getChildAt(3);
+//            ImageView r1c1 = (ImageView)fl_1.getChildAt(0);
+//            //todo setImageView
+////            voting_resultsActivity.runOnUiThread(new Runnable() {
+////                @Override
+////                public void run() {
+////                    String filename = pickIt.getChoices().get(3).getFilename();
+////                    sm.downloadPicture(r1c1, filename);
+////                }
+////            });
 
 
             return v;
         }
 
         static VoteFragment newInstance(String text) {
-
             VoteFragment f = new VoteFragment();
             Bundle b = new Bundle();
             b.putString("msg", text);
@@ -303,52 +373,5 @@ public class Voting_ResultsActivity extends ActionBarActivity {
 
             return f;
         }
-    }
-
-    private GraphicalView openChart(int choice, int demoCategory){
-        //also take in a json object or something to get the votes by demographic
-
-        // Pie Chart Section Names
-        String[][] code = new String[][] {{"Male", "Female", "Other"},
-            {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
-            {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
-            {"Democrat", "Independent", "Republican", "Other", "None"}};
-
-        String[] categoryTitle = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
-
-        // Pie Chart Section Value
-        double[] distribution /*= { 3.9, 12.9 }*/ = new double[2];
-        distribution[0] = 2;
-        distribution[1] = 4;
-
-        int Fuschia = this.getResources().getColor(R.color.Fuchsia);
-        int Purple = this.getResources().getColor(R.color.MediumPurple);
-        // Color of each Pie Chart Sections
-        int[] colors = { Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN, Color.GRAY, Color.CYAN, Color.MAGENTA, Fuschia, Purple};
-
-        // Instantiating CategorySeries to plot Pie Chart
-        CategorySeries distributionSeries = new CategorySeries(" Android version distribution as on October 1, 2012");
-        for(int i=0 ;i < distribution.length;i++){
-            // Adding a slice with its values and name to the Pie Chart
-            distributionSeries.add(code[demoCategory][i], distribution[i]);
-        }
-
-        // Instantiating a renderer for the Pie Chart
-        DefaultRenderer defaultRenderer  = new DefaultRenderer();
-        for(int i = 0 ;i<distribution.length;i++){
-            SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
-            seriesRenderer.setColor(colors[i]);
-            seriesRenderer.setDisplayChartValues(true);
-            // Adding a renderer for a slice
-            defaultRenderer.addSeriesRenderer(seriesRenderer);
-        }
-
-        defaultRenderer.setChartTitle("Votes for Choice "+choice+" by "+categoryTitle[demoCategory]);
-        defaultRenderer.setChartTitleTextSize(40);
-        defaultRenderer.setZoomButtonsVisible(true);
-        defaultRenderer.setDisplayValues(true);
-
-        return ChartFactory.getPieChartView(getBaseContext(), distributionSeries, defaultRenderer);
-
     }
 }
