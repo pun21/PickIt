@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.spun.pickit" >
+    package="com.bcdevops.pickit" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".PickItApp"
@@ -14,34 +14,27 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".AppLoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".AccountAdminActivity"
-            android:label="@string/account_admin"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".ProfileAdminActivity"
+            android:label="@string/profile_admin"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/facebook_login"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <meta-data
@@ -51,29 +44,38 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile_admin"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-
         <activity
             android:name=".UploadActivity"
             android:label="@string/title_activity_upload"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
-
         <activity
-            android:name=".Voting_ResultsActivity"
+            android:name=".ResultsActivity"
             android:label="@string/title_activity_results"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name=".VoteActivity"
+            android:label="@string/title_activity_vote"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
+            android:name=".ChoiceActivity"
+            android:label="@string/title_activity_choice"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 

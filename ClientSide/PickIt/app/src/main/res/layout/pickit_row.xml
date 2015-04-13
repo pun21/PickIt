@@ -9,7 +9,8 @@
             android:id="@+id/image_tl"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_margin="8dp"
+            android:layout_gravity="center_vertical"/>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -18,7 +19,7 @@
             <!-- Subject Heading -->
             <TextView
                 android:id="@+id/heading"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/heading"
                 android:textStyle="bold"
@@ -32,7 +33,7 @@
                 android:layout_below="@id/heading"
                 android:layout_marginTop="1dip"
                 android:textSize="@dimen/username"
-                android:textColor="#ff1024ff" />
+                android:textColor="@color/PrimaryColor" />
 
             <!-- Category -->
             <TextView

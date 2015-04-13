@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/accountAdminLayout"
+    android:gravity="center_horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor"
+        android:orientation="vertical">
+
+        <TableRow
+            android:gravity="center">
+            <TextView
+                android:id="@+id/accountAdminTextBox"
+                android:text="@string/profile_admin"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:textColor="@color/SecondaryColor"
+                android:textIsSelectable="false"
+                android:textStyle="bold|italic"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow>
+            <ScrollView
+                android:id="@+id/admin_scrollView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_table_border"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/usernameDemoTextbox"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:textSize="25sp"
+                        android:ems="10"
+                        android:hint="@string/username"
+                        android:gravity="center_horizontal"
+                        android:focusable="true"
+                        android:enabled="true"
+                        android:focusableInTouchMode="true" />
+
+                    <EditText
+                        android:id="@+id/passwordDemoTextbox"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:textSize="25sp"
+                        android:ems="10"
+                        android:hint="@string/password"
+                        android:gravity="center_horizontal"
+                        android:focusable="true"
+                        android:enabled="true"
+                        android:focusableInTouchMode="true"/>
+
+                    <EditText
+                        android:id="@+id/confirmDemoTextbox"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:textSize="25sp"
+                        android:ems="10"
+                        android:hint="@string/confirmPassword"
+                        android:gravity="center_horizontal"
+                        android:focusable="true"
+                        android:enabled="true"
+                        android:focusableInTouchMode="true"/>
+
+                    <TextView
+                        android:id="@+id/textView_bday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bday"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/PrimaryColor"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="60dp">
+
+                        <EditText
+                            android:id="@+id/textField_bday"
+                            android:background="@drawable/custom_dropdown"
+                            android:layout_width="fill_parent"
+                            android:layout_height="60dp"
+                            android:inputType="date"
+                            android:textSize="25sp"
+                            android:ems="10"
+                            android:hint="@string/date_format"
+                            android:maxLines="1"
+                            android:gravity="center"/>
+
+                        <ImageButton
+                            android:id="@+id/calendarButton"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/custom_date_box"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/selectdate"
+                            android:cropToPadding="true"
+                            android:onClick="selectDate"
+                            android:src="@drawable/calendar_icon" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/textView_gender"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/PrimaryColor"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_gender"
+                        android:background="@drawable/custom_dropdown"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/textView_ethnicity"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ethnicity"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/PrimaryColor"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_ethnicity"
+                        android:background="@drawable/custom_dropdown"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"/>
+
+                    <TextView
+                        android:id="@+id/textView_religion"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/religion"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/PrimaryColor"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_religion"
+                        android:background="@drawable/custom_dropdown"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal" />
+
+                    <TextView
+                        android:id="@+id/textView_political"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/political"
+                        android:textSize="20sp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/PrimaryColor"
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_political"
+                        android:background="@drawable/custom_dropdown"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal" />
+
+                    <Button
+                        android:id="@+id/button_save"
+                        android:background="@drawable/custom_dropdown"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/save"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="40dp"
+                        android:onClick="onClickSave"/>
+                </LinearLayout>
+            </ScrollView>
+        </TableRow>
+    </TableLayout>
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:minHeight="100dp"
+        android:minWidth="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+</RelativeLayout>
+
+
