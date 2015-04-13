@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tableLayout">
+
+    <TableRow>
+        <TextView
+            android:text="Label"
+            android:textSize="25sp"
+            android:layout_gravity="center_horizontal"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="ATTRIBUTE"
+            android:textSize="25dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="8"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="ATTRIBUTE"
+            android:textSize="25dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="8"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="ATTRIBUTE"
+            android:textSize="25dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="8"/>
+    </TableRow>
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:background="@color/black"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:text="ATTRIBUTE"
+            android:textSize="25dp"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="8"/>
+    </TableRow>
+</TableLayout>

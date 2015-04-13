@@ -156,4 +156,34 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+
+    <array name="legend">
+        <item>@color/Teal</item>
+        <item>@color/blue</item>
+        <item>@color/green</item>
+
+        <item>@color/material_deep_teal_200</item>
+        <item>@color/lime</item>
+        <item>@color/fuchsia</item>
+        <item>@color/yellow</item>
+        <item>@color/FireBrick</item>
+        <item>@color/RoyalBlue</item>
+        <item>@color/MidnightBlue</item>
+        <item>@color/maroon</item>
+        <item>@color/Teal</item>
+
+        <item>@color/SlateBlue</item>
+        <item>@color/DarkGoldenrod</item>
+        <item>@color/DarkGreen</item>
+        <item>@color/RoyalBlue</item>
+        <item>@color/purple</item>
+        <item>@color/OrangeRed</item>
+        <item>@color/yellow</item>
+
+        <item>@color/Orange</item>
+        <item>@color/Orchid</item>
+        <item>@color/LimeGreen</item>
+        <item>@color/DarkViolet</item>
+        <item>@color/DarkGreen</item>
+    </array>
 </resources>

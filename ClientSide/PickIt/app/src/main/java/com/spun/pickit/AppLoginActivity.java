@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +15,7 @@ import android.widget.Toast;
 
 import com.facebook.AppEventsLogger;
 import com.spun.pickit.database.handling.DatabaseAccess;
-import com.spun.pickit.fileIO.*;
+import com.spun.pickit.fileIO.LocalFileManager;
 import com.spun.pickit.model.Demographics;
 import com.spun.pickit.model.User;
 
@@ -131,6 +129,10 @@ public class AppLoginActivity extends Activity {
                 new AsyncLogIn(activity).start();
             }
         }).start();
+    }
+    public void onClickMain(View v) {
+        Intent intent = new Intent(this, ChoiceOneActivity.class);
+        startActivity(intent);
     }
     //endregion
 

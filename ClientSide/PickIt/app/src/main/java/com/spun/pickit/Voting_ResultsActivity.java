@@ -1,29 +1,21 @@
 package com.spun.pickit;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerTabStrip;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -37,20 +29,28 @@ import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Voting_ResultsActivity extends FragmentActivity {
     //region Class variables
+    private static final int GENDER = 0;
+    private static final int ETHNICITY = 1;
+    private static final int RELIGION = 2;
+    private static final int POLITICAL_AFFILIATION = 3;
+
     private static HashMap<Integer, ImageView> map;
+    private static HashMap<String, GraphicalView> chartMap;
     private static PickIt pickIt;
-    private static GraphicalView mChart;
 
     private CustomPagerAdapter mCustomPagerAdapter;
     private ViewPager mViewPager;
-    private PagerTabStrip mTabStrip;
-    private RelativeLayout layout;
     private PickItApp pickItApp;
     private ServerFileManager sm;
+    private boolean hasVoted = false;
+    private static ViewGroup box;
+    private static int graphID = 33;
     //endregion
 
     //region Activity life-cycle methods
@@ -60,14 +60,13 @@ public class Voting_ResultsActivity extends FragmentActivity {
         setContentView(R.layout.activity_voting_results);
         pickItApp = (PickItApp)getApplication();
 
-        pickIt = Globals.pickIt;
-        sm = new ServerFileManager();
-        getBitmaps();
+        getCharts();
 
-        mChart = openChart(1, 1);
-        mCustomPagerAdapter = new CustomPagerAdapter(this, getSupportFragmentManager(), getApplicationContext());
+        List<Fragment> fragments = getFragments();
+        mCustomPagerAdapter = new CustomPagerAdapter(this, getSupportFragmentManager(), getApplicationContext(), fragments);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setOffscreenPageLimit(fragments.size());
         mViewPager.setAdapter(mCustomPagerAdapter);
     }
 
@@ -162,8 +161,43 @@ public class Voting_ResultsActivity extends FragmentActivity {
         }
     }
 
-    private GraphicalView openChart(int choice, int demoCategory){
-        //also take in a json object or something to get the votes by demographic
+    private void getCharts() {
+        chartMap = new HashMap<>();
+
+        double[][] distribution = {{2, 2, 2},
+                {2, 4, 8, 16, 32, 64, 128, 254, 512},
+                {1, 2, 3, 4, 5, 6, 7},
+                {3, 3, 1, 5, 2}};
+
+//        for(int i = 0; i < pickIt.getChoices().size(); i++) {
+//            for(int j = 0; j < 4; j++) {
+//                chartMap.put(i+"-"+j, openChart(i+1, j, distribution[j]));
+//            }
+//        }
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                chartMap.put(i+"-"+j, openChart(i+1, j, distribution[j]));
+            }
+        }
+
+    }
+
+    private List<Fragment> getFragments() {
+        List<Fragment> list = new ArrayList<Fragment>();
+
+        list.add(VoteFragment.newInstance("Fragment 0"));
+
+        //todo i < number of choices
+        for (int i = 0; i< 4; i++) {
+            list.add(DemoFragment.newInstance("Fragment " + (i + 1)));
+        }
+        return list;
+    }
+
+    private GraphicalView openChart(int choice, int demoCategory, double[] distribution){
+        //distribution is the section of the pie chart that each grouping has
+        // ex. for demoCategory GENDER, distribution = {10, 10, 10}
+        //meaning Male, Female, and Other each have a third of the chart
 
         // Pie Chart Section Names
         String[][] code = new String[][] {{"Male", "Female", "Other"},
@@ -172,11 +206,6 @@ public class Voting_ResultsActivity extends FragmentActivity {
                 {"Democrat", "Independent", "Republican", "Other", "None"}};
 
         String[] categoryTitle = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
-
-        // Pie Chart Section Value
-        double[] distribution /*= { 3.9, 12.9 }*/ = new double[2];
-        distribution[0] = 2;
-        distribution[1] = 4;
 
         int Fuschia = this.getResources().getColor(R.color.Fuchsia);
         int Purple = this.getResources().getColor(R.color.MediumPurple);
@@ -204,6 +233,8 @@ public class Voting_ResultsActivity extends FragmentActivity {
         defaultRenderer.setChartTitleTextSize(40);
         defaultRenderer.setZoomButtonsVisible(true);
         defaultRenderer.setDisplayValues(true);
+        defaultRenderer.setLabelsColor(Color.BLACK);
+
 
         return ChartFactory.getPieChartView(getBaseContext(), distributionSeries, defaultRenderer);
 
@@ -211,50 +242,31 @@ public class Voting_ResultsActivity extends FragmentActivity {
     //endregion
 
     //Adapter
-    public class CustomPagerAdapter extends FragmentStatePagerAdapter {
+    public class CustomPagerAdapter extends FragmentPagerAdapter {
         private Voting_ResultsActivity activity;
         protected Context mContext;
+        private List<Fragment> fragments;
 
-        public CustomPagerAdapter(Voting_ResultsActivity activity, FragmentManager fm, Context context) {
+        public CustomPagerAdapter(Voting_ResultsActivity activity, FragmentManager fm, Context context, List<Fragment> fragments) {
             super(fm);
             this.activity = activity;
             mContext = context;
+            this.fragments = fragments;
         }
 
-        @Override
         // This method returns the fragment associated with
-        // the specified position.
-        //
-        // It is called when the Adapter needs a fragment
+        // the specified position. It is called when the Adapter needs a fragment
         // and it does not exists.
+        @Override
         public Fragment getItem(int position) {
-            switch(position) {
-                case 0: VoteFragment frag0 = new VoteFragment();
-                    Fragment a = frag0.newInstance("VoteFragment, Instance 1");
-                    return a;
-                case 1: DemoFragment frag1 = new DemoFragment();
-                    Fragment b = frag1.newInstance("DemoFragment, Instance 1");
-                    return b;
-                case 2: DemoFragment frag2 = new DemoFragment();
-                    Fragment c = frag2.newInstance("DemoFragment, Instance 2");
-                    return c;
-                case 3: DemoFragment frag3 = new DemoFragment();
-                    Fragment d = frag3.newInstance("DemoFragment, Instance 3");
-                    return d;
-                case 4: DemoFragment frag4 = new DemoFragment();
-                    Fragment e = frag4.newInstance("DemoFragment, Instance 4");
-                    return e;
-                default: DemoFragment frag5 = new DemoFragment();
-                    Fragment f = frag5.newInstance("DemoFragment, Instance 1");
-                    return f;
-            }
-
+            return this.fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return this.fragments.size();
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
@@ -272,27 +284,43 @@ public class Voting_ResultsActivity extends FragmentActivity {
     //Demo Fragment
     public static class DemoFragment extends Fragment {
         View rootView;
+        static int page = 0;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             // Inflate the layout resource that'll be returned
 
             rootView = inflater.inflate(R.layout.fragment_demo, container, false);
-            // Get the arguments that was supplied when
-            // the fragment was instantiated in the
-            // CustomPagerAdapter
 
-//            if(mChart.getParent()!=null)
-//                ((View)mChart.getParent()).removeView(mChart);
+            RelativeLayout b = (RelativeLayout) rootView.findViewById(R.id.relative_layout_graphs);
+            RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            TableLayout tl = (TableLayout)rootView.findViewById(R.id.table_graphs);
 
-            ((RelativeLayout) rootView).addView(mChart);
+            //remove any parent view from the GraphicalView before adding it to a View
+//                if (chartMap.get(page + "-" + 0).getParent() != null)
+//                    ((ViewGroup) chartMap.get(page + "-" + 0).getParent()).removeView((View)chartMap.get(page + "-" + i));
+
+            TableRow tr = (TableRow)rootView.findViewById(R.id.first_row);
+            tr.addView(chartMap.get(page + "-" + 0));
+
+            tr = (TableRow)rootView.findViewById(R.id.second_row);
+            tr.addView(chartMap.get(page + "-" + 1));
+
+            tr = (TableRow)rootView.findViewById(R.id.third_row);
+            tr.addView(chartMap.get(page + "-" + 2));
+
+            tr = (TableRow)rootView.findViewById(R.id.fourth_row);
+            tr.addView(chartMap.get(page + "-" + 3));
+
+            page++;
 
             return rootView;
         }
 
-        public DemoFragment newInstance(String text) {
+        public static final DemoFragment newInstance(String text) {
 
             DemoFragment f = new DemoFragment();
-
             Bundle b = new Bundle();
             b.putString("msg", text);
 
@@ -302,6 +330,8 @@ public class Voting_ResultsActivity extends FragmentActivity {
         }
     }
 
+
+
     //Vote Fragment
     public static class VoteFragment extends Fragment {
         private View v;
@@ -310,61 +340,20 @@ public class Voting_ResultsActivity extends FragmentActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             v = inflater.inflate(R.layout.fragment_vote, container, false);
 
-            //to get to the ImageViews
-//            RelativeLayout b = (RelativeLayout)v;
-//            TableRow tr = (TableRow)b.getChildAt(0);
-//            TextView ed = (TextView)tr.getChildAt(0);
+
+            final TextView ed = (TextView)v.findViewById(R.id.upload_description);
 //            ed.setText(pickIt.getSubjectHeader());
 //
-//            ScrollView a = (ScrollView) b.getChildAt(1);
-//            TableLayout tl = (TableLayout)a.getChildAt(0);
-//            GridLayout gl = (GridLayout)tl.getChildAt(0);
-
-            //ImageViews on Vote page
-//            FrameLayout fl_0 = (FrameLayout)gl.getChildAt(0);
-            final ImageView r0c0 = (ImageView)v.findViewById(R.id.row0column0);
-
-            final ServerFileManager serverFileManager = new ServerFileManager();
-            serverFileManager.downloadPicture(r0c0, pickIt.getChoices().get(0).getFilename());
-
-//            FrameLayout fl_1 = (FrameLayout)gl.getChildAt(1);
-//            ImageView r0c1 = (ImageView)fl_1.getChildAt(0);
-//            //todo set ImageView
-////            voting_resultsActivity.runOnUiThread(new Runnable() {
-////                @Override
-////                public void run() {
-////                    String filename = pickIt.getChoices().get(1).getFilename();
-////                    sm.downloadPicture(r0c1, filename);
-////                }
-////            });
+//            final ImageView r0c0 = (ImageView)v.findViewById(R.id.row0column0);
 //
-//            FrameLayout fl_2 = (FrameLayout)gl.getChildAt(2);
-//            ImageView r1c0 = (ImageView)fl_1.getChildAt(0);
-//            //todo setImageView
-////            voting_resultsActivity.runOnUiThread(new Runnable() {
-////                @Override
-////                public void run() {
-////                    String filename = pickIt.getChoices().get(2).getFilename();
-////                    sm.downloadPicture(r1c0, filename);
-////                }
-////            });
-//
-//            FrameLayout fl_3 = (FrameLayout)gl.getChildAt(3);
-//            ImageView r1c1 = (ImageView)fl_1.getChildAt(0);
-//            //todo setImageView
-////            voting_resultsActivity.runOnUiThread(new Runnable() {
-////                @Override
-////                public void run() {
-////                    String filename = pickIt.getChoices().get(3).getFilename();
-////                    sm.downloadPicture(r1c1, filename);
-////                }
-////            });
+//            final ServerFileManager serverFileManager = new ServerFileManager();
+//            serverFileManager.downloadPicture(r0c0, pickIt.getChoices().get(0).getFilename());
 
-
+            //the other ImageViews will be set here
             return v;
         }
 
-        static VoteFragment newInstance(String text) {
+        public static VoteFragment newInstance(String text) {
             VoteFragment f = new VoteFragment();
             Bundle b = new Bundle();
             b.putString("msg", text);

@@ -107,5 +107,7 @@
     <string name="dateHint">End Date</string>
     <string name="timeHint">Stopping Time</string>
     <string name="vote">Vote</string>
+    <string name="title_activity_choice_one">ChoiceOneActivity</string>
+    <string name="title_activity_choice_two">ChoiceTwoActivity</string>
 
 </resources>

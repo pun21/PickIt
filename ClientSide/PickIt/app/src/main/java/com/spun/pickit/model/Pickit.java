@@ -56,6 +56,7 @@ public class PickIt implements Serializable {
     public ArrayList<Choice> getChoices(){
         return choices;
     }
+    public ArrayList<Vote> getVotes() {return votes; }
     public int getUserID(){
         return userID;
     }

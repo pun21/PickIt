@@ -1,7 +1,47 @@
- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:id="@+id/demo_layout">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/demo_layout">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:id="@+id/relative_layout_graphs"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TableLayout
+                android:id="@+id/table_graphs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:id="@+id/first_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </TableRow>
+                <TableRow
+                    android:id="@+id/second_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </TableRow>
+                <TableRow
+                    android:id="@+id/third_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </TableRow>
+                <TableRow
+                    android:id="@+id/fourth_row"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
