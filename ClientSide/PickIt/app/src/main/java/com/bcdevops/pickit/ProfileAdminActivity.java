@@ -20,8 +20,11 @@ import com.bcdevops.pickit.fileIO.ServerFileManager;
 import com.bcdevops.pickit.model.Demographics;
 import com.bcdevops.pickit.model.User;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,15 +71,14 @@ public class ProfileAdminActivity extends Activity {
         loading = (ProgressBar)findViewById(R.id.loading);
 
         layoutID = R.id.accountAdminLayout;
-
-        setSpinners();
-        updateScreen();
     }
 
     @Override
     protected void onResume(){
         super.onResume();
 
+        setSpinners();
+        updateScreen();
         endLoad();
     }
 
@@ -168,12 +170,42 @@ public class ProfileAdminActivity extends Activity {
         final User user = new User(0, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
         final ProfileAdminActivity activity = this;
 
+//        if(notOfAge(tempBirthday)){
+//            Context context = getApplicationContext();
+//            CharSequence text = "Sorry, sport...";
+//            int duration = Toast.LENGTH_SHORT;
+//
+//            Toast.makeText(context, text, duration).show();
+//
+//            finish();
+//            System.exit(0);
+//            return;
+//        }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 new AsyncSave(activity, user, tempPassword).start();
             }
         }).start();
+    }
+
+    private boolean notOfAge(String birthday){
+        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+
+        Date date;
+        try {
+            date = format.parse(birthday);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date = null;
+        }
+
+        int twentyOneYearsAgo = ((int)new Date().getTime() - (1000*60*60*24*365*21));
+        if(date != null && date.getTime() < twentyOneYearsAgo)
+            return true;
+
+        return false;
     }
 
     private void updateUser(){
@@ -297,6 +329,38 @@ public class ProfileAdminActivity extends Activity {
         adapt_p = ArrayAdapter.createFromResource(this,R.array.political_affiliation_array, android.R.layout.simple_spinner_item);
         adapt_p.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_p.setAdapter(adapt_p);
+
+        //Set current values of user
+        if(pickItApp.getUserID() > 0){
+            String compareValue= pickItApp.getEthnicity();
+            if (!compareValue.equals(null)) {
+                int spinnerPostion = adapt_e.getPosition(compareValue);
+                spin_e.setSelection(spinnerPostion);
+            }
+
+            compareValue= pickItApp.getGender();
+            if (!compareValue.equals(null)) {
+                int spinnerPostion = adapt_g.getPosition(compareValue);
+                spin_g.setSelection(spinnerPostion);
+            }
+
+            compareValue= pickItApp.getReligion();
+            if (!compareValue.equals(null)) {
+                int spinnerPostion = adapt_r.getPosition(compareValue);
+                spin_r.setSelection(spinnerPostion);
+            }
+            compareValue= pickItApp.getPolitical();
+            if (!compareValue.equals(null)) {
+                int spinnerPostion = adapt_p.getPosition(compareValue);
+                spin_p.setSelection(spinnerPostion);
+            }
+
+            compareValue = pickItApp.getBirthday();
+            if(!compareValue.equals(null)){
+                String birthday = compareValue.substring(5, 10).replace('-','/') + "/" + compareValue.substring(0, 4);
+                mBirthday.setText(birthday);
+            }
+        }
     }
     public void updateScreen(){
         if(pickItApp.isGuest()){
@@ -404,8 +468,6 @@ public class ProfileAdminActivity extends Activity {
                 public void run() {
                     if (userID != 0){
                         String tempUsername = user.getUsername();
-                        if(pickItApp.isGuest())
-                            tempUsername = "Guest";
 
                         setUserInformation(userID, tempUsername, user.getBirthday(), user.getGender(), user.getEthnicity(), user.getReligion(), user.getPoliticalAffiliation());
 

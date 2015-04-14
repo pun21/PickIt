@@ -39,7 +39,6 @@ public class LoginActivity extends Activity {
     protected void onStart(){
         super.onStart();
 
-
         this.layoutID = R.id.AppLoginDefault;
     }
 
@@ -103,6 +102,9 @@ public class LoginActivity extends Activity {
 
     @Override
     protected  void onStop() {
+        username = "";
+        password = "";
+
         endLoad();
 
         super.onStop();

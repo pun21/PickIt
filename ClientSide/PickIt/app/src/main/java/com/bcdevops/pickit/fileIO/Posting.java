@@ -116,12 +116,12 @@ public class Posting {
                     serverResponseCode = conn.getResponseCode();
                     String serverResponseMessage = conn.getResponseMessage();
 
-                    if(serverResponseCode == 200){
+                    if(serverResponseCode != 200){
 
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
                                 Context context = activity.getApplicationContext();
-                                Toast.makeText(context, "File Upload Complete.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "File Upload Failed.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

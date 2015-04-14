@@ -85,6 +85,7 @@
         <item>Food</item>
         <item>Sports</item>
         <item>Technology</item>
+        <item>Other</item>
     </string-array>
 
     <string name="title_activity_temp">temp</string>

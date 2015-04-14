@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.bcdevops.pickit.database.handling.DatabaseAccess;
 import com.bcdevops.pickit.fileIO.ServerFileManager;
+import com.bcdevops.pickit.model.Choice;
 import com.bcdevops.pickit.model.PickIt;
 
 import org.achartengine.ChartFactory;
@@ -72,7 +73,12 @@ public class ResultsActivity extends FragmentActivity {
         setFrontEnd();
 
         username = (TextView)findViewById(R.id.textView_username);
-        username.setText(pickIt.getUsername()+"'s Upload");
+
+        String tempUsername = pickItApp.getUsername();
+        if(tempUsername.contains("Guest"))
+            tempUsername = "Guest";
+
+        username.setText(tempUsername+"'s Upload");
     }
 
     @Override
@@ -113,17 +119,23 @@ public class ResultsActivity extends FragmentActivity {
         switch (source) {
             case R.id.row0column0:
                 Globals.choice = pickIt.getChoices().get(0);
+                Globals.pickIt = pickIt;
                 break;
             case R.id.row0column1:
                 Globals.choice = pickIt.getChoices().get(1);
+                Globals.pickIt = pickIt;
                 break;
             case R.id.row1column0:
-                Globals.choice = pickIt.getChoices().get(0);
+                Globals.choice = pickIt.getChoices().get(2);
+                Globals.pickIt = pickIt;
                 break;
             case R.id.row1column1:
-                Globals.choice = pickIt.getChoices().get(0);
+                Globals.choice = pickIt.getChoices().get(3);
+                Globals.pickIt = pickIt;
                 break;
             default:
+                Globals.choice = new Choice();
+                Globals.pickIt = pickIt;
                 break;
         }
 
@@ -142,53 +154,6 @@ public class ResultsActivity extends FragmentActivity {
 
             map.put(a, view);
         }
-    }
-
-    private GraphicalView openChart(int choice, int demoCategory){
-        //also take in a json object or something to get the votes by demographic
-
-        // Pie Chart Section Names
-        String[][] code = new String[][] {{"Male", "Female", "Other"},
-                {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
-                {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
-                {"Democrat", "Independent", "Republican", "Other", "None"}};
-
-        String[] categoryTitle = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
-
-        // Pie Chart Section Value
-        double[] distribution /*= { 3.9, 12.9 }*/ = new double[2];
-        distribution[0] = 2;
-        distribution[1] = 4;
-
-        int Fuschia = this.getResources().getColor(R.color.Fuchsia);
-        int Purple = this.getResources().getColor(R.color.MediumPurple);
-        // Color of each Pie Chart Sections
-        int[] colors = { Color.BLUE, Color.RED, Color.YELLOW, Color.GREEN, Color.GRAY, Color.CYAN, Color.MAGENTA, Fuschia, Purple};
-
-        // Instantiating CategorySeries to plot Pie Chart
-        CategorySeries distributionSeries = new CategorySeries(" Android version distribution as on October 1, 2012");
-        for(int i=0 ;i < distribution.length;i++){
-            // Adding a slice with its values and name to the Pie Chart
-            distributionSeries.add(code[demoCategory][i], distribution[i]);
-        }
-
-        // Instantiating a renderer for the Pie Chart
-        DefaultRenderer defaultRenderer  = new DefaultRenderer();
-        for(int i = 0 ;i<distribution.length;i++){
-            SimpleSeriesRenderer seriesRenderer = new SimpleSeriesRenderer();
-            seriesRenderer.setColor(colors[i]);
-            seriesRenderer.setDisplayChartValues(true);
-            // Adding a renderer for a slice
-            defaultRenderer.addSeriesRenderer(seriesRenderer);
-        }
-
-        defaultRenderer.setChartTitle("Votes for Choice "+choice+" by "+categoryTitle[demoCategory]);
-        defaultRenderer.setChartTitleTextSize(40);
-        defaultRenderer.setZoomButtonsVisible(true);
-        defaultRenderer.setDisplayValues(true);
-
-        return ChartFactory.getPieChartView(getBaseContext(), distributionSeries, defaultRenderer);
-
     }
 
     private void setFrontEnd(){
@@ -213,11 +178,11 @@ public class ResultsActivity extends FragmentActivity {
                 serverFileManager.downloadPicture(r1c1, pickIt.getChoices().get(3).getFilename());
                 r1c1.setBackground(null);
             }else{
-                r1c1.setVisibility(View.INVISIBLE);
+                r1c1.setVisibility(View.GONE);
             }
         }else{
-            r1c0.setVisibility(View.INVISIBLE);
-            r1c1.setVisibility(View.INVISIBLE);
+            r1c0.setVisibility(View.GONE);
+            r1c1.setVisibility(View.GONE);
         }
 
         if(pickIt.getSubjectHeader().trim().length() == 0)
@@ -230,7 +195,6 @@ public class ResultsActivity extends FragmentActivity {
 
         int choice1Votes = getVotesForChoice(pickIt.getChoices().get(0).getChoiceID());
         int choice2Votes = getVotesForChoice(pickIt.getChoices().get(1).getChoiceID());
-
 
         String choiceVotes = "\nUpper Left: " + choice1Votes;
         choiceVotes += "\nUpper Right: " + choice2Votes;

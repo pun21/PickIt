@@ -16,7 +16,7 @@ public class MainFragment extends Fragment {
     private Session.StatusCallback callback = new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-            onSessionStateChange(session, state, exception);
+            //onSessionStateChange(session, state, exception);
         }
     };
     private UiLifecycleHelper uiHelper;
@@ -40,14 +40,6 @@ public class MainFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-// For scenarios where the main activity is launched and user
-// session is not null, the session state change notification
-// may not be triggered. Trigger it if it's open/closed.
-        Session session = Session.getActiveSession();
-        if (session != null &&
-                (session.isOpened() || session.isClosed()) ) {
-            onSessionStateChange(session, session.getState(), null);
-        }
         uiHelper.onResume();
     }
     @Override
@@ -72,11 +64,4 @@ public class MainFragment extends Fragment {
     }
 
     // Helper Method
-    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-        if (state.isOpened()) {
-            Log.i(TAG, "Logged in...");
-        } else if (state.isClosed()) {
-            Log.i(TAG, "Logged out...");
-        }
-    }
 }

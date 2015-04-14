@@ -78,13 +78,6 @@ public class LocalFileManager {
                 writer.append(pickIt.toString());
                 writer.flush();
                 writer.close();
-
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity.getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }catch(Exception e){
                 e.printStackTrace();
 

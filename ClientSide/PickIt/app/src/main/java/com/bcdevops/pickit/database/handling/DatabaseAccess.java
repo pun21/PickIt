@@ -1,7 +1,5 @@
 package com.bcdevops.pickit.database.handling;
 
-import android.util.Log;
-
 import com.bcdevops.pickit.database.handling.crud.PasswordValidation;
 import com.bcdevops.pickit.database.handling.crud.PickItCRUD;
 import com.bcdevops.pickit.database.handling.crud.UserCRUD;

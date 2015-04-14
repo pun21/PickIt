@@ -1,9 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.bcdevops.pickit.ChoiceActivity"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_activity_table"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/PrimaryColor">
+
+        <TableRow
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/PrimaryColor"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textView_appName"
+                android:text="@string/app_name"
+                android:clickable="true"
+                android:onClick="onClickAppName"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:textStyle="bold|italic"
+                android:textSize="40sp"
+                android:layout_weight="2"
+                android:textColor="@color/SecondaryColor"/>
+
+            <TextView
+                android:id="@+id/textView_username"
+                android:text="@string/username"
+                android:clickable="true"
+                android:onClick="onClickUsername"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textStyle="bold|italic"
+                android:textSize="40sp"
+                android:textColor="@color/SecondaryColor"
+                android:layout_gravity="end|top"/>
+        </TableRow>
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/custom_table_border"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/choice_imageView"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"/>
+
+                <TextView
+                    android:id="@+id/total_vote_stats"
+                    android:textSize="25sp"
+                    android:textColor="@color/PrimaryColor"
+                    android:textStyle="bold"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"/>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/gender_stats"
+                        android:textSize="14sp"
+                        android:textColor="@color/PrimaryColor"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/ethnicity_stats"
+                        android:textSize="14sp"
+                        android:textColor="@color/PrimaryColor"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/political_stats"
+                        android:textSize="14sp"
+                        android:textColor="@color/PrimaryColor"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/religion_stats"
+                        android:textSize="14sp"
+                        android:textColor="@color/PrimaryColor"
+                        android:textStyle="bold"
+                        android:layout_weight="1"/>
+                </TableRow>
+            </TableLayout>
+        </ScrollView>
+    </TableLayout>
 
 </RelativeLayout>

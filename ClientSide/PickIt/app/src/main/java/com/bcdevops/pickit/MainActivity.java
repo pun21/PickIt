@@ -57,7 +57,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // TODO Auto-generated method stub
                 category = mCategory.getItemAtPosition(arg2).toString();
 
                 if(category.equals("All categories"))
@@ -76,10 +75,8 @@ public class MainActivity extends Activity {
             public void onNothingSelected(AdapterView<?> arg0) { }
         });
 
-        setUsername();
-
         mSortingType = Enums.Toggles.MOST_RECENT;
-
+        setUsername();
         populatePickItList("");
         populateListView();
         setToggles();
@@ -88,6 +85,10 @@ public class MainActivity extends Activity {
         endLoad();
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
     @Override
     protected void onStop(){
         for(int a = 0; a < pickItList.size(); a++){
@@ -124,7 +125,7 @@ public class MainActivity extends Activity {
         //do nothing: we're on the main page
     }
 
-    /*Handler methods for results pane toggles ---------------------------------------------------*/
+    /*Handler methods for results pane toggles */
 
     public void onClickRecencyToggle(View v) {
         mSortingType = Enums.Toggles.MOST_RECENT;
@@ -199,7 +200,11 @@ public class MainActivity extends Activity {
     private void setUsername(){
         TextView username = (TextView)findViewById(R.id.textView_username);
 
-        username.setText(pickItApp.getUsername());
+        String tempUsername = pickItApp.getUsername();
+        if(tempUsername.contains("Guest"))
+            tempUsername = "Guest";
+
+        username.setText(tempUsername);
     }
     private void setToggles(){
         ToggleButton recentlyAddedToggle = (ToggleButton) findViewById(R.id.toggle_recency);
@@ -307,23 +312,29 @@ public class MainActivity extends Activity {
             vHeading.setText(pickIt.getSubjectHeader());
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
-            vUsername.setText(pickIt.getUsername());
+            String tempUsername = pickIt.getUsername();
+            if(tempUsername.contains("Guest"))
+                tempUsername = "Guest";
 
-            vUsername.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mainActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(mainActivity, ProfileActivity.class);
-                            Globals.nextUserID = pickIt.getUserID();
-                            Globals.nextUsername = pickIt.getUsername();
+            vUsername.setText(tempUsername);
 
-                            startActivity(intent);
-                        }
-                    });
-                }
-            });
+            if(!tempUsername.equals("Guest")){
+                vUsername.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(mainActivity, ProfileActivity.class);
+                                Globals.nextUserID = pickIt.getUserID();
+                                Globals.nextUsername = pickIt.getUsername();
+
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+            }
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
             vCategory.setText(pickIt.getCategory());

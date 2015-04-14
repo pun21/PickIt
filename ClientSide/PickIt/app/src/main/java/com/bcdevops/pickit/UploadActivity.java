@@ -31,7 +31,6 @@ import com.bcdevops.pickit.fileIO.ServerFileManager;
 import com.bcdevops.pickit.model.Choice;
 import com.bcdevops.pickit.model.PickIt;
 
-import org.achartengine.GraphicalView;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,11 +54,12 @@ public class UploadActivity extends FragmentActivity {
     private Spinner mCategory;
     private ProgressBar loading;
     private LocalFileManager localFileManager;
+    private Uri fileUri;
 
-    ArrayAdapter<CharSequence> mCategoriesAdapter;
+    private ArrayAdapter<CharSequence> mCategoriesAdapter;
 
     private int selectedImageId;
-    private Uri fileUri;
+    private boolean uploadedImages;
     //endregion
 
     //region Activity Life-cycle Methods
@@ -81,6 +81,8 @@ public class UploadActivity extends FragmentActivity {
         mCategory = (Spinner) findViewById(R.id.category_spinner);
 
         localFileManager = new LocalFileManager(this);
+
+        uploadedImages = false;
 
         setSpinners();
     }
@@ -130,6 +132,16 @@ public class UploadActivity extends FragmentActivity {
                     }
                     break;
             }
+        }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if(uploadedImages){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
     }
     //endregion
@@ -673,6 +685,7 @@ public class UploadActivity extends FragmentActivity {
                 new SaveChoice(activity, choices.get(a), savedFile, pickItID, choices.get(a).getFilename()).start();
             }
 
+            uploadedImages = true;
             updateScreen("", pickIt);
         }
 

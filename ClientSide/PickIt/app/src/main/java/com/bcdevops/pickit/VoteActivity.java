@@ -58,7 +58,12 @@ public class VoteActivity extends FragmentActivity {
         getBitmaps();
 
         username = (TextView)findViewById(R.id.textView_username);
-        username.setText(pickIt.getUsername() + "'s Upload");
+
+        String tempUsername = pickItApp.getUsername();
+        if(tempUsername.contains("Guest"))
+            tempUsername = "Guest";
+
+        username.setText(tempUsername + "'s Upload");
 
         setPickItValues();
     }

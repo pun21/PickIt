@@ -28,8 +28,6 @@ public class PickItApp extends Application {
     private static final String KEY_RELIGION = "religion";
     private static final String KEY_POLITICAL = "political";
     private static final String KEY_GUEST = "guest";
-    private static final String KEY_RESULT_ID = "nextResultID";
-    private static final String KEY_NEXT_USER_ID = "nextUserID";
     //endregion
 
     //region Demographics and user identification
@@ -159,6 +157,12 @@ public class PickItApp extends Application {
 
         setInSharedPreferences(KEY_POLITICAL, political);
     }
+    public String getPolitical(){
+        if(!political.equals(""))
+            return political;
+
+        return getFromSharedPreferences(KEY_POLITICAL, "");
+    }
     public void setGuest(boolean guest){
         this.guest = guest;
 
@@ -210,4 +214,5 @@ public class PickItApp extends Application {
         return value;
     }
     //endregion
+
 }

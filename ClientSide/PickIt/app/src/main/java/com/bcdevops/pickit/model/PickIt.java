@@ -78,8 +78,8 @@ public class PickIt implements Serializable {
 
         int hours = secondsOfLife % 24;
 
-        String dateStructuredText = "Expired: Legacy view available";
-        if(hours != 0 || minutes != 0 || seconds != 0){
+        String dateStructuredText = "";
+        if(hours > 0 || minutes > 0 || seconds > 0){
             dateStructuredText = hours + " h " + minutes + " m " + seconds + " s";
         }
 
@@ -147,9 +147,7 @@ public class PickIt implements Serializable {
                 public void onTick(long millisUntilFinished) {
                     pickIt.setSecondsOfLife((int)(millisUntilFinished/1000));
                 }
-                public void onFinish() {
-                    pickIt.setSecondsOfLife(0);
-                }
+                public void onFinish() { }
             }.start();
         }
 
