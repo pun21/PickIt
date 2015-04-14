@@ -19,6 +19,7 @@ import com.bcdevops.pickit.model.Vote;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -196,9 +197,9 @@ public class ChoiceActivity extends Activity {
                     String demo = pairs.get(i).first;
                     Integer votes = pairs.get(i).second;
                     double percentage = (double) votes / (double)values.size();
-                    String votePercentage = String.valueOf(percentage*100);
-                    votePercentage = votePercentage.length() > 4 ? votePercentage.substring(0, 5) : votePercentage.substring(0, votePercentage.length());
-                    demoString += "\n" + demo + ": " + votePercentage + "%";
+                    double votePercentage = percentage*100;
+                    String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+                    demoString += "\n" + demo + ": " + votePercentageString + "%";
                 }
                 return demoString;
             }
@@ -208,15 +209,15 @@ public class ChoiceActivity extends Activity {
     }
     private void setTotalStatsView(){
         if(pickItVotes.size() == 0){
-            String totalStatsString = "\nTotal Votes: 0, 0.00%";
+            String totalStatsString = "\nTotal Votes: 0      0.00%";
             total_stats.setText(totalStatsString);
             return;
         }
 
         double percent = (double)choiceVotes.size() / (double)pickItVotes.size();
-        String votePercentage = String.valueOf(percent * 100);
-        votePercentage = votePercentage.length() > 4 ? votePercentage.substring(0, 4) : votePercentage.substring(0, votePercentage.length());
-        String totalStatsString = "\nTotal Votes: " + getVotesForChoice(choice.getChoiceID()) +  ", " + votePercentage + "%";
+        double votePercentage = percent * 100;
+        String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+        String totalStatsString = "\nTotal Votes: " + getVotesForChoice(choice.getChoiceID()) +  "      " + votePercentageString + "%";
         total_stats.setText(totalStatsString);
     }
     private int getVotesForChoice(int choiceID){
