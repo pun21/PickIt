@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -13,9 +12,11 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.bcdevops.pickit.fileIO.ServerFileManager;
@@ -27,31 +28,28 @@ import com.bcdevops.pickit.model.Vote;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 
 public class ChoiceActivity extends Activity {
     //region Class variables
 
     private static HashMap<String, Integer> graphValues;
-    private static int choiceID;
-    private static int demoCategory;
-    private MyGraphview mGraph;
+    private static HashMap<String, Integer> legendColors;
+    private ArrayList<MyGraphview> graphList;
     private ArrayList<Vote> votes;
     private PickItApp pickItApp;
     private Choice choice;
     private PickIt pickIt;
-    private boolean noVotes = false;
-    private Button btn_next;
+    private int demoCategory;
     private ImageView image;
-    private TextView total_stats;
-    private TextView gender_stats;
-    private TextView ethnicity_stats;
-    private TextView political_stats;
-    private TextView religion_stats;
+    private LinearLayout graph_layout;
+    private TableLayout legend_layout;
+    private TextView total_stats, gender_stats, ethnicity_stats, political_stats, religion_stats, title;
+    private int[] colors;
     private String[][] code = new String[][] {{"Male", "Female", "Other"},
             {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
             {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
             {"Democrat", "Independent", "Republican", "Other", "None"}};
+    private String[] chart_title = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
 
     //endregion
 
@@ -62,17 +60,14 @@ public class ChoiceActivity extends Activity {
         setContentView(R.layout.activity_choice);
 
         pickItApp = (PickItApp)getApplication();
+        colors = this.getResources().getIntArray(R.array.legend);
 
+        demoCategory = 0;
         choice = Globals.choice;
         pickIt = Globals.pickIt;
-        demoCategory = Globals.demoCategory;
-        if (demoCategory == 3) {
-            Globals.demoCategory = 0;
-        } else {
-            Globals.demoCategory++;
-        }
         votes = pickIt.getVotes();
         votes = getVotesForChoiceID(choice.getChoiceID());
+        getLegendColors();
 
         image = (ImageView)findViewById(R.id.choice_imageView);
         total_stats = (TextView)findViewById(R.id.total_vote_stats);
@@ -80,14 +75,17 @@ public class ChoiceActivity extends Activity {
         ethnicity_stats = (TextView)findViewById(R.id.ethnicity_stats);
         political_stats = (TextView)findViewById(R.id.political_stats);
         religion_stats = (TextView)findViewById(R.id.religion_stats);
-        btn_next = (Button)findViewById(R.id.btn_next);
+
+        title = (TextView)findViewById(R.id.graph_title);
+        graph_layout = (LinearLayout) findViewById(R.id.linear);
+        legend_layout = (TableLayout) findViewById(R.id.legend_table);
 
         setUsername();
         setChoiceImage();
         setStatistics();
 
         getGraphValues();
-        mGraph = createGraph();
+        createGraphs();
         addViews();
     }
 
@@ -130,43 +128,44 @@ public class ChoiceActivity extends Activity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
-    public void callIntent() {
-        Intent intent = new Intent(this, ChoiceActivity.class);
-        startActivity(intent);
+    public void onClickNextGraph(View v) {
+        if (demoCategory < 3)
+            demoCategory++;
+        else
+            demoCategory = 0;
+
+        addViews();
     }
     //endregion
 
     //region Helper methods
+    private void createGraphs() {
+        graphList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            graphList.add(new MyGraphview(this, calculateData(getValues(code[i]))));
+        }
+    }
     private void addViews() {
 
-        if (demoCategory < 3) {
-            btn_next.setText("See Next Graph");
-            btn_next.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callIntent();
-                }
-            });
+        if (votes.isEmpty() & demoCategory == 0) {
+            Button btn = (Button) findViewById(R.id.btn_next);
+            btn.setVisibility(View.GONE);
+            if (graph_layout.getChildCount() == 0) {
+                TextView tv = new TextView(this);
+                tv.setText("There were no votes for this choice");
+                tv.setTextSize(18);
+                graph_layout.addView(tv);
+            }
         }
-        else {
-            btn_next.setVisibility(View.INVISIBLE);
+        else if (!votes.isEmpty()){
+            setLegend();
+            title.setText(chart_title[demoCategory]);
+            if (graph_layout.getChildAt(0) != null)
+                graph_layout.removeAllViews();
+
+
+            graph_layout.addView(new MyGraphview(this, calculateData(getValues(code[demoCategory]))));
         }
-
-        LinearLayout lv1 = (LinearLayout) findViewById(R.id.linear);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-        params.weight = 1.0f;
-
-        mGraph.setLayoutParams(params);
-
-        if (!noVotes)
-            lv1.addView(mGraph);
-        else {
-            TextView tv = new TextView(this);
-            tv.setText("There were no votes for this choice");
-            lv1.addView(tv);
-        }
-
     }
     private ArrayList<Vote> getVotesForChoiceID(int choiceID){
         ArrayList<Vote> votesTemp = new ArrayList<>();
@@ -299,6 +298,65 @@ public class ChoiceActivity extends Activity {
 
         username.setText(pickItApp.getUsername());
     }
+    //put all the colors for all the demographic strings into a hashmap
+    private void getLegendColors() {
+
+        legendColors = new HashMap<>();
+        int k = 0;
+        for (int i = 0; i < code.length; i++) {
+            for ( int j = 0; j < code[i].length; j++) {
+                legendColors.put(code[i][j], colors[k++]);
+            }
+        }
+    }
+    private void setLegend() {
+
+        switch (demoCategory) {
+            case 0:
+                if (legend_layout.getChildAt(8).getVisibility() == View.VISIBLE) {
+                    for (int i = 0; i < 6; i++) {
+                        legend_layout.getChildAt(8 - i).setVisibility(View.GONE);
+                    }
+                } else {
+                    for (int i = 0; i < 2; i++) {
+                        legend_layout.getChildAt(4 - i).setVisibility(View.GONE);
+                    }
+                }
+                for (int i = 0; i < 3; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < 6; i++) {
+                    legend_layout.getChildAt(i+3).setVisibility(View.VISIBLE);
+                }
+                for (int i = 0; i < 9; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 2; i++) {
+                    legend_layout.getChildAt(8-i).setVisibility(View.GONE);
+                }
+                for (int i = 0; i < 7; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 2; i++) {
+                    legend_layout.getChildAt(6-i).setVisibility(View.GONE);
+                }
+                for (int i = 0; i < 5; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+
+        }
+    }
     //get the votes for each element in a demographic category
     private float[] getValues(String[] category) {
         float[] values = new float[category.length];
@@ -327,9 +385,6 @@ public class ChoiceActivity extends Activity {
             graphValues.put(demo.getPoliticalAffiliation(), graphValues.get(demo.getPoliticalAffiliation())+1);
         }
     }
-    private MyGraphview createGraph() {
-        return new MyGraphview(this, calculateData(getValues(code[demoCategory])));
-    }
     private float[] calculateData(float[] data) {
         float total = 0;
         for (int i = 0; i < data.length; i++) {
@@ -344,7 +399,7 @@ public class ChoiceActivity extends Activity {
     public class MyGraphview extends View {
         private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private float[] value_degree;
-        RectF rectf = new RectF(120, 120, 380, 380);
+        RectF rectf = new RectF(10, 10, 400, 400);
         float temp = 0;
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
@@ -367,29 +422,17 @@ public class ChoiceActivity extends Activity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            Random r;
+
             for (int i = 0; i < value_degree.length; i++) {
                 int color;
                 if (i == 0) {
-                    r = new Random();
-
-                    color = Color.argb(100, r.nextInt(256), r.nextInt(256),
-                            r.nextInt(256));
-                    while (color == R.color.white) {
-                        color = Color.argb(100, r.nextInt(256), r.nextInt(256),
-                                r.nextInt(256));
-                    }
+                    //get color corresponding to the demographic category
+                    color = legendColors.get(code[demoCategory][i]);
                     paint.setColor(color);
                     canvas.drawArc(rectf, 0, value_degree[i], true, paint);
                 } else {
                     temp += value_degree[i - 1];
-                    r = new Random();
-                    color = Color.argb(255, r.nextInt(256), r.nextInt(256),
-                            r.nextInt(256));
-                    while (color == R.color.white) {
-                        color = Color.argb(100, r.nextInt(256), r.nextInt(256),
-                                r.nextInt(256));
-                    }
+                    color = legendColors.get(code[demoCategory][i]);
                     paint.setColor(color);
                     canvas.drawArc(rectf, temp, value_degree[i], true, paint);
                 }

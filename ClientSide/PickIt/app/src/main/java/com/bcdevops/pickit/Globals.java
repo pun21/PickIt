@@ -8,5 +8,4 @@ public class Globals {
     public static Choice choice = null;
     public static String nextUsername = "";
     public static int nextUserID;
-    public static int demoCategory = 0;
 }
