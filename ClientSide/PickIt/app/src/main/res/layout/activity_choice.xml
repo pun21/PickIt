@@ -109,6 +109,30 @@
                         android:textColor="@color/PrimaryColor"
                         android:textStyle="bold"
                         android:layout_weight="1"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <Button
+                        android:id="@+id/btn_next"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:orientation="vertical"
+                        android:background="@drawable/custom_upload_border"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
                 </TableRow>
             </TableLayout>
         </ScrollView>
