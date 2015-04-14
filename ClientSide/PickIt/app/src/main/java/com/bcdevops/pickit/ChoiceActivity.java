@@ -25,7 +25,8 @@ import java.util.HashMap;
 
 public class ChoiceActivity extends Activity {
     //region Class variables
-    private ArrayList<Vote> votes;
+    private ArrayList<Vote> pickItVotes;
+    private ArrayList<Vote> choiceVotes;
     private PickItApp pickItApp;
     private Choice choice;
     private PickIt pickIt;
@@ -49,8 +50,8 @@ public class ChoiceActivity extends Activity {
 
         choice = Globals.choice;
         pickIt = Globals.pickIt;
-        votes = pickIt.getVotes();
-        votes = getVotesForChoiceID(choice.getChoiceID());
+        pickItVotes = pickIt.getVotes();
+        choiceVotes = getVotesForChoiceID(choice.getChoiceID());
 
         image = (ImageView)findViewById(R.id.choice_imageView);
         total_stats = (TextView)findViewById(R.id.total_vote_stats);
@@ -95,10 +96,8 @@ public class ChoiceActivity extends Activity {
     public void onClickUsername(View v) {
         // When we go to the ProfileActivity,  set the nextUserName as
         // the profile page that we are intending to view
-        if(pickItApp.isGuest())
-            return;
-
-        Globals.nextUsername = pickItApp.getUsername();
+        TextView username = (TextView)findViewById(R.id.textView_username);
+        Globals.nextUsername = username.getText().toString();
 
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
@@ -108,9 +107,9 @@ public class ChoiceActivity extends Activity {
     //region Helper methods
     private ArrayList<Vote> getVotesForChoiceID(int choiceID){
         ArrayList<Vote> votesTemp = new ArrayList<>();
-        for(int a = 0; a < votes.size(); a++){
-            if(votes.get(a).getChoiceID() == choiceID)
-                votesTemp.add(votes.get(a));
+        for(int a = 0; a < pickItVotes.size(); a++){
+            if(pickItVotes.get(a).getChoiceID() == choiceID)
+                votesTemp.add(pickItVotes.get(a));
         }
 
         return votesTemp;
@@ -128,8 +127,8 @@ public class ChoiceActivity extends Activity {
     }
     private void setGenderStatsView(){
         ArrayList<String> values = new ArrayList<>();
-        for (int i = 0; i< votes.size();i++){
-            Demographics demo = votes.get(i).getDemographics();
+        for (int i = 0; i< choiceVotes.size();i++){
+            Demographics demo = choiceVotes.get(i).getDemographics();
             values.add(demo.getGender());
         }
 
@@ -139,8 +138,8 @@ public class ChoiceActivity extends Activity {
     }
     private void setEthnicityStatsView(){
         ArrayList<String> values = new ArrayList<>();
-        for (int i = 0; i < votes.size();i++){
-            Demographics demo = votes.get(i).getDemographics();
+        for (int i = 0; i < choiceVotes.size();i++){
+            Demographics demo = choiceVotes.get(i).getDemographics();
             values.add(demo.getEthnicity());
         }
 
@@ -150,8 +149,8 @@ public class ChoiceActivity extends Activity {
     }
     private void setPoliticalStatsView(){
         ArrayList<String> values = new ArrayList<>();
-        for (int i = 0; i< votes.size();i++){
-            Demographics demo = votes.get(i).getDemographics();
+        for (int i = 0; i< choiceVotes.size();i++){
+            Demographics demo = choiceVotes.get(i).getDemographics();
             values.add(demo.getPoliticalAffiliation());
         }
 
@@ -161,8 +160,8 @@ public class ChoiceActivity extends Activity {
     }
     private void setReligionStatsView(){
         ArrayList<String> values = new ArrayList<>();
-        for (int i = 0; i< votes.size();i++){
-            Demographics demo = votes.get(i).getDemographics();
+        for (int i = 0; i< choiceVotes.size();i++){
+            Demographics demo = choiceVotes.get(i).getDemographics();
             values.add(demo.getReligion());
         }
 
@@ -208,13 +207,13 @@ public class ChoiceActivity extends Activity {
         return "\nNo votes.";
     }
     private void setTotalStatsView(){
-        if(votes.size() == 0){
+        if(pickItVotes.size() == 0){
             String totalStatsString = "\nTotal Votes: 0, 0.00%";
             total_stats.setText(totalStatsString);
             return;
         }
 
-        double percent = (double)getVotesForChoice(choice.getChoiceID()) / (double)votes.size();
+        double percent = (double)choiceVotes.size() / (double)pickItVotes.size();
         String votePercentage = String.valueOf(percent * 100);
         votePercentage = votePercentage.length() > 4 ? votePercentage.substring(0, 4) : votePercentage.substring(0, votePercentage.length());
         String totalStatsString = "\nTotal Votes: " + getVotesForChoice(choice.getChoiceID()) +  ", " + votePercentage + "%";
@@ -222,7 +221,7 @@ public class ChoiceActivity extends Activity {
     }
     private int getVotesForChoice(int choiceID){
         int sum = 0;
-        for(int a = 0; a < votes.size(); a++){
+        for(int a = 0; a < pickItVotes.size(); a++){
             if(pickIt.getVotes().get(a).getChoiceID() == choiceID)
                 sum++;
         }
@@ -232,10 +231,7 @@ public class ChoiceActivity extends Activity {
     private void setUsername(){
         TextView username = (TextView)findViewById(R.id.textView_username);
 
-        if(pickItApp.isGuest())
-            pickItApp.setUsername("Guest");
-
-        username.setText(pickItApp.getUsername());
+        username.setText(pickIt.getUsername());
     }
     //endregion
 }

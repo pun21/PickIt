@@ -55,6 +55,14 @@ public class ProfileActivity extends Activity {
         endLoad();
     }
 
+    @Override
+    public void onResume(){
+        username = (TextView)findViewById(R.id.username);
+
+        username.setText(Globals.nextUsername);
+
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

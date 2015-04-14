@@ -58,7 +58,6 @@
 
         <TextView
             android:id = "@+id/username"
-            android:text = "@string/username"
             android:clickable = "true"
             android:onClick = "onClickSignOut"
             android:layout_height="wrap_content"

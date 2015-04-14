@@ -59,7 +59,7 @@ public class VoteActivity extends FragmentActivity {
 
         username = (TextView)findViewById(R.id.textView_username);
 
-        String tempUsername = pickItApp.getUsername();
+        String tempUsername = pickIt.getUsername();
         if(tempUsername.contains("Guest"))
             tempUsername = "Guest";
 

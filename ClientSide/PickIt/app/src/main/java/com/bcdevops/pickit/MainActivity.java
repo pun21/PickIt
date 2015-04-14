@@ -312,29 +312,23 @@ public class MainActivity extends Activity {
             vHeading.setText(pickIt.getSubjectHeader());
 
             vUsername = (TextView) itemView.findViewById(R.id.username);
-            String tempUsername = pickIt.getUsername();
-            if(tempUsername.contains("Guest"))
-                tempUsername = "Guest";
+            vUsername.setText(pickIt.getUsername());
 
-            vUsername.setText(tempUsername);
+            vUsername.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(mainActivity, ProfileActivity.class);
+                            Globals.nextUserID = pickIt.getUserID();
+                            Globals.nextUsername = pickIt.getUsername();
 
-            if(!tempUsername.equals("Guest")){
-                vUsername.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mainActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(mainActivity, ProfileActivity.class);
-                                Globals.nextUserID = pickIt.getUserID();
-                                Globals.nextUsername = pickIt.getUsername();
-
-                                startActivity(intent);
-                            }
-                        });
-                    }
-                });
-            }
+                            startActivity(intent);
+                        }
+                    });
+                }
+            });
 
             vCategory = (TextView) itemView.findViewById(R.id.category);
             vCategory.setText(pickIt.getCategory());
