@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/custom_table_border"
-    android:layout_width="0dp"
-    android:layout_height="fill_parent"
-    android:layout_weight="1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <ListView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/list"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1">
 
-    </ListView>
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/linear"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!--
+        <Button
+        android:id="@+id/btn_next_graph"
+        android:text="See Next Graph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /> -->
+    </LinearLayout>
+
+
+</RelativeLayout>
