@@ -110,6 +110,186 @@
                         android:textStyle="bold"
                         android:layout_weight="1"/>
                 </TableRow>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/btn_next"
+                        android:text="@string/next_graph_button"
+                        android:textSize="18sp"
+                        android:background="@drawable/custom_upload_border"
+                        android:onClick="onClickNextGraph"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/graph_title"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"/>
+                </TableRow>
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linear_legend"
+                        android:orientation="vertical"
+                        android:layout_weight="15"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TableLayout
+                            android:id="@+id/legend_table"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square1"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text1"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square2"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text2"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square3"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text3"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square4"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text4"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square5"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text5"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square6"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text6"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square7"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text7"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square8"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text8"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:id="@+id/color_square9"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/legend_text9"
+                                    android:textSize="18sp"
+                                    android:layout_weight="8"/>
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </TableRow>
             </TableLayout>
         </ScrollView>
     </TableLayout>

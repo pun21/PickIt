@@ -113,5 +113,6 @@
     <string name="vote">Vote</string>
     <string name="title_activity_vote">VoteActivity</string>
     <string name="title_activity_choice">ChoiceActivity</string>
+    <string name="next_graph_button">Next Graph</string>
 
 </resources>

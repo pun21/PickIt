@@ -1,14 +1,22 @@
 package com.bcdevops.pickit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.bcdevops.pickit.fileIO.ServerFileManager;
@@ -17,8 +25,6 @@ import com.bcdevops.pickit.model.Demographics;
 import com.bcdevops.pickit.model.PickIt;
 import com.bcdevops.pickit.model.Vote;
 
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,18 +32,33 @@ import java.util.HashMap;
 
 public class ChoiceActivity extends Activity {
     //region Class variables
+    private HashMap<String, Integer> legendColors;
+    private HashMap<String, Integer> genderValues;
+    private HashMap<String, Integer> ethnicityValues;
+    private HashMap<String, Integer> religionValues;
+    private HashMap<String, Integer> politicalValues;
     private ArrayList<Vote> pickItVotes;
     private ArrayList<Vote> choiceVotes;
     private PickItApp pickItApp;
     private Choice choice;
     private PickIt pickIt;
+    private int demoCategory;
 
+    private LinearLayout graph_layout;
+    private TableLayout legend_layout;
     private ImageView image;
     private TextView total_stats;
     private TextView gender_stats;
     private TextView ethnicity_stats;
     private TextView political_stats;
     private TextView religion_stats;
+    private TextView chart_title;
+    private int[] colors;
+    private String[][] code = new String[][] {{"Male", "Female", "Other"},
+            {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
+            {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
+            {"Democrat", "Independent", "Republican", "Other", "None"}};
+    private String[] categories = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
 
     //endregion
 
@@ -48,6 +69,8 @@ public class ChoiceActivity extends Activity {
         setContentView(R.layout.activity_choice);
 
         pickItApp = (PickItApp)getApplication();
+        colors = this.getResources().getIntArray(R.array.legend);
+        demoCategory = 0;
 
         choice = Globals.choice;
         pickIt = Globals.pickIt;
@@ -60,10 +83,18 @@ public class ChoiceActivity extends Activity {
         ethnicity_stats = (TextView)findViewById(R.id.ethnicity_stats);
         political_stats = (TextView)findViewById(R.id.political_stats);
         religion_stats = (TextView)findViewById(R.id.religion_stats);
+        chart_title = (TextView)findViewById(R.id.graph_title);
+        graph_layout = (LinearLayout) findViewById(R.id.linear);
+        legend_layout = (TableLayout) findViewById(R.id.legend_table);
+
 
         setUsername();
         setChoiceImage();
         setStatistics();
+
+        getLegendColors();
+        getGraphValues();
+        addViews();
     }
 
     @Override
@@ -103,9 +134,32 @@ public class ChoiceActivity extends Activity {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
+    public void onClickNextGraph(View v) {
+        if (demoCategory < 3)
+            demoCategory++;
+        else
+            demoCategory = 0;
+
+        addViews();
+    }
     //endregion
 
     //region Helper methods
+    private void addViews() {
+
+        if (choiceVotes.isEmpty() & demoCategory == 0) {
+            Button btn = (Button) findViewById(R.id.btn_next);
+            btn.setVisibility(View.GONE);
+        }
+        else if (!choiceVotes.isEmpty()){
+            setLegend();
+            chart_title.setText(categories[demoCategory]);
+            if (graph_layout.getChildAt(0) != null)
+                graph_layout.removeAllViews();
+
+            graph_layout.addView(new MyGraphview(this, calculateData(getValues(code[demoCategory]))));
+        }
+    }
     private ArrayList<Vote> getVotesForChoiceID(int choiceID){
         ArrayList<Vote> votesTemp = new ArrayList<>();
         for(int a = 0; a < pickItVotes.size(); a++){
@@ -233,6 +287,175 @@ public class ChoiceActivity extends Activity {
         TextView username = (TextView)findViewById(R.id.textView_username);
 
         username.setText(pickIt.getUsername());
+    }
+    private void getLegendColors() {
+    /*put all the colors for all the demographic strings into a hashmap*/
+        legendColors = new HashMap<>();
+        int k = 0;
+        for (int i = 0; i < code.length; i++) {
+            for ( int j = 0; j < code[i].length; j++) {
+                legendColors.put(code[i][j], colors[k++]);
+            }
+        }
+    }
+    private void setLegend() {
+
+        switch (demoCategory) {
+            case 0:
+                if (legend_layout.getChildAt(8).getVisibility() == View.VISIBLE) {
+                    for (int i = 0; i < 6; i++) {
+                        legend_layout.getChildAt(8 - i).setVisibility(View.GONE);
+                    }
+                } else {
+                    for (int i = 0; i < 2; i++) {
+                        legend_layout.getChildAt(4 - i).setVisibility(View.GONE);
+                    }
+                }
+                for (int i = 0; i < 3; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < 6; i++) {
+                    legend_layout.getChildAt(i+3).setVisibility(View.VISIBLE);
+                }
+                for (int i = 0; i < 9; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 2; i++) {
+                    legend_layout.getChildAt(8-i).setVisibility(View.GONE);
+                }
+                for (int i = 0; i < 7; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 2; i++) {
+                    legend_layout.getChildAt(6-i).setVisibility(View.GONE);
+                }
+                for (int i = 0; i < 5; i++) {
+                    ((ViewGroup)legend_layout.getChildAt(i)).getChildAt(0).setBackgroundColor(legendColors.get(code[demoCategory][i]));
+                    ((TextView)((ViewGroup)legend_layout.getChildAt(i)).getChildAt(1)).setText(code[demoCategory][i]);
+                }
+                break;
+
+        }
+    }
+    private float[] getValues(String[] category) {
+    /*get the votes for each element in a demographic category*/
+        float[] values = new float[category.length];
+        switch(demoCategory) {
+            case 0:
+                for (int i = 0; i < category.length; i++) {
+                    values[i] = genderValues.get(category[i]);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < category.length; i++) {
+                    values[i] = ethnicityValues.get(category[i]);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < category.length; i++) {
+                    values[i] = religionValues.get(category[i]);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < category.length; i++) {
+                    values[i] = politicalValues.get(category[i]);
+                }
+        }
+        return values;
+    }
+    private void  initHashMapValues() {
+        genderValues = new HashMap<>();
+        ethnicityValues = new HashMap<>();
+        religionValues = new HashMap<>();
+        politicalValues = new HashMap<>();
+
+        for (int i = 0; i < code[0].length; i++) {
+            genderValues.put(code[0][i], 0);
+        }
+        for (int i = 0; i < code[1].length; i++) {
+            ethnicityValues.put(code[1][i], 0);
+        }
+        for (int i = 0; i < code[2].length; i++) {
+            religionValues.put(code[2][i], 0);
+        }
+        for (int i = 0; i < code[3].length; i++) {
+            politicalValues.put(code[3][i], 0);
+        }
+
+    }
+    private void getGraphValues() {
+        initHashMapValues();
+
+        for (int i = 0; i < choiceVotes.size(); i++) {
+            Demographics demo = choiceVotes.get(i).getDemographics();
+            genderValues.put(demo.getGender(), genderValues.get(demo.getGender()) + 1);
+            ethnicityValues.put(demo.getEthnicity(), ethnicityValues.get(demo.getEthnicity()) + 1);
+            religionValues.put(demo.getReligion(), religionValues.get(demo.getReligion()) + 1);
+            politicalValues.put(demo.getPoliticalAffiliation(), politicalValues.get(demo.getPoliticalAffiliation()) + 1);
+        }
+    }
+    private float[] calculateData(float[] data) {
+        float total = 0;
+        for (int i = 0; i < data.length; i++) {
+            total += data[i];
+        }
+        for (int i = 0; i < data.length; i++) {
+            data[i] = 360 * (data[i] / total);
+        }
+        return data;
+    }
+
+    public class MyGraphview extends View {
+        private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private float[] value_degree;
+        RectF rectf = new RectF(10, 10, 400, 400);
+        Display display = getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight()/2;
+
+
+        public MyGraphview(Context context, float[] values) {
+            super(context);
+            value_degree = new float[values.length];
+            for (int i = 0; i < values.length; i++) {
+                value_degree[i] = values[i];
+            }
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            this.setMeasuredDimension(width/2, height/2);
+        }
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+
+            float temp = 0;
+            for (int i = 0; i < value_degree.length; i++) {
+                int color;
+                if (i == 0) {
+                    //get color corresponding to the demographic category
+                    color = legendColors.get(code[demoCategory][i]);
+                    paint.setColor(color);
+                    canvas.drawArc(rectf, 0, value_degree[i], true, paint);
+                } else {
+                    temp += value_degree[i - 1];
+                    color = legendColors.get(code[demoCategory][i]);
+                    paint.setColor(color);
+                    canvas.drawArc(rectf, temp, value_degree[i], true, paint);
+                }
+            }
+        }
     }
     //endregion
 }
