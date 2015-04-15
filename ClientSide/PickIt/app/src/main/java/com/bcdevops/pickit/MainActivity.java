@@ -91,14 +91,6 @@ public class MainActivity extends Activity {
     }
     @Override
     protected void onStop(){
-        for(int a = 0; a < pickItList.size(); a++){
-            try{
-                pickItList.get(a).stopTimer();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
-
         super.onStop();
     }
     //endregion

@@ -29,18 +29,29 @@ import org.achartengine.GraphicalView;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ResultsActivity extends FragmentActivity {
     //region Class variables
-    private static HashMap<Integer, ImageView> map;
     private static PickIt pickIt;
+
     private PickItApp pickItApp;
     private ServerFileManager sm;
 
     private TextView username;
+    private TextView description;
+    private TextView r0c0_textView;
+    private TextView r0c1_textView;
+    private TextView r1c0_textView;
+    private TextView r1c1_textView;
+    private ImageView r0c0;
+    private ImageView r0c1;
+    private ImageView r1c0;
+    private ImageView r1c1;
     //endregion
 
     //region Activity life-cycle methods
@@ -63,6 +74,16 @@ public class ResultsActivity extends FragmentActivity {
                 }
             }
         }
+
+        r0c0_textView = (TextView)findViewById(R.id.r0c0_text);
+        r0c1_textView = (TextView)findViewById(R.id.r0c1_text);
+        r1c0_textView = (TextView)findViewById(R.id.r1c0_text);
+        r1c1_textView = (TextView)findViewById(R.id.r1c1_text);
+        r0c0 = (ImageView)findViewById(R.id.row0column0);
+        r0c1 = (ImageView)findViewById(R.id.row0column1);
+        r1c0 = (ImageView)findViewById(R.id.row1column0);
+        r1c1 = (ImageView)findViewById(R.id.row1column1);
+        description = (TextView)findViewById(R.id.upload_description);
 
         DatabaseAccess access = new DatabaseAccess();
         pickIt.setVotes(access.retrievePickItVotes(pickIt.getPickItID()));
@@ -146,23 +167,14 @@ public class ResultsActivity extends FragmentActivity {
 
     //region Helper methods
     private void getBitmaps(){
-        map = new HashMap<>();
-
         for(int a = 0; a < pickIt.getChoices().size(); a++){
             ImageView view = new ImageView(this);
             sm.downloadPicture(view, pickIt.getChoices().get(a).getFilename());
-
-            map.put(a, view);
         }
     }
 
     private void setFrontEnd(){
-        final ImageView r0c0 = (ImageView)findViewById(R.id.row0column0);
-        final ImageView r0c1 = (ImageView)findViewById(R.id.row0column1);
-        final ImageView r1c0 = (ImageView)findViewById(R.id.row1column0);
-        final ImageView r1c1 = (ImageView)findViewById(R.id.row1column1);
-        final TextView description = (TextView)findViewById(R.id.upload_description);
-
+        //region Download images and set views
         ServerFileManager serverFileManager = new ServerFileManager();
         serverFileManager.downloadPicture(r0c0, pickIt.getChoices().get(0).getFilename());
         r0c0.setBackground(null);
@@ -184,33 +196,49 @@ public class ResultsActivity extends FragmentActivity {
             r1c0.setVisibility(View.GONE);
             r1c1.setVisibility(View.GONE);
         }
+        //endregion
 
+        //Description
         if(pickIt.getSubjectHeader().trim().length() == 0)
             description.setVisibility(View.GONE);
         else
             description.setText(pickIt.getSubjectHeader());
 
-        TextView resultsSummary = (TextView)findViewById(R.id.pickItVoteInfo);
-        String numVotes = "Number of votes: " + pickIt.getVotes().size();
+        // Choice 0
+        int choice0Votes = getVotesForChoice(pickIt.getChoices().get(0).getChoiceID());
+        double percent = choice0Votes / (double)pickIt.getVotes().size();
+        double votePercentage = percent * 100;
+        String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+        String totalStatsString = choice0Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+        r0c0_textView.setText(totalStatsString);
 
-        int choice1Votes = getVotesForChoice(pickIt.getChoices().get(0).getChoiceID());
-        int choice2Votes = getVotesForChoice(pickIt.getChoices().get(1).getChoiceID());
+        // Choice 1
+        int choice1Votes = getVotesForChoice(pickIt.getChoices().get(1).getChoiceID());
+        percent = choice1Votes / (double)pickIt.getVotes().size();
+        votePercentage = percent * 100;
+        votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+        totalStatsString = choice1Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+        r0c1_textView.setText(totalStatsString);
 
-        String choiceVotes = "\nUpper Left: " + choice1Votes;
-        choiceVotes += "\nUpper Right: " + choice2Votes;
-
+        // Choice 2
         if(pickIt.getChoices().size() > 2){
-            int choice3Votes = getVotesForChoice(pickIt.getChoices().get(2).getChoiceID());
-            choiceVotes += "\nBottom Left: " + choice3Votes;
+            int choice2Votes = getVotesForChoice(pickIt.getChoices().get(2).getChoiceID());
+            percent = choice2Votes / (double)pickIt.getVotes().size();
+            votePercentage = percent * 100;
+            votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+            totalStatsString = choice2Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+            r1c0_textView.setText(totalStatsString);
         }
 
+        // Choice 3
         if(pickIt.getChoices().size() > 3){
-            int choice4Votes = getVotesForChoice(pickIt.getChoices().get(3).getChoiceID());
-            choiceVotes += "\nBottom Right: " + choice4Votes;
+            int choice3Votes = getVotesForChoice(pickIt.getChoices().get(3).getChoiceID());
+            percent = choice3Votes / (double)pickIt.getVotes().size();
+            votePercentage = percent * 100;
+            votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+            totalStatsString = choice3Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+            r1c1_textView.setText(totalStatsString);
         }
-
-        String resultString = numVotes + choiceVotes;
-        resultsSummary.setText(resultString);
     }
 
     private int getVotesForChoice(int choiceID){

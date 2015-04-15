@@ -45,12 +45,16 @@
     <string name="religion">Religion</string>
     <string name="age">Age</string>
 
+    <string name="required">Must change...</string>
+
     <string-array name="gender_array">
+        <item>Must change...</item>
         <item>Female</item>
         <item>Male</item>
         <item>Other</item>
     </string-array>
     <string-array name="ethnicity_array">
+        <item>Must change...</item>
         <item>African</item>
         <item>African American</item>
         <item>Asian</item>
@@ -62,6 +66,7 @@
         <item>Other</item>
     </string-array>
     <string-array name="political_affiliation_array">
+        <item>Must change...</item>
         <item>Democrat</item>
         <item>Independent</item>
         <item>Republican</item>
@@ -69,6 +74,7 @@
         <item>None</item>
     </string-array>
     <string-array name="religion_array">
+        <item>Must change...</item>
         <item>Buddhism</item>
         <item>Christianity</item>
         <item>Hinduism</item>

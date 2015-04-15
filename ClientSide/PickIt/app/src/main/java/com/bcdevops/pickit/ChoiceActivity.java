@@ -209,7 +209,7 @@ public class ChoiceActivity extends Activity {
     }
     private void setTotalStatsView(){
         if(pickItVotes.size() == 0){
-            String totalStatsString = "\nTotal Votes: 0      0.00%";
+            String totalStatsString = "No votes yet";
             total_stats.setText(totalStatsString);
             return;
         }
@@ -217,7 +217,7 @@ public class ChoiceActivity extends Activity {
         double percent = (double)choiceVotes.size() / (double)pickItVotes.size();
         double votePercentage = percent * 100;
         String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
-        String totalStatsString = "\nTotal Votes: " + getVotesForChoice(choice.getChoiceID()) +  "      " + votePercentageString + "%";
+        String totalStatsString = getVotesForChoice(choice.getChoiceID()) + " of " + pickItVotes.size() +  " votes,  " + votePercentageString + "%";
         total_stats.setText(totalStatsString);
     }
     private int getVotesForChoice(int choiceID){
@@ -232,7 +232,13 @@ public class ChoiceActivity extends Activity {
     private void setUsername(){
         TextView username = (TextView)findViewById(R.id.textView_username);
 
-        username.setText(pickIt.getUsername());
+        String tempUsername = pickIt.getUsername();
+
+        tempUsername = tempUsername.contains("Guest") ? "Guest" : tempUsername;
+        username.setText(tempUsername);
+
+        if(tempUsername.equals("Guest"))
+            username.setEnabled(false);
     }
     //endregion
 }
