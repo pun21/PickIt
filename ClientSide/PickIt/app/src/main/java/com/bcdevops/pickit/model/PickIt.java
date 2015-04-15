@@ -70,17 +70,18 @@ public class PickIt implements Serializable {
         return username;
     }
     public String getLifeString(){
-        int seconds = secondsOfLife % 60;
-        secondsOfLife = (secondsOfLife - seconds) / 60;
+        int temp = secondsOfLife;
+        int seconds = temp % 60;
+        temp = (temp - seconds) / 60;
 
-        int minutes = secondsOfLife % 60;
-        secondsOfLife = (secondsOfLife - minutes) / 60;
+        int minutes = temp % 60;
+        temp = (temp - minutes) / 60;
 
-        int hours = secondsOfLife % 24;
+        int hours = temp;
 
-        String dateStructuredText = "";
+        String dateStructuredText = "Expired";
         if(hours > 0 || minutes > 0 || seconds > 0){
-            dateStructuredText = hours + " h " + minutes + " m " + seconds + " s";
+            dateStructuredText = hours + " h   " + minutes + " m   " + seconds + " s";
         }
 
         return dateStructuredText;

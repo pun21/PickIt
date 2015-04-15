@@ -44,6 +44,12 @@ public class VoteActivity extends FragmentActivity {
         pickItApp = (PickItApp)getApplication();
 
         pickIt = Globals.pickIt;
+
+        if(!(pickIt.getSecondsOfLife() > 0)){
+            Intent intent = new Intent(this, ResultsActivity.class);
+            startActivity(intent);
+        }
+
         pickIt.setVotes(new DatabaseAccess().retrievePickItVotes(pickIt.getPickItID()));
 
         for(int a = 0; a < pickIt.getVotes().size(); a++){

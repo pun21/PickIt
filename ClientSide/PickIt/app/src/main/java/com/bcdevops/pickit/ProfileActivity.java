@@ -44,7 +44,13 @@ public class ProfileActivity extends Activity {
         loading = (ProgressBar)findViewById(R.id.loading);
         username = (TextView)findViewById(R.id.username);
 
-        username.setText(Globals.nextUsername);
+        String tempUsername = Globals.nextUsername;
+
+        tempUsername = tempUsername.contains("Guest") ? "Guest" : tempUsername;
+        username.setText(tempUsername);
+
+        if(tempUsername.equals("Guest"))
+            username.setEnabled(false);
 
         viewSortingType  = Enums.Toggles.UPLOADED;
 
@@ -88,19 +94,11 @@ public class ProfileActivity extends Activity {
 
     @Override
     protected void onStop(){
-        for(int a = 0; a < pickItList.size(); a++){
-            pickItList.get(a).stopTimer();
-        }
-
         super.onStop();
     }
     //endregion
 
     //region Input Handlers
-    public void onClickNavHome(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 
     public void onClickUsername(View v) {
             Intent intent = new Intent(this, ProfileAdminActivity.class);
@@ -109,19 +107,6 @@ public class ProfileActivity extends Activity {
 
     public void onClickAppName(View v){
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickNavUpload(View v) {
-        Intent intent = new Intent(this, UploadActivity.class);
-        startActivity(intent);
-    }
-
-    public void onClickSignOut(View v) {
-        pickItApp.resetUser();
-
-        //go to login page after signing out
-        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

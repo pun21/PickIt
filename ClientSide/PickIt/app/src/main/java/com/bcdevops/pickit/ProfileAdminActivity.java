@@ -33,10 +33,10 @@ public class ProfileAdminActivity extends Activity {
     PickItApp pickItApp;
     LocalFileManager localFileManager;
 
-    Spinner spin_g;
-    Spinner spin_e;
-    Spinner spin_r;
-    Spinner spin_p;
+    Spinner mGender;
+    Spinner mEthnicity;
+    Spinner mReligion;
+    Spinner mPolitical;
     ArrayAdapter<CharSequence> adapt_g;
     ArrayAdapter<CharSequence> adapt_e;
     ArrayAdapter<CharSequence> adapt_r;
@@ -59,16 +59,18 @@ public class ProfileAdminActivity extends Activity {
         pickItApp = (PickItApp)getApplication();
         localFileManager = new LocalFileManager(this);
 
-        spin_g = (Spinner) findViewById(R.id.spinner_gender);
-        spin_e = (Spinner) findViewById(R.id.spinner_ethnicity);
-        spin_r = (Spinner) findViewById(R.id.spinner_religion);
-        spin_p = (Spinner) findViewById(R.id.spinner_political);
+        mGender = (Spinner) findViewById(R.id.spinner_gender);
+        mEthnicity = (Spinner) findViewById(R.id.spinner_ethnicity);
+        mReligion = (Spinner) findViewById(R.id.spinner_religion);
+        mPolitical = (Spinner) findViewById(R.id.spinner_political);
 
         mUsernameRepresentation = (EditText)findViewById(R.id.usernameDemoTextbox);
         mPasswordRepresentation = (EditText)findViewById(R.id.passwordDemoTextbox);
         mConfirmPasswordRepresentation = (EditText)findViewById(R.id.confirmDemoTextbox);
         mBirthday = (EditText)findViewById(R.id.textField_bday);
         loading = (ProgressBar)findViewById(R.id.loading);
+
+        mBirthday.setEnabled(false);
 
         layoutID = R.id.accountAdminLayout;
     }
@@ -110,14 +112,6 @@ public class ProfileAdminActivity extends Activity {
             }else{
                 updateUser();
             }
-        }else{
-            Context context = getApplicationContext();
-            CharSequence text = "Invalid credentials\nPlease try again";
-            int duration = Toast.LENGTH_LONG;
-
-            Toast.makeText(context, text, duration).show();
-
-            endLoad();
         }
     }
     //endregion
@@ -141,21 +135,10 @@ public class ProfileAdminActivity extends Activity {
                 tempPassword = mPasswordRepresentation.getText().toString();
             }
 
-
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            Date date = formatter.parse(mBirthday.getText().toString());
-            tempBirthday = new SimpleDateFormat("yyyy-MM-dd").format(date);
-
-            Spinner mGender = (Spinner)findViewById(R.id.spinner_gender);
+            tempBirthday = mBirthday.getText().toString();
             tempGender = mGender.getSelectedItem().toString();
-
-            Spinner mEthnicity = (Spinner)findViewById(R.id.spinner_ethnicity);
             tempEthnicity = mEthnicity.getSelectedItem().toString();
-
-            Spinner mReligion = (Spinner)findViewById(R.id.spinner_religion);
             tempReligion = mReligion.getSelectedItem().toString();
-
-            Spinner mPolitical = (Spinner)findViewById(R.id.spinner_political);
             tempPolitical = mPolitical.getSelectedItem().toString();
         }catch(Exception e){
             e.printStackTrace();
@@ -170,17 +153,12 @@ public class ProfileAdminActivity extends Activity {
         final User user = new User(0, tempUsername, tempBirthday, tempGender, tempEthnicity, tempReligion, tempPolitical);
         final ProfileAdminActivity activity = this;
 
-//        if(notOfAge(tempBirthday)){
-//            Context context = getApplicationContext();
-//            CharSequence text = "Sorry, sport...";
-//            int duration = Toast.LENGTH_SHORT;
-//
-//            Toast.makeText(context, text, duration).show();
-//
-//            finish();
-//            System.exit(0);
-//            return;
-//        }
+        if(notOfAge(tempBirthday)){
+            Intent intent = new Intent(this, LoginActivity.class);
+
+            startActivity(intent);
+            return;
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -191,7 +169,7 @@ public class ProfileAdminActivity extends Activity {
     }
 
     private boolean notOfAge(String birthday){
-        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
 
         Date date;
         try {
@@ -201,13 +179,14 @@ public class ProfileAdminActivity extends Activity {
             date = null;
         }
 
-        int twentyOneYearsAgo = ((int)new Date().getTime() - (1000*60*60*24*365*21));
-        if(date != null && date.getTime() < twentyOneYearsAgo)
+        long eighteenYears = (long)1000*(long)60*(long)60*(long)24*(long)365*(long)18;
+
+        long eighteenYearsAgo = new Date().getTime() - eighteenYears;
+        if(date.getTime() > eighteenYearsAgo)
             return true;
 
         return false;
     }
-
     private void updateUser(){
         String tempUsername;
         String tempBirthday;
@@ -218,21 +197,10 @@ public class ProfileAdminActivity extends Activity {
 
         try{
             tempUsername = mUsernameRepresentation.getText().toString();
-
-            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-            Date date = formatter.parse(mBirthday.getText().toString());
-            tempBirthday = new SimpleDateFormat("yyyy-MM-dd").format(date);
-
-            Spinner mGender = (Spinner)findViewById(R.id.spinner_gender);
+            tempBirthday = mBirthday.getText().toString();
             tempGender = mGender.getSelectedItem().toString();
-
-            Spinner mEthnicity = (Spinner)findViewById(R.id.spinner_ethnicity);
             tempEthnicity = mEthnicity.getSelectedItem().toString();
-
-            Spinner mReligion = (Spinner)findViewById(R.id.spinner_religion);
             tempReligion = mReligion.getSelectedItem().toString();
-
-            Spinner mPolitical = (Spinner)findViewById(R.id.spinner_political);
             tempPolitical = mPolitical.getSelectedItem().toString();
         }catch(Exception e){
             e.printStackTrace();
@@ -272,14 +240,39 @@ public class ProfileAdminActivity extends Activity {
     }
     private boolean isAcceptableData(){
         if(pickItApp.isGuest()){
-            if(birthdayIsCorrectFormat())
+            if(birthdayIsCorrectFormat() && spinnersAreChanged())
                 return true;
         }else{
-            if(birthdayIsCorrectFormat() && credentialsAreValid() && passwordsMatch())
+            if(birthdayIsCorrectFormat() && credentialsAreValid() && passwordsMatch() && spinnersAreChanged())
                 return true;
         }
 
         return false;
+    }
+    private boolean spinnersAreChanged(){
+        boolean genderChanged = !mGender.getSelectedItem().toString().equals(getResources().getString(R.string.required));
+        boolean ethnicityChanged = !mEthnicity.getSelectedItem().toString().equals(getResources().getString(R.string.required));
+        boolean religionChanged = !mReligion.getSelectedItem().toString().equals(getResources().getString(R.string.required));
+        boolean politicalChanged = !mPolitical.getSelectedItem().toString().equals(getResources().getString(R.string.required));
+
+        String valuesUnchanged = "";
+        if(!genderChanged)
+            valuesUnchanged += "\nGender";
+        if(!ethnicityChanged)
+            valuesUnchanged += "\nEthnicity";
+        if(!religionChanged)
+            valuesUnchanged += "\nReligion";
+        if(!politicalChanged)
+            valuesUnchanged += "\nPolitical Affiliation";
+
+        if(!valuesUnchanged.equals("")){
+            CharSequence text = "The following need to be changed: " + valuesUnchanged;
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            endLoad();
+            return false;
+        }
+
+        return true;
     }
     private boolean passwordsMatch(){
         return mPasswordRepresentation.getText().toString().equals(mConfirmPasswordRepresentation.getText().toString());
@@ -305,6 +298,10 @@ public class ProfileAdminActivity extends Activity {
             }catch(Exception e){
                 e.printStackTrace();
             }
+        }else{
+            CharSequence text = "Please enter your birthday";
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            endLoad();
         }
 
         return false;
@@ -313,51 +310,51 @@ public class ProfileAdminActivity extends Activity {
         //Gender options
         adapt_g = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item);
         adapt_g.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_g.setAdapter(adapt_g);
+        mGender.setAdapter(adapt_g);
 
         //Ethnicity options
         adapt_e = ArrayAdapter.createFromResource(this,R.array.ethnicity_array, android.R.layout.simple_spinner_item);
         adapt_e.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_e.setAdapter(adapt_e);
+        mEthnicity.setAdapter(adapt_e);
 
         //Religion options
         adapt_r = ArrayAdapter.createFromResource(this,R.array.religion_array, android.R.layout.simple_spinner_item);
         adapt_r.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_r.setAdapter(adapt_r);
+        mReligion.setAdapter(adapt_r);
 
         //Political Affiliation options
         adapt_p = ArrayAdapter.createFromResource(this,R.array.political_affiliation_array, android.R.layout.simple_spinner_item);
         adapt_p.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spin_p.setAdapter(adapt_p);
+        mPolitical.setAdapter(adapt_p);
 
         //Set current values of user
         if(pickItApp.getUserID() > 0){
             String compareValue= pickItApp.getEthnicity();
             if (!compareValue.equals(null)) {
                 int spinnerPostion = adapt_e.getPosition(compareValue);
-                spin_e.setSelection(spinnerPostion);
+                mEthnicity.setSelection(spinnerPostion);
             }
 
             compareValue= pickItApp.getGender();
             if (!compareValue.equals(null)) {
                 int spinnerPostion = adapt_g.getPosition(compareValue);
-                spin_g.setSelection(spinnerPostion);
+                mGender.setSelection(spinnerPostion);
             }
 
             compareValue= pickItApp.getReligion();
             if (!compareValue.equals(null)) {
                 int spinnerPostion = adapt_r.getPosition(compareValue);
-                spin_r.setSelection(spinnerPostion);
+                mReligion.setSelection(spinnerPostion);
             }
             compareValue= pickItApp.getPolitical();
             if (!compareValue.equals(null)) {
                 int spinnerPostion = adapt_p.getPosition(compareValue);
-                spin_p.setSelection(spinnerPostion);
+                mPolitical.setSelection(spinnerPostion);
             }
 
             compareValue = pickItApp.getBirthday();
             if(!compareValue.equals(null)){
-                String birthday = compareValue.substring(5, 10).replace('-','/') + "/" + compareValue.substring(0, 4);
+                String birthday = compareValue;
                 mBirthday.setText(birthday);
             }
         }
@@ -475,7 +472,7 @@ public class ProfileAdminActivity extends Activity {
                         startActivity(intent);
                     }else{
                         Context context = getApplicationContext();
-                        CharSequence text = "We're sorry! We were unable to save your information";
+                        CharSequence text = "Error: We were unable to save your information :(";
                         int duration = Toast.LENGTH_LONG;
 
                         Toast.makeText(context, text, duration).show();

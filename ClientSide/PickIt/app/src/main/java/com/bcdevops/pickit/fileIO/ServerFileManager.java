@@ -1,6 +1,7 @@
 package com.bcdevops.pickit.fileIO;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -9,6 +10,7 @@ import com.bcdevops.pickit.database.handling.DatabaseAccess;
 import com.bcdevops.pickit.model.PickIt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ServerFileManager {
     //region Class variables
@@ -22,6 +24,7 @@ public class ServerFileManager {
     final private String KEY_EXPIRING_UPLOADS = "PickIt/php/expiring_uploads.php";
     final private String KEY_USER_UPLOADS = "PickIt/php/users_uploads.php";
     final private String KEY_RECENT_USER_ACTIVITY = "PickIt/php/users_recent_activity.php";
+
     final private Activity activity;
     final private String file;
     final private String filename;
@@ -97,7 +100,7 @@ public class ServerFileManager {
 
         ImageLoader imageLoader = ImageLoader.getInstance();
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisc(true).resetViewBeforeLoading(true)
+                .cacheOnDisc(true).resetViewBeforeLoading(false)
                 .showImageForEmptyUri(null)
                 .showImageOnFail(null)
                 .showImageOnLoading(null).build();
