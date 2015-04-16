@@ -149,12 +149,16 @@ public class ProfileActivity extends Activity {
     }
 
     private void setEditProfile(){
+        TextView editProfile = (TextView)findViewById(R.id.textView_EditProfile);
+
         boolean nextUserIsThisUser = pickItApp.getUsername().equals(Globals.nextUsername);
 
         if (nextUserIsThisUser){
-            TextView editProfile = (TextView)findViewById(R.id.textView_EditProfile);
             editProfile.setEnabled(true);
             editProfile.setVisibility(View.VISIBLE);
+        }else{
+            editProfile.setEnabled(true);
+            editProfile.setVisibility(View.GONE);
         }
     }
 
