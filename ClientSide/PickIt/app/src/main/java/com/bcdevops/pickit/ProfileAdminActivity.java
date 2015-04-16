@@ -154,6 +154,10 @@ public class ProfileAdminActivity extends Activity {
         final ProfileAdminActivity activity = this;
 
         if(notOfAge(tempBirthday)){
+            CharSequence text = "Age Requirement: 18+";
+
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(this, LoginActivity.class);
 
             startActivity(intent);

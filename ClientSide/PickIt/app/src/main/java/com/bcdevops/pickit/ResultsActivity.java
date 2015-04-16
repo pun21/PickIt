@@ -204,40 +204,42 @@ public class ResultsActivity extends FragmentActivity {
         else
             description.setText(pickIt.getSubjectHeader());
 
-        // Choice 0
-        int choice0Votes = getVotesForChoice(pickIt.getChoices().get(0).getChoiceID());
-        double percent = choice0Votes / (double)pickIt.getVotes().size();
-        double votePercentage = percent * 100;
-        String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
-        String totalStatsString = choice0Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
-        r0c0_textView.setText(totalStatsString);
+        if(pickIt.getVotes().size() != 0){
+            // Choice 0
+            int choice0Votes = getVotesForChoice(pickIt.getChoices().get(0).getChoiceID());
+            double percent = choice0Votes / (double)pickIt.getVotes().size();
+            double votePercentage = percent * 100;
+            String votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+            String totalStatsString = choice0Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+            r0c0_textView.setText(totalStatsString);
 
-        // Choice 1
-        int choice1Votes = getVotesForChoice(pickIt.getChoices().get(1).getChoiceID());
-        percent = choice1Votes / (double)pickIt.getVotes().size();
-        votePercentage = percent * 100;
-        votePercentageString = new DecimalFormat("#.##").format(votePercentage);
-        totalStatsString = choice1Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
-        r0c1_textView.setText(totalStatsString);
-
-        // Choice 2
-        if(pickIt.getChoices().size() > 2){
-            int choice2Votes = getVotesForChoice(pickIt.getChoices().get(2).getChoiceID());
-            percent = choice2Votes / (double)pickIt.getVotes().size();
+            // Choice 1
+            int choice1Votes = getVotesForChoice(pickIt.getChoices().get(1).getChoiceID());
+            percent = choice1Votes / (double)pickIt.getVotes().size();
             votePercentage = percent * 100;
             votePercentageString = new DecimalFormat("#.##").format(votePercentage);
-            totalStatsString = choice2Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
-            r1c0_textView.setText(totalStatsString);
-        }
+            totalStatsString = choice1Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+            r0c1_textView.setText(totalStatsString);
 
-        // Choice 3
-        if(pickIt.getChoices().size() > 3){
-            int choice3Votes = getVotesForChoice(pickIt.getChoices().get(3).getChoiceID());
-            percent = choice3Votes / (double)pickIt.getVotes().size();
-            votePercentage = percent * 100;
-            votePercentageString = new DecimalFormat("#.##").format(votePercentage);
-            totalStatsString = choice3Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
-            r1c1_textView.setText(totalStatsString);
+            // Choice 2
+            if(pickIt.getChoices().size() > 2){
+                int choice2Votes = getVotesForChoice(pickIt.getChoices().get(2).getChoiceID());
+                percent = choice2Votes / (double)pickIt.getVotes().size();
+                votePercentage = percent * 100;
+                votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+                totalStatsString = choice2Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+                r1c0_textView.setText(totalStatsString);
+            }
+
+            // Choice 3
+            if(pickIt.getChoices().size() > 3){
+                int choice3Votes = getVotesForChoice(pickIt.getChoices().get(3).getChoiceID());
+                percent = choice3Votes / (double)pickIt.getVotes().size();
+                votePercentage = percent * 100;
+                votePercentageString = new DecimalFormat("#.##").format(votePercentage);
+                totalStatsString = choice3Votes + " of " + pickIt.getVotes().size() +  " votes\n" + votePercentageString + "%";
+                r1c1_textView.setText(totalStatsString);
+            }
         }
     }
 

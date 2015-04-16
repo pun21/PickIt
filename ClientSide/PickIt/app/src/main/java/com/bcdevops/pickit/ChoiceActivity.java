@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -58,7 +59,7 @@ public class ChoiceActivity extends Activity {
             {"African","African-American", "Asian", "Caucasian", "Hispanic", "Latino", "Native American", "Pacific Islander", "Other" },
             {"Buddhism", "Christianity", "Hinduism", "Islam", "Judaism", "Other", "None"},
             {"Democrat", "Independent", "Republican", "Other", "None"}};
-    private String[] categories = new String[] {"Gender", "Ethnicity", "Religion", "Political Affiliation"};
+    private String[] categories = new String[] {"Gender", "Ethnicity", "Religion", "Political"};
 
     //endregion
 
@@ -84,7 +85,7 @@ public class ChoiceActivity extends Activity {
         political_stats = (TextView)findViewById(R.id.political_stats);
         religion_stats = (TextView)findViewById(R.id.religion_stats);
         chart_title = (TextView)findViewById(R.id.graph_title);
-        graph_layout = (LinearLayout) findViewById(R.id.linear);
+        graph_layout = (LinearLayout) findViewById(R.id.linear_graph_layout);
         legend_layout = (TableLayout) findViewById(R.id.legend_table);
 
 
@@ -157,7 +158,10 @@ public class ChoiceActivity extends Activity {
             if (graph_layout.getChildAt(0) != null)
                 graph_layout.removeAllViews();
 
-            graph_layout.addView(new MyGraphview(this, calculateData(getValues(code[demoCategory]))));
+
+            MyGraphview graphview = new MyGraphview(this, calculateData(getValues(code[demoCategory])));
+
+            graph_layout.addView(graphview);
         }
     }
     private ArrayList<Vote> getVotesForChoiceID(int choiceID){
@@ -175,10 +179,12 @@ public class ChoiceActivity extends Activity {
     private void setStatistics(){
         setTotalStatsView();
 
-        setGenderStatsView();
-        setEthnicityStatsView();
-        setPoliticalStatsView();
-        setReligionStatsView();
+        if(pickItVotes.size() > 0){
+            setGenderStatsView();
+            setEthnicityStatsView();
+            setPoliticalStatsView();
+            setReligionStatsView();
+        }
     }
     private void setGenderStatsView(){
         ArrayList<String> values = new ArrayList<>();
@@ -423,7 +429,7 @@ public class ChoiceActivity extends Activity {
     public class MyGraphview extends View {
         private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private float[] value_degree;
-        RectF rectf = new RectF(10, 10, 400, 400);
+        RectF rectf = new RectF(10, 10, 280, 280);
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
         int height = display.getHeight()/2;

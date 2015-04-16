@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Activity Labels -->
-    <string name="app_name">PicStat</string>
+    <string name="app_name">PickIt</string>
     <string name="profile_admin">Profile Admin</string>
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">1589926514552725</string>

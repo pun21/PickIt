@@ -10,7 +10,7 @@
         android:id="@+id/main_activity_table"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/PrimaryColor">
+        android:background="@color/PrimaryColor" >
 
         <TableRow
             android:layout_width="fill_parent"
@@ -66,21 +66,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/choice_imageView"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"/>
-
                 <TextView
                     android:id="@+id/total_vote_stats"
                     android:textSize="25sp"
-                    android:textColor="@color/PrimaryColor"
+                    android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:gravity="center"
                     android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/choice_imageView"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"/>
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -91,14 +91,14 @@
                     <TextView
                         android:id="@+id/gender_stats"
                         android:textSize="14sp"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/ethnicity_stats"
                         android:textSize="14sp"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_weight="1"/>
                 </TableRow>
@@ -110,62 +110,64 @@
                     <TextView
                         android:id="@+id/political_stats"
                         android:textSize="14sp"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/religion_stats"
                         android:textSize="14sp"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_weight="1"/>
                 </TableRow>
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="5dp">
 
                     <Button
                         android:id="@+id/btn_next"
                         android:text="@string/next_graph_button"
-                        android:textSize="18sp"
-                        android:background="@drawable/custom_upload_border"
+                        android:textColor="@color/SecondaryColor"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/custom_next_button"
                         android:onClick="onClickNextGraph"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"/>
                 </TableRow>
-
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:id="@+id/graph_title"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:layout_width="fill_parent"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </TableRow>
                 <TableRow
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:id="@+id/linear"
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
                     <LinearLayout
                         android:id="@+id/linear_legend"
                         android:orientation="vertical"
-                        android:layout_weight="15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TableLayout
                             android:id="@+id/legend_table"
@@ -175,7 +177,7 @@
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square1"
@@ -183,13 +185,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text1"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square2"
@@ -197,13 +199,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text2"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square3"
@@ -211,13 +213,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text3"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square4"
@@ -225,13 +227,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text4"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square5"
@@ -239,13 +241,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text5"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square6"
@@ -253,13 +255,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text6"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square7"
@@ -267,13 +269,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text7"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square8"
@@ -281,13 +283,13 @@
 
                                 <TextView
                                     android:id="@+id/legend_text8"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                             <TableRow
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp">
+                                android:layout_marginTop="5dp">
 
                                 <TextView
                                     android:id="@+id/color_square9"
@@ -295,14 +297,22 @@
 
                                 <TextView
                                     android:id="@+id/legend_text9"
-                                    android:textSize="18sp"
+                                    android:textSize="@dimen/graph_keys"
                                     android:layout_weight="8"/>
                             </TableRow>
                         </TableLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/linear_graph_layout"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:layout_gravity="top|center_horizontal"
+                        android:gravity="top|center_horizontal">
                     </LinearLayout>
                 </TableRow>
             </TableLayout>
         </ScrollView>
     </TableLayout>
-
 </RelativeLayout>

@@ -9,5 +9,6 @@
     <dimen name="username">15dip</dimen>
     <dimen name="category">13dip</dimen>
     <dimen name="voting_time">12dip</dimen>
+    <dimen name="graph_keys">12sp</dimen>
 
 </resources>
