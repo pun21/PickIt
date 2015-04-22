@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:textStyle="bold|italic"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:layout_weight="2"
                 android:textColor="@color/SecondaryColor"/>
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textStyle="bold|italic"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:textColor="@color/SecondaryColor"
                 android:layout_gravity="end|top"/>
         </TableRow>
@@ -59,6 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/custom_upload_border"
+                android:textSize="12sp"
                 android:textOff="@string/trending"
                 android:textOn="@string/trending_selected"
                 android:onClick="onClickTrendingToggle"
@@ -70,6 +71,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/custom_upload_border"
+                android:textSize="12sp"
                 android:textOff="@string/recency"
                 android:textOn="@string/recency_selected"
                 android:onClick="onClickRecencyToggle"
@@ -80,6 +82,7 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:background="@drawable/custom_upload_border"
+                android:textSize="12sp"
                 android:textOff="@string/expiring"
                 android:textOn="@string/expiring_selected"
                 android:onClick="onClickTimeRemainingToggle"

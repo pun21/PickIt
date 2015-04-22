@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bcdevops.pickit.database.handling.DatabaseAccess;
 import com.bcdevops.pickit.fileIO.ServerFileManager;
@@ -126,6 +127,23 @@ public class ResultsActivity extends FragmentActivity {
     //endregion
 
     //region UI handlers
+    public void onClickReport(View v){
+        //report to server
+        DatabaseAccess access = new DatabaseAccess();
+        access.sendReport(pickIt.getPickItID());
+
+        //Toast
+        CharSequence text = getString(R.string.reportText);
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+
+        //Take to main screen
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+    public void onClickAppName(View v){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     public void onClickUsername(View v) {
         //go to Profile Admin Activity
         Globals.nextUsername = pickItApp.getUsername();
@@ -191,10 +209,14 @@ public class ResultsActivity extends FragmentActivity {
                 r1c1.setBackground(null);
             }else{
                 r1c1.setVisibility(View.GONE);
+                r1c1_textView.setVisibility(View.GONE);
             }
         }else{
             r1c0.setVisibility(View.GONE);
+            r1c0_textView.setVisibility(View.GONE);
+
             r1c1.setVisibility(View.GONE);
+            r1c1_textView.setVisibility(View.GONE);
         }
         //endregion
 

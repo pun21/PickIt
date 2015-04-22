@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     //region Class Variables
     private static final int MAX_NUMBER_GRID_ROWS = 150;
-    private static ArrayList<PickIt> pickItList;
+    private static ArrayList<PickIt> pickItList = new ArrayList<PickIt>();
 
     private ArrayAdapter<CharSequence> mCategoriesAdapter;
 
@@ -152,6 +152,13 @@ public class MainActivity extends Activity {
         startLoad();
 
         ServerFileManager sm = new ServerFileManager();
+
+//        if(pickItList.size() > 0){
+//            for(int a = 0; a < pickItList.size(); a++){
+//                pickItList.get(a).stopTimer();
+//            }
+//        }
+
         pickItList = new ArrayList<>();
 
         switch (mSortingType){
@@ -179,6 +186,13 @@ public class MainActivity extends Activity {
                     pickItList.remove(a);
                     a--;
                 }
+            }
+        }
+
+        for(int a = 0; a < pickItList.size(); a++){
+            if(pickItList.get(a).getSecondsOfLife() == 0){
+                pickItList.remove(a);
+                a--;
             }
         }
     }
@@ -272,6 +286,7 @@ public class MainActivity extends Activity {
             final ImageView image_tl= (ImageView) itemView.findViewById(R.id.image_tl);
             final ServerFileManager sm = new ServerFileManager();
             final PickIt pickIt = pickItList.get(position);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

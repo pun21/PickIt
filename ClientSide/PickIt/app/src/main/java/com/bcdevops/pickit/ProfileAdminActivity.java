@@ -180,7 +180,7 @@ public class ProfileAdminActivity extends Activity {
             date = format.parse(birthday);
         } catch (ParseException e) {
             e.printStackTrace();
-            date = null;
+            return false;
         }
 
         long eighteenYears = (long)1000*(long)60*(long)60*(long)24*(long)365*(long)18;
@@ -271,7 +271,7 @@ public class ProfileAdminActivity extends Activity {
 
         if(!valuesUnchanged.equals("")){
             CharSequence text = "The following need to be changed: " + valuesUnchanged;
-            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
             endLoad();
             return false;
         }

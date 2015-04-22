@@ -2,10 +2,12 @@
 <TableRow
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/PrimaryColor">
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/textView_appName"
@@ -19,16 +21,20 @@
             android:layout_width="wrap_content"
             android:layout_alignParentStart="true"/>
 
-        <TextView
-            android:id="@+id/textView_username"
-            android:text="@string/username"
-            android:clickable="true"
-            android:onClick="onClickUsername"
-            android:layout_height="wrap_content"
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:id="@+id/report"
+            android:onClick="onClickReport"
             android:layout_width="wrap_content"
-            android:textStyle="bold|italic"
-            android:textSize="30sp"
+            android:layout_height="wrap_content"
+            android:text="@string/report"
             android:textColor="@color/SecondaryColor"
-            android:layout_alignParentEnd="true"/>
+            android:textSize="12sp"
+            android:textStyle="bold|italic"
+            android:background="@drawable/report_button"
+            android:padding="10dp"
+            android:layout_gravity="end"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 </TableRow>

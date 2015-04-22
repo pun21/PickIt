@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Report -->
+    <string name="report">Report</string>
+    <string name="reportText">Report Successful</string>
+
     <!-- Activity Labels -->
     <string name="app_name">PickIt</string>
     <string name="profile_admin">Profile Admin</string>
@@ -23,7 +27,7 @@
     <string name="trending_selected">~* Trending *~</string>
     <string name="expiring">Expiring</string>
     <string name="expiring_selected">~* Expiring *~</string>
-    <string name="edit_profile">edit</string>
+    <string name="edit_profile">Edit</string>
     <string name="upload">Upload</string>
     <string name="voted_on">Voted On</string>
     <string name="users_uploads">Uploads</string>

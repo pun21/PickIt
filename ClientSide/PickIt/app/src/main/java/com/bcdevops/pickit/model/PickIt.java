@@ -81,7 +81,7 @@ public class PickIt implements Serializable {
 
         String dateStructuredText = "Expired";
         if(hours > 0 || minutes > 0 || seconds > 0){
-            dateStructuredText = hours + " h   " + minutes + " m   " + seconds + " s";
+            dateStructuredText = "Expires in:   " + hours + " h   " + minutes + " m   " + seconds + " s";
         }
 
         return dateStructuredText;

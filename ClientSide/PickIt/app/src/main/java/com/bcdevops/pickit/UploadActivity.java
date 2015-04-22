@@ -600,7 +600,17 @@ public class UploadActivity extends FragmentActivity {
 
             //Scaling
             int nh = (int) ( bitmap.getHeight() * (512.0 / bitmap.getWidth()) );
-            final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 512, nh, true);
+            Bitmap temp= Bitmap.createScaledBitmap(bitmap, 512, nh, true);
+
+            if (temp.getHeight() <= temp.getWidth()) {
+                int difference = Math.abs(temp.getWidth() - temp.getHeight());
+                temp = Bitmap.createBitmap(temp, 0+difference/2, 0, temp.getWidth()-difference, temp.getHeight());
+            } else {
+                int difference = Math.abs(temp.getWidth() - temp.getHeight());
+                temp = Bitmap.createBitmap(temp, 0, 0+difference/2, temp.getWidth(), temp.getHeight()-difference);
+            }
+
+            final Bitmap scaledBitmap = temp;
 
             runOnUiThread(new Runnable() {
                 @Override

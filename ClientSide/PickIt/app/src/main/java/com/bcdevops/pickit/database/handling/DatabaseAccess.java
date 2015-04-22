@@ -2,6 +2,7 @@ package com.bcdevops.pickit.database.handling;
 
 import com.bcdevops.pickit.database.handling.crud.PasswordValidation;
 import com.bcdevops.pickit.database.handling.crud.PickItCRUD;
+import com.bcdevops.pickit.database.handling.crud.ReportCRUD;
 import com.bcdevops.pickit.database.handling.crud.UserCRUD;
 import com.bcdevops.pickit.database.handling.crud.ChoiceCRUD;
 
@@ -25,6 +26,10 @@ import java.net.URI;
 import java.util.ArrayList;
 
 public class DatabaseAccess {
+    public void sendReport(int pickItID){
+        ReportCRUD reportCRUD = new ReportCRUD(pickItID);
+        DataAccess access = new DataAccess(reportCRUD.create());
+    }
 
     public ArrayList<Vote> retrievePickItVotes(int pickItID){
         VoteCRUD voteCRUD = new VoteCRUD(pickItID);

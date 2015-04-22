@@ -92,6 +92,19 @@ public class VoteActivity extends FragmentActivity {
     //endregion
 
     //region UI handlers
+    public void onClickReport(View v){
+        //report to server
+        DatabaseAccess access = new DatabaseAccess();
+        access.sendReport(pickIt.getPickItID());
+
+        //Toast
+        CharSequence text = getString(R.string.reportText);
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+
+        //Take to main screen
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     public void onClickChoice(View v) {
         int source = v.getId();
 
@@ -102,31 +115,36 @@ public class VoteActivity extends FragmentActivity {
 
         switch (source) {
             case R.id.row0column0:
-                choice1.setBackground(getResources().getDrawable(R.drawable.custom_table_border));
+                choice1.setBackground(getResources().getDrawable(R.drawable.custom_upload_border));
                 choice2.setBackground(null);
                 choice3.setBackground(null);
                 choice4.setBackground(null);
                 break;
             case R.id.row0column1:
                 choice1.setBackground(null);
-                choice2.setBackground(getResources().getDrawable(R.drawable.custom_table_border));
+                choice2.setBackground(getResources().getDrawable(R.drawable.custom_upload_border));
                 choice3.setBackground(null);
                 choice4.setBackground(null);
                 break;
             case R.id.row1column0:
                 choice1.setBackground(null);
                 choice2.setBackground(null);
-                choice3.setBackground(getResources().getDrawable(R.drawable.custom_table_border));
+                choice3.setBackground(getResources().getDrawable(R.drawable.custom_upload_border));
                 choice4.setBackground(null);
                 break;
             case R.id.row1column1:
                 choice1.setBackground(null);
                 choice2.setBackground(null);
                 choice3.setBackground(null);
-                choice4.setBackground(getResources().getDrawable(R.drawable.custom_table_border));
+                choice4.setBackground(getResources().getDrawable(R.drawable.custom_upload_border));
                 break;
             default:
         }
+    }
+
+    public void onClickAppName(View v){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void onClickUsername(View v) {
@@ -208,11 +226,11 @@ public class VoteActivity extends FragmentActivity {
                                 serverFileManager.downloadPicture(r1c1, pickIt.getChoices().get(3).getFilename());
                                 r1c1.setBackground(null);
                             }else{
-                                r1c1.setVisibility(View.INVISIBLE);
+                                r1c1.setVisibility(View.GONE);
                             }
                         }else{
-                            r1c0.setVisibility(View.INVISIBLE);
-                            r1c1.setVisibility(View.INVISIBLE);
+                            r1c0.setVisibility(View.GONE);
+                            r1c1.setVisibility(View.GONE);
                         }
 
                         if(pickIt.getSubjectHeader().trim().length() == 0)
